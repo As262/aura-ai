@@ -1,0 +1,212 @@
+/* UploadForm Component Styles */
+.upload-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.upload-title {
+  text-align: center;
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Upload Area */
+.upload-area {
+  position: relative;
+  border: 3px dashed #cbd5e0;
+  border-radius: 15px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: linear-gradient(145deg, #f7fafc, #edf2f7);
+}
+
+.upload-area:hover {
+  border-color: #4ade80;
+  background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+}
+
+.upload-area.drag-active {
+  border-color: #4ade80;
+  background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+  transform: scale(1.02);
+}
+
+.upload-area.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* File Input */
+.file-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+/* Upload Icon */
+.upload-icon {
+  font-size: 3rem;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Upload Text */
+.upload-text h3 {
+  color: #2d3748;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.upload-text p {
+  color: #718096;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4ade80;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+  color: #4a5568;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Caption Section */
+.caption-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.caption-label {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.caption-input {
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+  background: white;
+}
+
+.caption-input:focus {
+  outline: none;
+  border-color: #4ade80;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+}
+
+.caption-input::placeholder {
+  color: #a0aec0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .upload-form {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .upload-title {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .upload-area {
+    padding: 2rem 1rem;
+  }
+  
+  .upload-icon {
+    font-size: 2.5rem;
+  }
+  
+  .upload-text h3 {
+    font-size: 1.1rem;
+  }
+  
+  .upload-text p {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-form {
+    padding: 1rem;
+  }
+  
+  .upload-area {
+    padding: 1.5rem 0.5rem;
+  }
+  
+  .upload-icon {
+    font-size: 2rem;
+  }
+  
+  .upload-text h3 {
+    font-size: 1rem;
+  }
+}
