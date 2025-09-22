@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
+import { ToastProvider } from './components/Toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LandingPage from './pages/LandingPage';
@@ -12,25 +14,43 @@ import './App.css';
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <div className="App">
-            <Header />
-            <main className="main-content">
-              <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/aesthetic-analyzer" element={<AestheticAnalyzer />} />
-                <Route path="/convo-decoder" element={<ConvoDecoder />} />
-                <Route path="/login" element={<Auth />} />
-                <Route path="/signup" element={<Auth />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
+      <ThemeProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <Router>
+              <div className="App">
+                <Header />
+                <main className="main-content">
+                  <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route 
+                      path="/aesthetic-analyzer" 
+                      element={
+                        <ErrorBoundary>
+                          <AestheticAnalyzer />
+                        </ErrorBoundary>
+                      } 
+                    />
+                    <Route 
+                      path="/convo-decoder" 
+                      element={
+                        <ErrorBoundary>
+                          <ConvoDecoder />
+                        </ErrorBoundary>
+                      } 
+                    />
+                    <Route path="/login" element={<Auth />} />
+                    <Route path="/signup" element={<Auth />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </Router>
+          </ToastProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 

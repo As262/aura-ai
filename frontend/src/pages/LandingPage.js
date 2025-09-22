@@ -1,12 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import FeatureCard from '../components/FeatureCard';
 import './LandingPage.css';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
   const scrollToFeatures = () => {
     document.getElementById('features').scrollIntoView({ 
       behavior: 'smooth' 
     });
+  };
+
+  const handleGetStarted = () => {
+    navigate('/login');
   };
 
   return (
@@ -25,27 +32,26 @@ const LandingPage = () => {
             <div className="hero-actions">
               <button 
                 className="btn btn-primary btn-large btn-hero-cta"
-                onClick={scrollToFeatures}
+                onClick={handleGetStarted}
               >
-                <span className="btn-icon">🚀</span>
                 Get Started
               </button>
               <button 
                 className="btn btn-outline btn-large"
                 onClick={scrollToFeatures}
               >
-                <span className="btn-icon">📖</span>
                 Learn More
               </button>
             </div>
           </div>
           <div className="hero-visual">
-            <div className="floating-elements">
-              <div className="floating-card card-1">📸</div>
-              <div className="floating-card card-2">💬</div>
-              <div className="floating-card card-3">✨</div>
-              <div className="floating-card card-4">🎨</div>
-              <div className="floating-card card-5">💫</div>
+            <div className="geometric-background">
+              <div className="geometric-shape shape-1"></div>
+              <div className="geometric-shape shape-2"></div>
+              <div className="geometric-shape shape-3"></div>
+              <div className="geometric-shape shape-4"></div>
+              <div className="geometric-shape shape-5"></div>
+              <div className="geometric-shape shape-6"></div>
             </div>
           </div>
         </div>
@@ -117,7 +123,6 @@ const LandingPage = () => {
             className="btn btn-primary btn-large btn-cta-final"
             onClick={scrollToFeatures}
           >
-            <span className="btn-icon">✨</span>
             Start Your Analysis
           </button>
         </div>

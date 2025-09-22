@@ -7,46 +7,145 @@ class MockApiService {
   }
 
   // Mock Aesthetic Analyzer API
-  static async analyzeAesthetic(file, caption) {
+  static async analyzeAesthetic(file, caption, platform = 'instagram') {
     await this.delay(2000);
     
-    // Simulate analysis based on file type and caption content
-    const results = {
-      aestheticScore: this.generateScore(70, 100),
-      captionTone: this.getRandomTone(),
-      hashtagSuggestions: this.getRandomHashtags(),
-      visualStyle: this.getRandomVisualStyle(),
-      colorPalette: this.getRandomColorPalette(),
-      postingPattern: this.getRandomPostingPattern(),
-      engagementPrediction: this.generateScore(75, 100),
-      audienceMatch: this.getRandomAudienceMatch(),
-      contentCategories: this.getRandomContentCategories(),
-      moodBoard: this.getRandomMoodBoard()
-    };
+    try {
+      // Simulate random errors (5% chance)
+      if (Math.random() < 0.05) {
+        throw new Error('Service temporarily unavailable. Please try again.');
+      }
 
-    return { success: true, data: results };
+      // Simulate platform-specific rate limiting
+      if (this.isRateLimited(platform)) {
+        throw new Error(`Rate limit exceeded for ${platform}. Please wait before making another request.`);
+      }
+      
+      // Simulate analysis based on file type and caption content
+      const results = {
+        aestheticScore: this.generateScore(70, 100),
+        captionTone: this.getRandomTone(),
+        hashtagSuggestions: this.getRandomHashtags(platform),
+        visualStyle: this.getRandomVisualStyle(platform),
+        colorPalette: this.getRandomColorPalette(),
+        postingPattern: this.getRandomPostingPattern(platform),
+        engagementPrediction: this.generateScore(75, 100),
+        audienceMatch: this.getRandomAudienceMatch(),
+        contentCategories: this.getRandomContentCategories(),
+        moodBoard: this.getRandomMoodBoard(),
+        platform: platform,
+        timestamp: new Date().toISOString()
+      };
+
+      return { success: true, data: results };
+    } catch (error) {
+      console.error('Aesthetic analysis error:', error);
+      return { 
+        success: false, 
+        error: error.message,
+        code: 'ANALYSIS_ERROR',
+        timestamp: new Date().toISOString()
+      };
+    }
   }
 
   // Mock Conversation Decoder API
   static async analyzeConversation(file) {
     await this.delay(2500);
     
-    const results = {
-      replyDelay: this.getRandomReplyDelay(),
-      conversationBalance: this.getRandomBalance(),
-      communicationStyle: this.getRandomCommStyle(),
-      moodAnalysis: this.getRandomMood(),
-      romanticInterest: this.getRandomRomanticCues(),
-      personalityTraits: this.getRandomPersonalityTraits(),
-      responseLength: this.getRandomResponseLength(),
-      emojiUsage: this.getRandomEmojiPattern(),
-      engagementLevel: this.generateScore(75, 100),
-      conversationStarter: this.getRandomStarterStyle(),
-      socialMetrics: this.getRandomSocialMetrics(),
-      communicationHealth: this.getRandomHealthScore()
-    };
+    try {
+      // Simulate random errors (3% chance)
+      if (Math.random() < 0.03) {
+        throw new Error('Failed to process conversation file. Please ensure the file format is supported.');
+      }
 
-    return { success: true, data: results };
+      // Simulate file size validation
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        throw new Error('File too large. Please upload a file smaller than 5MB.');
+      }
+      
+      const results = {
+        replyDelay: this.getRandomReplyDelay(),
+        conversationBalance: this.getRandomBalance(),
+        communicationStyle: this.getRandomCommStyle(),
+        moodAnalysis: this.getRandomMood(),
+        romanticInterest: this.getRandomRomanticCues(),
+        personalityTraits: this.getRandomPersonalityTraits(),
+        responseLength: this.getRandomResponseLength(),
+        emojiUsage: this.getRandomEmojiPattern(),
+        engagementLevel: this.generateScore(75, 100),
+        conversationStarter: this.getRandomStarterStyle(),
+        socialMetrics: this.getRandomSocialMetrics(),
+        communicationHealth: this.getRandomHealthScore(),
+        timestamp: new Date().toISOString()
+      };
+
+      return { success: true, data: results };
+    } catch (error) {
+      console.error('Conversation analysis error:', error);
+      return { 
+        success: false, 
+        error: error.message,
+        code: 'CONVERSATION_ERROR',
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  // Rate limiting simulation
+  static rateLimitStore = new Map();
+  
+  static isRateLimited(platform) {
+    const key = `${platform}_requests`;
+    const now = Date.now();
+    const windowMs = 60 * 1000; // 1 minute window
+    const maxRequests = 10; // 10 requests per minute
+    
+    if (!this.rateLimitStore.has(key)) {
+      this.rateLimitStore.set(key, []);
+    }
+    
+    const requests = this.rateLimitStore.get(key);
+    
+    // Remove old requests outside the window
+    const validRequests = requests.filter(time => now - time < windowMs);
+    
+    if (validRequests.length >= maxRequests) {
+      return true;
+    }
+    
+    // Add current request
+    validRequests.push(now);
+    this.rateLimitStore.set(key, validRequests);
+    
+    return false;
+  }
+
+  // Network status simulation
+  static simulateNetworkIssue() {
+    if (Math.random() < 0.02) { // 2% chance
+      throw new Error('Network connection lost. Please check your internet connection and try again.');
+    }
+  }
+
+  // Enhanced error handling for file validation
+  static validateFile(file, allowedTypes, maxSize = 10 * 1024 * 1024) {
+    if (!file) {
+      throw new Error('No file provided');
+    }
+
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error(`Unsupported file type. Please upload: ${allowedTypes.join(', ')}`);
+    }
+
+    if (file.size > maxSize) {
+      const maxSizeMB = Math.round(maxSize / (1024 * 1024));
+      throw new Error(`File too large. Maximum size allowed: ${maxSizeMB}MB`);
+    }
+
+    if (file.size < 1024) { // Less than 1KB
+      throw new Error('File appears to be corrupted or empty');
+    }
   }
 
   // Helper methods for generating random mock data
@@ -68,31 +167,74 @@ class MockApiService {
     return tones[Math.floor(Math.random() * tones.length)];
   }
 
-  static getRandomHashtags() {
-    const hashtagSets = [
-      ['#aesthetic', '#vibes', '#mood', '#inspiration', '#lifestyle'],
-      ['#photography', '#art', '#creative', '#visualart', '#capture'],
-      ['#minimalist', '#clean', '#simple', '#modernart', '#design'],
-      ['#colorful', '#vibrant', '#energetic', '#bold', '#expression'],
-      ['#vintage', '#retro', '#classic', '#timeless', '#nostalgia'],
-      ['#nature', '#outdoor', '#adventure', '#explore', '#wanderlust'],
-      ['#fashionista', '#style', '#outfit', '#trendy', '#chic'],
-      ['#foodie', '#delicious', '#yummy', '#cooking', '#recipe']
-    ];
+  static getRandomHashtags(platform = 'instagram') {
+    const platformSpecificHashtags = {
+      instagram: [
+        ['#aesthetic', '#vibes', '#mood', '#inspiration', '#lifestyle'],
+        ['#photography', '#art', '#creative', '#visualart', '#capture'],
+        ['#minimalist', '#clean', '#simple', '#modernart', '#design'],
+        ['#colorful', '#vibrant', '#energetic', '#bold', '#expression'],
+        ['#vintage', '#retro', '#classic', '#timeless', '#nostalgia'],
+        ['#nature', '#outdoor', '#adventure', '#explore', '#wanderlust'],
+        ['#fashionista', '#style', '#outfit', '#trendy', '#chic'],
+        ['#foodie', '#delicious', '#yummy', '#cooking', '#recipe']
+      ],
+      tiktok: [
+        ['#fyp', '#foryou', '#viral', '#trending', '#tiktok'],
+        ['#dance', '#music', '#trend', '#challenge', '#duet'],
+        ['#comedy', '#funny', '#humor', '#meme', '#laugh'],
+        ['#aesthetic', '#vibes', '#mood', '#style', '#outfit'],
+        ['#tutorial', '#howto', '#tips', '#diy', '#lifehack']
+      ],
+      twitter: [
+        ['#Breaking', '#News', '#Update', '#Thread', '#Opinion'],
+        ['#Tech', '#AI', '#Innovation', '#Future', '#Digital'],
+        ['#Motivation', '#Success', '#Goals', '#Growth', '#Mindset'],
+        ['#Community', '#Discussion', '#Thoughts', '#Perspective', '#Ideas']
+      ],
+      youtube: [
+        ['#Tutorial', '#HowTo', '#Guide', '#Tips', '#Learn'],
+        ['#Review', '#Unboxing', '#Tech', '#Gaming', '#Entertainment'],
+        ['#Vlog', '#Daily', '#Lifestyle', '#Travel', '#Adventure'],
+        ['#Music', '#Cover', '#Original', '#Performance', '#Artist']
+      ],
+      linkedin: [
+        ['#Professional', '#Career', '#Leadership', '#Business', '#Success'],
+        ['#Networking', '#Industry', '#Insights', '#Growth', '#Innovation'],
+        ['#Workplace', '#Skills', '#Development', '#Strategy', '#Trends']
+      ]
+    };
+    
+    const hashtagSets = platformSpecificHashtags[platform] || platformSpecificHashtags.instagram;
     return hashtagSets[Math.floor(Math.random() * hashtagSets.length)];
   }
 
-  static getRandomVisualStyle() {
-    const styles = [
-      'Minimalist Modern',
-      'Vintage Aesthetic',
-      'Bold & Colorful',
-      'Moody & Dramatic',
-      'Clean & Bright',
-      'Artistic & Creative',
-      'Urban & Edgy',
-      'Soft & Dreamy'
-    ];
+  static getRandomVisualStyle(platform = 'instagram') {
+    const platformStyles = {
+      instagram: [
+        'Minimalist Modern', 'Vintage Aesthetic', 'Bold & Colorful', 
+        'Moody & Dramatic', 'Clean & Bright', 'Artistic & Creative', 
+        'Urban & Edgy', 'Soft & Dreamy'
+      ],
+      tiktok: [
+        'Dynamic & Energetic', 'Trendy & Fresh', 'Pop Culture Vibes',
+        'Quick & Snappy', 'Gen-Z Aesthetic', 'Viral Ready'
+      ],
+      youtube: [
+        'Professional & Polished', 'Cinematic Quality', 'Thumbnail Worthy',
+        'Engaging & Clear', 'Brand Consistent', 'High Production Value'
+      ],
+      twitter: [
+        'Clean & Professional', 'News Worthy', 'Discussion Starter',
+        'Shareable Content', 'Topic Focused'
+      ],
+      linkedin: [
+        'Corporate & Professional', 'Industry Standard', 'Business Focused',
+        'Executive Level', 'Thought Leadership'
+      ]
+    };
+    
+    const styles = platformStyles[platform] || platformStyles.instagram;
     return styles[Math.floor(Math.random() * styles.length)];
   }
 
@@ -110,17 +252,32 @@ class MockApiService {
     return palettes[Math.floor(Math.random() * palettes.length)];
   }
 
-  static getRandomPostingPattern() {
-    const patterns = [
-      'Consistent Daily Poster',
-      'Weekend Warrior',
-      'Sporadic Creator',
-      'Strategic Scheduler',
-      'Spontaneous Sharer',
-      'Curated Perfectionist',
-      'Story Enthusiast',
-      'Feed Perfectionist'
-    ];
+  static getRandomPostingPattern(platform = 'instagram') {
+    const platformPatterns = {
+      instagram: [
+        'Consistent Daily Poster', 'Weekend Warrior', 'Sporadic Creator',
+        'Strategic Scheduler', 'Spontaneous Sharer', 'Curated Perfectionist',
+        'Story Enthusiast', 'Feed Perfectionist'
+      ],
+      tiktok: [
+        'Multiple Daily Posts', 'Trend Chaser', 'Peak Hours Poster',
+        'Viral Content Creator', 'Consistent Creator', 'Weekend Trendsetter'
+      ],
+      youtube: [
+        'Weekly Uploader', 'Consistent Scheduler', 'Series Creator',
+        'Long-form Producer', 'Quality over Quantity', 'Strategic Releaser'
+      ],
+      twitter: [
+        'Real-time Responder', 'Thread Creator', 'News Commentator',
+        'Daily Tweeter', 'Conversation Starter', 'Thought Leader'
+      ],
+      linkedin: [
+        'Weekly Thought Leader', 'Industry Commentator', 'Professional Updater',
+        'Business Insights Sharer', 'Network Engager', 'Content Curator'
+      ]
+    };
+    
+    const patterns = platformPatterns[platform] || platformPatterns.instagram;
     return patterns[Math.floor(Math.random() * patterns.length)];
   }
 

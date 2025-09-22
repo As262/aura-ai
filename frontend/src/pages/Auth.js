@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import AccessibilityUtils from '../utils/AccessibilityUtils';
 import './Auth.css';
 
 const Auth = () => {
@@ -13,21 +14,56 @@ const Auth = () => {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
-  const { login, signup, isLoading } = useAuth();
+  const [fieldErrors, setFieldErrors] = useState({});
+  const { login, signup, isLoading, authError, clearError } = useAuth();
   const navigate = useNavigate();
+  const formRef = useRef(null);
+  const titleRef = useRef(null);
+
+  // Generate unique IDs for form elements
+  const nameId = AccessibilityUtils.generateId('name');
+  const emailId = AccessibilityUtils.generateId('email');
+  const passwordId = AccessibilityUtils.generateId('password');
+  const confirmPasswordId = AccessibilityUtils.generateId('confirm-password');
+  const errorId = AccessibilityUtils.generateId('form-error');
+
+  // Clear errors when component mounts or mode switches
+  useEffect(() => {
+    setError('');
+    clearError();
+  }, [isLogin, clearError]);
+
+  // Show auth errors from context
+  useEffect(() => {
+    if (authError) {
+      setError(authError);
+    }
+  }, [authError]);
 
   const handleModeSwitch = (loginMode) => {
     setIsLogin(loginMode);
     setError('');
+    setFieldErrors({});
     setFormData({
       name: '',
       email: '',
       password: '',
       confirmPassword: ''
     });
+    clearError();
     
     // Update URL without page reload
     window.history.pushState(null, '', loginMode ? '/login' : '/signup');
+    
+    // Focus the title for screen readers
+    if (titleRef.current) {
+      AccessibilityUtils.manageFocus(titleRef.current);
+    }
+    
+    // Announce the change
+    AccessibilityUtils.announceToScreenReader(
+      loginMode ? 'Switched to login form' : 'Switched to signup form'
+    );
   };
 
   const handleChange = (e) => {
@@ -40,9 +76,10 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    clearError();
 
     if (isLogin) {
-      // Login validation
+      // Basic client-side validation for login
       if (!formData.email || !formData.password) {
         setError('Please fill in all fields');
         return;
@@ -51,11 +88,10 @@ const Auth = () => {
       const result = await login(formData.email, formData.password);
       if (result.success) {
         navigate('/');
-      } else {
-        setError(result.error);
       }
+      // Error handling is now done automatically via authError in useEffect
     } else {
-      // Signup validation
+      // Basic client-side validation for signup
       if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
         setError('Please fill in all fields');
         return;
@@ -66,17 +102,11 @@ const Auth = () => {
         return;
       }
 
-      if (formData.password.length < 6) {
-        setError('Password must be at least 6 characters long');
-        return;
-      }
-
       const result = await signup(formData.name, formData.email, formData.password);
       if (result.success) {
         navigate('/');
-      } else {
-        setError(result.error);
       }
+      // Error handling is now done automatically via authError in useEffect
     }
   };
 
