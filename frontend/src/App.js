@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ConnectionStatus from './components/ConnectionStatus';
 import LandingPage from './pages/LandingPage';
 import AestheticAnalyzer from './pages/AestheticAnalyzer';
 import ConvoDecoder from './pages/ConvoDecoder';
@@ -21,6 +22,7 @@ function App() {
             <Router>
               <div className="App">
                 <Header />
+                <ConnectionStatus />
                 <main className="main-content">
                   <Routes>
                     <Route path="/" element={<LandingPage />} />

@@ -2,6 +2,7 @@ import React, { useState, useCallback, memo, lazy, Suspense } from 'react';
 import { useToast } from '../components/Toast';
 import UploadForm from '../components/UploadForm';
 import ResultPanel from '../components/ResultPanel';
+import ApiService from '../services/ApiService';
 import MockApiService from '../services/MockApiService';
 import './AestheticAnalyzer.css';
 
@@ -26,16 +27,31 @@ const AestheticAnalyzer = () => {
         id: 'analysis-loading'
       });
 
-      // Use mock API service with Instagram platform
-      const response = await MockApiService.analyzeAesthetic(
-        formData.file, 
-        formData.caption, 
-        'instagram'
-      );
+      // Try real API first, fallback to mock if backend is unavailable
+      let response;
+      const backendAvailable = await ApiService.testConnection();
+      
+      if (backendAvailable) {
+        console.log('🔗 Using Django backend API');
+        response = await ApiService.analyzeAesthetic(
+          formData.file, 
+          formData.caption, 
+          'instagram'
+        );
+      } else {
+        console.log('🔄 Backend unavailable, using mock API');
+        showWarning('Using demo mode - connect to backend for full features', { duration: 3000 });
+        response = await MockApiService.analyzeAesthetic(
+          formData.file, 
+          formData.caption, 
+          'instagram'
+        );
+      }
       
       if (response.success) {
         setResults(response.data);
-        showSuccess(`Analysis complete! Your Instagram content scored ${response.data.aestheticScore}% aesthetic appeal.`);
+        const scoreText = response.data.aestheticScore || response.data.aesthetic_score || 'N/A';
+        showSuccess(`Analysis complete! Your Instagram content scored ${scoreText}% aesthetic appeal.`);
       } else {
         throw new Error(response.error || 'Analysis failed');
       }

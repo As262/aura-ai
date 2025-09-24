@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UploadForm from '../components/UploadForm';
 import ResultPanel from '../components/ResultPanel';
+import ApiService from '../services/ApiService';
 import MockApiService from '../services/MockApiService';
 import './ConvoDecoder.css';
 
@@ -15,13 +16,22 @@ const ConvoDecoder = () => {
     setResults(null);
 
     try {
-      // Use mock API service
-      const response = await MockApiService.analyzeConversation(formData.file);
+      // Try real API first, fallback to mock if backend is unavailable
+      let response;
+      const backendAvailable = await ApiService.testConnection();
+      
+      if (backendAvailable) {
+        console.log('🔗 Using Django backend API');
+        response = await ApiService.analyzeConversation(formData.file);
+      } else {
+        console.log('🔄 Backend unavailable, using mock API');
+        response = await MockApiService.analyzeConversation(formData.file);
+      }
       
       if (response.success) {
         setResults(response.data);
       } else {
-        throw new Error('Analysis failed');
+        throw new Error(response.error || 'Analysis failed');
       }
     } catch (err) {
       setError('Failed to analyze your conversation. Please try again.');
