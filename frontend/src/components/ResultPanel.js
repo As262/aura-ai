@@ -2,9 +2,14 @@ import React from 'react';
 import './ResultPanel.css';
 
 const ResultPanel = ({ title, results, isVisible = false }) => {
+  console.log('🎯 ResultPanel props:', { title, results, isVisible });
+  
   if (!isVisible || !results) {
+    console.log('🎯 ResultPanel not rendering:', { isVisible, hasResults: !!results });
     return null;
   }
+
+  try {
 
   const renderResultItem = (key, value) => {
     if (Array.isArray(value)) {
@@ -30,7 +35,12 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
             {Object.entries(value).map(([nestedKey, nestedValue]) => (
               <div key={nestedKey} className="result-nested-item">
                 <span className="nested-label">{nestedKey}:</span>
-                <span className="nested-value">{nestedValue}</span>
+                <span className="nested-value">
+                  {typeof nestedValue === 'object' && nestedValue !== null 
+                    ? JSON.stringify(nestedValue, null, 2)
+                    : String(nestedValue)
+                  }
+                </span>
               </div>
             ))}
           </div>
@@ -54,7 +64,10 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
             </div>
           ) : (
             <span className={`result-text ${getValueClass(key, value)}`}>
-              {value}
+              {typeof value === 'object' && value !== null 
+                ? JSON.stringify(value, null, 2)
+                : String(value)
+              }
             </span>
           )}
         </div>
@@ -108,6 +121,19 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
       </div>
     </div>
   );
+  } catch (error) {
+    console.error('❌ ResultPanel render error:', error);
+    return (
+      <div className="result-panel error">
+        <div className="result-header">
+          <h2 className="result-title">Display Error</h2>
+        </div>
+        <div className="result-content">
+          <p>Unable to display results. Please try again.</p>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default ResultPanel;

@@ -2,6 +2,8 @@ from rest_framework import generics, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.core.files.storage import default_storage
@@ -138,6 +140,105 @@ class ConversationAnalysisView(generics.CreateAPIView):
                 status=status.HTTP_201_CREATED
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SocialMediaAnalysisView(APIView):
+    """
+    Social media-specific aesthetic analysis endpoint
+    """
+    permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
+    
+    def post(self, request):
+        print("🚀 Social Media Analysis API called")
+        print(f"📄 Request data keys: {list(request.data.keys())}")
+        print(f"📄 Request files: {list(request.FILES.keys())}")
+        print(f"📄 Request method: {request.method}")
+        print(f"📄 Content type: {request.content_type}")
+        
+        try:
+            if 'image' in request.FILES:
+                print("✅ Image file found in request")
+                image_file = request.FILES['image']
+                platform = request.data.get('analysis_type', 'instagram')  # Default to Instagram
+                caption = request.data.get('caption', '')  # Optional caption
+                print(f"📄 Platform: {platform}, Caption: {caption[:50]}...")
+                
+                # Save uploaded file temporarily
+                import tempfile
+                import os
+                
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.jpg') as temp_file:
+                    for chunk in image_file.chunks():
+                        temp_file.write(chunk)
+                    temp_file_path = temp_file.name
+                
+                try:
+                    # Initialize AI service and run social media analysis
+                    ai_service = ImageAnalysisService()
+                    print(f"🎯 Running social media analysis for platform: {platform}")
+                    
+                    # Use the new social media analysis method
+                    analysis_result = ai_service.analyze_social_media(
+                        temp_file_path, 
+                        platform=platform,
+                        caption=caption
+                    )
+                    
+                    print(f"✅ Social media analysis completed with score: {analysis_result.get('aesthetic_score', 'N/A')}")
+                    
+                    # Convert numpy arrays to JSON-serializable format
+                    import json
+                    import numpy as np
+                    
+                    def convert_numpy_types(obj):
+                        if isinstance(obj, np.ndarray):
+                            return obj.tolist()
+                        elif isinstance(obj, np.floating):
+                            return float(obj)
+                        elif isinstance(obj, np.integer):
+                            return int(obj)
+                        elif isinstance(obj, dict):
+                            return {key: convert_numpy_types(value) for key, value in obj.items()}
+                        elif isinstance(obj, list):
+                            return [convert_numpy_types(item) for item in obj]
+                        return obj
+                    
+                    # Make analysis result JSON serializable
+                    serializable_result = convert_numpy_types(analysis_result)
+                    
+                    # Create AestheticAnalysis object directly (bypassing serializer validation issues)
+                    from .models import AestheticAnalysis
+                    analysis = AestheticAnalysis.objects.create(
+                        user=request.user if request.user.is_authenticated else None,
+                        image=image_file,
+                        result=serializable_result
+                    )
+                    
+                    return Response(
+                        AestheticAnalysisSerializer(analysis).data,
+                        status=status.HTTP_201_CREATED
+                    )
+                    
+                finally:
+                    # Clean up temporary file
+                    if os.path.exists(temp_file_path):
+                        os.unlink(temp_file_path)
+            else:
+                print("❌ No image file found in request")
+                return Response(
+                    {'error': 'No image file provided'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+        except Exception as e:
+            print(f"❌ Social media analysis error: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return Response(
+                {'error': f'Analysis failed: {str(e)}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 @api_view(['GET'])

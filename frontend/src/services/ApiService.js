@@ -5,6 +5,9 @@ class ApiService {
   // Helper method for making HTTP requests
   static async makeRequest(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
+    console.log('🌐 Making request to:', url);
+    console.log('🌐 Request options:', { ...options, body: options.body instanceof FormData ? '[FormData]' : options.body });
+    
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -16,11 +19,17 @@ class ApiService {
     // Remove Content-Type for FormData
     if (options.body instanceof FormData) {
       delete config.headers['Content-Type'];
+      console.log('🌐 FormData detected, removed Content-Type header');
     }
 
     try {
+      console.log('🌐 Sending request...');
       const response = await fetch(url, config);
+      console.log('🌐 Response status:', response.status);
+      console.log('🌐 Response headers:', Object.fromEntries(response.headers.entries()));
+      
       const data = await response.json();
+      console.log('🌐 Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
@@ -70,20 +79,27 @@ class ApiService {
     });
   }
 
-  // Aesthetic Analysis
+  // Aesthetic Analysis (Social Media focused)
   static async analyzeAesthetic(file, caption = '', platform = 'instagram') {
     try {
+      console.log('🚀 ApiService.analyzeAesthetic called with:', { file, caption, platform });
+      console.log('🚀 File details:', { name: file.name, size: file.size, type: file.type });
+      
       // Validate file
       this.validateFile(file, ['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+      console.log('✅ File validation passed');
 
       const formData = new FormData();
       formData.append('image', file);
+      formData.append('analysis_type', platform);
+      if (caption) {
+        formData.append('caption', caption);
+      }
       
-      // Add metadata as JSON string if needed
-      const metadata = { caption, platform };
-      formData.append('metadata', JSON.stringify(metadata));
+      console.log('🚀 FormData created, making request to /social-media-analysis/');
 
-      const result = await this.makeRequest('/aesthetic-analysis/', {
+      // Use social media specific endpoint
+      const result = await this.makeRequest('/social-media-analysis/', {
         method: 'POST',
         body: formData,
       });

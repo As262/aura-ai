@@ -19,6 +19,8 @@ const AestheticAnalyzer = () => {
   const { showSuccess, showError, showWarning } = useToast();
 
   const handleFileUpload = useCallback(async (formData) => {
+    console.log('🚀 Starting file upload analysis...');
+    
     setIsLoading(true);
     setError(null);
     setResults(null);
@@ -51,12 +53,19 @@ const AestheticAnalyzer = () => {
             showSuccess(`🎯 AI Analysis Complete! Overall rating: ${overallScore}/10`);
           }
         } else {
-          // Use basic aesthetic analysis
-          response = await ApiService.analyzeAesthetic(
-            formData.file, 
-            formData.caption, 
-            'instagram'
-          );
+          // Use basic aesthetic analysis (social media mode)
+          console.log('🎯 Calling social media analysis...');
+          try {
+            response = await ApiService.analyzeAesthetic(
+              formData.file, 
+              formData.caption, 
+              'instagram'
+            );
+            console.log('🎯 Social media analysis completed:', response);
+          } catch (socialError) {
+            console.error('❌ Social media analysis error:', socialError);
+            throw new Error(`Social media analysis failed: ${socialError.message}`);
+          }
           
           if (response.success) {
             setResults(response.data);
@@ -74,9 +83,34 @@ const AestheticAnalyzer = () => {
         );
         
         if (response.success) {
-          setResults(response.data);
-          const scoreText = response.data.aestheticScore || response.data.aesthetic_score || 'N/A';
-          showSuccess(`Demo analysis complete! Your content scored ${scoreText}% aesthetic appeal.`);
+          console.log('✅ Analysis successful, response:', response);
+          console.log('✅ Response data:', response.data);
+          console.log('✅ Setting results...');
+          
+          // Safely validate response data before setting state
+          const responseData = response.data || {};
+          console.log('✅ Validated response data:', responseData);
+          
+          try {
+            setResults(responseData);
+            console.log('✅ Results set successfully');
+          } catch (setResultsError) {
+            console.error('❌ Error setting results:', setResultsError);
+            throw new Error('Failed to display results');
+          }
+          
+          // Handle both social media and detailed analysis response formats
+          const result = responseData.result || responseData;
+          console.log('✅ Extracted result:', result);
+          
+          const scoreText = result?.aestheticScore || result?.aesthetic_score || responseData?.aesthetic_score || 'N/A';
+          console.log('✅ Score text:', scoreText);
+          
+          try {
+            showSuccess(`Analysis complete! Your content scored ${scoreText}% aesthetic appeal.`);
+          } catch (toastError) {
+            console.error('❌ Error showing success toast:', toastError);
+          }
         }
       }
       
@@ -84,11 +118,30 @@ const AestheticAnalyzer = () => {
         throw new Error(response.error || 'Analysis failed');
       }
     } catch (err) {
-      console.error('Analysis error:', err);
-      setError(err.message || 'Failed to analyze your content. Please try again.');
-      showError(err.message || 'Failed to analyze your content. Please try again.');
+      console.error('❌ Analysis error caught:', err);
+      console.error('❌ Error details:', {
+        message: err.message,
+        stack: err.stack,
+        name: err.name
+      });
+      
+      const errorMessage = err.message || 'Failed to analyze your content. Please try again.';
+      console.log('❌ Setting error state:', errorMessage);
+      
+      // Safely set error state
+      try {
+        setError(errorMessage);
+        showError(errorMessage);
+      } catch (setterError) {
+        console.error('❌ Error setting error state:', setterError);
+      }
     } finally {
-      setIsLoading(false);
+      console.log('🏁 Analysis complete, setting loading to false');
+      try {
+        setIsLoading(false);
+      } catch (finalError) {
+        console.error('❌ Error in finally block:', finalError);
+      }
     }
   }, [analysisMode, showSuccess, showError, showWarning]);
 
