@@ -16,12 +16,18 @@
 .page-title {
   font-size: 3rem;
   font-weight: 800;
-  background: linear-gradient(45deg, var(--accent-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-color) !important;
   margin-bottom: 1rem;
-  will-change: auto;
+  text-shadow: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  /* Remove any gradient or selection styling */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  background-clip: initial !important;
 }
 
 .page-description {

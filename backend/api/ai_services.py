@@ -31,6 +31,7 @@ class ImageAnalysisService:
         # Initialize MediaPipe with optimized settings for GPU
         self.mp_pose = mp.solutions.pose
         self.mp_face_mesh = mp.solutions.face_mesh
+        self.mp_face_detection = mp.solutions.face_detection
         self.mp_drawing = mp.solutions.drawing_utils
         self.pose = self.mp_pose.Pose(
             static_image_mode=True,
@@ -42,6 +43,10 @@ class ImageAnalysisService:
             static_image_mode=True,
             max_num_faces=1,
             refine_landmarks=True,
+            min_detection_confidence=0.5
+        )
+        self.face_detection = self.mp_face_detection.FaceDetection(
+            model_selection=1,  # Use full-range model for better accuracy
             min_detection_confidence=0.5
         )
         
@@ -535,72 +540,495 @@ class ImageAnalysisService:
         return suggestions
     
     def check_rule_of_thirds(self, image_rgb):
-        """Check rule of thirds composition"""
-        # Simplified rule of thirds checking
-        return {
-            'score': 7.0,
-            'compliance': 'Good',
-            'suggestions': 'Subject is well positioned'
-        }
+        
+        """Check rule of thirds composition using actual image analysis"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            score = self._analyze_rule_of_thirds(gray)
+            
+            # Determine compliance level based on score
+            if score >= 8.0:
+                compliance = 'Excellent'
+                suggestions = 'Subject placement follows rule of thirds perfectly'
+            elif score >= 6.5:
+                compliance = 'Good'
+                suggestions = 'Good subject positioning with room for minor improvements'
+            elif score >= 5.0:
+                compliance = 'Fair'
+                suggestions = 'Consider repositioning key elements along rule-of-thirds lines'
+            else:
+                compliance = 'Poor'
+                suggestions = 'Try placing important elements at intersection points of rule-of-thirds grid'
+            
+            return {
+                'score': round(score, 1),
+                'compliance': compliance,
+                'suggestions': suggestions
+            }
+        except Exception as e:
+            print(f"Error in rule of thirds analysis: {e}")
+            return {
+                'score': 6.0,
+                'compliance': 'Good',
+                'suggestions': 'Unable to analyze rule of thirds'
+            }
     
     def detect_leading_lines(self, image_rgb):
-        """Detect leading lines in composition"""
-        return {
-            'score': 6.5,
-            'detected': True,
-            'strength': 'Medium'
-        }
+        """Detect leading lines in composition using computer vision"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            
+            # Edge detection
+            edges = cv2.Canny(gray, 50, 150)
+            
+            # Hough line detection
+            lines = cv2.HoughLines(edges, 1, np.pi/180, threshold=80)
+            
+            if lines is None:
+                return {
+                    'score': 3.0,
+                    'detected': False,
+                    'strength': 'None'
+                }
+            
+            line_count = len(lines)
+            
+            # Analyze line directions and strength
+            angles = []
+            for line in lines:
+                rho, theta = line[0]
+                angles.append(theta)
+            
+            # Calculate score based on line count and direction variety
+            base_score = min(line_count / 10 * 7, 7.0)  # More lines = higher score up to 7
+            
+            # Bonus for good line distribution
+            angle_variety = np.std(angles) if len(angles) > 1 else 0
+            variety_bonus = min(angle_variety * 2, 2.0)
+            
+            final_score = base_score + variety_bonus
+            
+            # Determine strength and detection status
+            if final_score >= 7.0:
+                strength = 'Strong'
+            elif final_score >= 5.0:
+                strength = 'Medium'
+            elif final_score >= 3.0:
+                strength = 'Weak'
+            else:
+                strength = 'Very Weak'
+            
+            return {
+                'score': round(final_score, 1),
+                'detected': line_count > 0,
+                'strength': strength,
+                'line_count': int(line_count)
+            }
+            
+        except Exception as e:
+            print(f"Error in leading lines detection: {e}")
+            return {
+                'score': 5.0,
+                'detected': True,
+                'strength': 'Medium'
+            }
     
     def analyze_symmetry(self, image_rgb):
-        """Analyze image symmetry"""
-        return {
-            'score': 6.0,
-            'type': 'Asymmetric',
-            'balance': 'Good'
-        }
+        """Analyze image symmetry using computer vision"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            score = self._analyze_symmetry_score(gray)
+            
+            # Determine symmetry type and balance
+            if score >= 8.0:
+                sym_type = 'Highly Symmetric'
+                balance = 'Excellent'
+            elif score >= 6.5:
+                sym_type = 'Moderately Symmetric'
+                balance = 'Good'
+            elif score >= 4.0:
+                sym_type = 'Slightly Asymmetric'
+                balance = 'Fair'
+            else:
+                sym_type = 'Highly Asymmetric'
+                balance = 'Dynamic'
+            
+            return {
+                'score': round(score, 1),
+                'type': sym_type,
+                'balance': balance
+            }
+            
+        except Exception as e:
+            print(f"Error in symmetry analysis: {e}")
+            return {
+                'score': 6.0,
+                'type': 'Asymmetric',
+                'balance': 'Good'
+            }
     
     def analyze_visual_balance(self, image_rgb):
-        """Analyze visual balance"""
-        return {
-            'score': 7.5,
-            'type': 'Well balanced',
-            'weight_distribution': 'Even'
-        }
+        """Analyze visual balance using computer vision"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            score = self.score_visual_balance(image_rgb)
+            
+            # Determine balance type based on score
+            if score >= 8.5:
+                balance_type = 'Perfectly Balanced'
+                distribution = 'Excellent'
+            elif score >= 7.0:
+                balance_type = 'Well Balanced'
+                distribution = 'Good'
+            elif score >= 5.5:
+                balance_type = 'Moderately Balanced'
+                distribution = 'Fair'
+            elif score >= 4.0:
+                balance_type = 'Slightly Unbalanced'
+                distribution = 'Uneven'
+            else:
+                balance_type = 'Unbalanced'
+                distribution = 'Poor'
+            
+            return {
+                'score': round(score, 1),
+                'type': balance_type,
+                'weight_distribution': distribution
+            }
+            
+        except Exception as e:
+            print(f"Error in visual balance analysis: {e}")
+            return {
+                'score': 7.0,
+                'type': 'Well balanced',
+                'weight_distribution': 'Good'
+            }
     
     def extract_dominant_colors(self, pil_image):
-        """Extract dominant colors from image"""
-        # Simplified color extraction
-        return [
-            {'hex': '#3498db', 'percentage': 35, 'name': 'Blue'},
-            {'hex': '#2ecc71', 'percentage': 25, 'name': 'Green'},
-            {'hex': '#e74c3c', 'percentage': 20, 'name': 'Red'},
-            {'hex': '#f39c12', 'percentage': 20, 'name': 'Orange'}
-        ]
+        """Extract dominant colors from image using K-means clustering"""
+        try:
+            # Convert to numpy array
+            image_array = np.array(pil_image)
+            
+            # Reshape to be a list of pixels
+            pixels = image_array.reshape(-1, 3)
+            
+            # Use K-means to find dominant colors
+            try:
+                from sklearn.cluster import KMeans
+                
+                # Find 4-6 dominant colors
+                n_colors = min(5, len(np.unique(pixels.reshape(-1, pixels.shape[-1]), axis=0)))
+                if n_colors < 2:
+                    n_colors = 2
+                
+                kmeans = KMeans(n_clusters=n_colors, random_state=42, n_init=10)
+                kmeans.fit(pixels)
+                
+                # Get colors and their percentages
+                colors = kmeans.cluster_centers_.astype(int)
+                labels = kmeans.labels_
+                
+                # Calculate percentages
+                percentages = []
+                for i in range(n_colors):
+                    count = np.sum(labels == i)
+                    percentage = (count / len(labels)) * 100
+                    percentages.append(percentage)
+                    
+            except ImportError:
+                # Fallback: use simple color binning if sklearn not available
+                # Reduce colors by quantization
+                quantized = (pixels // 32) * 32  # Reduce to 8 levels per channel
+                unique_colors, counts = np.unique(quantized, axis=0, return_counts=True)
+                
+                # Get top colors
+                sorted_indices = np.argsort(counts)[::-1]
+                n_colors = min(5, len(unique_colors))
+                
+                colors = unique_colors[sorted_indices[:n_colors]]
+                percentages = (counts[sorted_indices[:n_colors]] / len(pixels)) * 100
+            
+            # Sort by percentage
+            color_info = list(zip(colors, percentages))
+            color_info.sort(key=lambda x: x[1], reverse=True)
+            
+            # Format results
+            result = []
+            color_names = ['Primary', 'Secondary', 'Accent', 'Highlight', 'Shadow']
+            
+            for i, (color, percentage) in enumerate(color_info):
+                hex_color = '#{:02x}{:02x}{:02x}'.format(color[0], color[1], color[2])
+                color_name = self._get_color_name(color)
+                
+                result.append({
+                    'hex': hex_color,
+                    'percentage': round(percentage, 1),
+                    'name': color_name,
+                    'role': color_names[i] if i < len(color_names) else 'Support'
+                })
+            
+            return result
+            
+        except Exception as e:
+            print(f"Error extracting dominant colors: {e}")
+            # Fallback: analyze basic color statistics
+            try:
+                image_array = np.array(pil_image)
+                avg_color = np.mean(image_array.reshape(-1, 3), axis=0).astype(int)
+                hex_color = '#{:02x}{:02x}{:02x}'.format(avg_color[0], avg_color[1], avg_color[2])
+                
+                return [
+                    {'hex': hex_color, 'percentage': 100.0, 'name': self._get_color_name(avg_color), 'role': 'Dominant'}
+                ]
+            except:
+                return [
+                    {'hex': '#808080', 'percentage': 100.0, 'name': 'Gray', 'role': 'Neutral'}
+                ]
     
     def analyze_color_harmony(self, dominant_colors):
-        """Analyze color harmony"""
-        return {
-            'type': 'Complementary',
-            'score': 8.0,
-            'description': 'Colors work well together'
-        }
+        """Analyze color harmony using color theory"""
+        try:
+            if not dominant_colors or len(dominant_colors) < 2:
+                return {
+                    'type': 'Monochromatic',
+                    'score': 7.0,
+                    'description': 'Single color or minimal color variation'
+                }
+            
+            # Convert hex colors to HSV for analysis
+            hsv_colors = []
+            for color_info in dominant_colors[:4]:  # Analyze top 4 colors
+                hex_color = color_info['hex']
+                rgb = tuple(int(hex_color[i:i+2], 16) for i in (1, 3, 5))
+                hsv = cv2.cvtColor(np.uint8([[rgb]]), cv2.COLOR_RGB2HSV)[0][0]
+                hsv_colors.append(hsv[0])  # Hue value
+            
+            # Analyze harmony patterns
+            harmony_type, score = self._analyze_harmony_pattern(hsv_colors)
+            
+            # Generate description
+            if score >= 8.5:
+                description = 'Excellent color harmony with strong visual appeal'
+            elif score >= 7.0:
+                description = 'Good color harmony that works well together'
+            elif score >= 5.5:
+                description = 'Adequate color harmony with room for improvement'
+            else:
+                description = 'Color harmony could be improved'
+            
+            return {
+                'type': harmony_type,
+                'score': round(score, 1),
+                'description': description
+            }
+            
+        except Exception as e:
+            print(f"Error analyzing color harmony: {e}")
+            return {
+                'type': 'Complex',
+                'score': 6.5,
+                'description': 'Unable to analyze color harmony'
+            }
     
     def analyze_color_temperature(self, pil_image):
-        """Analyze overall color temperature"""
-        return {
-            'warmth': 'Neutral',
-            'score': 7.0,
-            'kelvin': 5500
-        }
+        """Analyze overall color temperature using computer vision"""
+        try:
+            image_array = np.array(pil_image)
+            
+            # Calculate average RGB values
+            avg_r = np.mean(image_array[:, :, 0])
+            avg_g = np.mean(image_array[:, :, 1])
+            avg_b = np.mean(image_array[:, :, 2])
+            
+            # Calculate color temperature using RGB ratios
+            # Warm images have more red, cool images have more blue
+            warmth_ratio = (avg_r - avg_b) / (avg_r + avg_b + 1e-6)
+            
+            # Convert to Kelvin approximation and warmth category
+            if warmth_ratio > 0.15:
+                warmth = 'Very Warm'
+                kelvin = 2800
+                score = 8.0
+            elif warmth_ratio > 0.05:
+                warmth = 'Warm'
+                kelvin = 3500
+                score = 7.5
+            elif warmth_ratio > -0.05:
+                warmth = 'Neutral'
+                kelvin = 5500
+                score = 8.5  # Neutral is often ideal
+            elif warmth_ratio > -0.15:
+                warmth = 'Cool'
+                kelvin = 6500
+                score = 7.0
+            else:
+                warmth = 'Very Cool'
+                kelvin = 8000
+                score = 6.5
+            
+            # Adjust score based on image content suitability
+            # Check if temperature matches content (e.g., sunset should be warm)
+            green_dominance = avg_g / (avg_r + avg_g + avg_b)
+            if green_dominance > 0.4 and warmth in ['Warm', 'Very Warm']:
+                score += 0.5  # Nature scenes often benefit from warmth
+            
+            return {
+                'warmth': warmth,
+                'score': min(round(score, 1), 10.0),
+                'kelvin': int(kelvin)
+            }
+            
+        except Exception as e:
+            print(f"Error analyzing color temperature: {e}")
+            return {
+                'warmth': 'Neutral',
+                'score': 7.0,
+                'kelvin': 5500
+            }
     
     def analyze_saturation(self, pil_image):
-        """Analyze color saturation"""
-        return {
-            'level': 'Well saturated',
-            'score': 7.5,
-            'vibrance': 'Natural'
-        }
+        """Analyze color saturation using computer vision"""
+        try:
+            image_array = np.array(pil_image)
+            hsv = cv2.cvtColor(image_array, cv2.COLOR_RGB2HSV)
+            
+            # Get saturation channel
+            saturation = hsv[:, :, 1]
+            
+            # Calculate saturation statistics
+            avg_saturation = np.mean(saturation)
+            saturation_std = np.std(saturation)
+            
+            # Determine saturation level
+            if avg_saturation > 180:
+                level = 'Highly Saturated'
+                vibrance = 'Vibrant'
+                score = 8.5
+            elif avg_saturation > 120:
+                level = 'Well Saturated'
+                vibrance = 'Natural'
+                score = 9.0  # Often ideal
+            elif avg_saturation > 80:
+                level = 'Moderately Saturated'
+                vibrance = 'Subtle'
+                score = 7.5
+            elif avg_saturation > 40:
+                level = 'Low Saturation'
+                vibrance = 'Muted'
+                score = 6.0
+            else:
+                level = 'Desaturated'
+                vibrance = 'Monochrome'
+                score = 5.0
+            
+            # Adjust score based on saturation consistency
+            if saturation_std < 30:  # Very consistent saturation
+                score += 0.5
+            elif saturation_std > 80:  # Very inconsistent
+                score -= 0.5
+            
+            return {
+                'level': level,
+                'score': min(max(round(score, 1), 1.0), 10.0),
+                'vibrance': vibrance,
+                'average_saturation': round(avg_saturation / 255 * 100, 1)
+            }
+            
+        except Exception as e:
+            print(f"Error analyzing saturation: {e}")
+            return {
+                'level': 'Well saturated',
+                'score': 7.5,
+                'vibrance': 'Natural',
+                'average_saturation': 60.0
+            }
+
+    def _get_color_name(self, rgb_color):
+        """Get human-readable color name from RGB values"""
+        r, g, b = rgb_color
+        
+        # Define color ranges
+        if r > 200 and g < 100 and b < 100:
+            return 'Red'
+        elif r < 100 and g > 200 and b < 100:
+            return 'Green'
+        elif r < 100 and g < 100 and b > 200:
+            return 'Blue'
+        elif r > 200 and g > 200 and b < 100:
+            return 'Yellow'
+        elif r > 200 and g < 100 and b > 200:
+            return 'Magenta'
+        elif r < 100 and g > 200 and b > 200:
+            return 'Cyan'
+        elif r > 150 and g > 100 and b < 100:
+            return 'Orange'
+        elif r > 100 and g < 100 and b > 150:
+            return 'Purple'
+        elif r > 180 and g > 180 and b > 180:
+            return 'White'
+        elif r < 80 and g < 80 and b < 80:
+            return 'Black'
+        elif abs(r - g) < 30 and abs(g - b) < 30:
+            return 'Gray'
+        elif r > g and r > b:
+            return 'Reddish'
+        elif g > r and g > b:
+            return 'Greenish'
+        elif b > r and b > g:
+            return 'Bluish'
+        else:
+            return 'Mixed'
     
+    def _analyze_harmony_pattern(self, hue_values):
+        """Analyze color harmony pattern from hue values"""
+        if len(hue_values) < 2:
+            return 'Monochromatic', 7.0
+        
+        # Sort hues for analysis
+        hues = sorted(hue_values)
+        
+        # Check for complementary colors (opposite on color wheel)
+        for i, hue1 in enumerate(hues):
+            for hue2 in hues[i+1:]:
+                hue_diff = abs(hue1 - hue2)
+                if 150 <= hue_diff <= 180 or hue_diff >= 330:  # Accounting for circular nature
+                    return 'Complementary', 9.0
+        
+        # Check for analogous colors (adjacent on color wheel)
+        analogous_count = 0
+        for i in range(len(hues) - 1):
+            hue_diff = abs(hues[i+1] - hues[i])
+            if hue_diff <= 60:  # Within 60 degrees
+                analogous_count += 1
+        
+        if analogous_count >= len(hues) - 1:
+            return 'Analogous', 8.5
+        
+        # Check for triadic colors (120 degrees apart)
+        if len(hues) >= 3:
+            for i, hue1 in enumerate(hues):
+                for j, hue2 in enumerate(hues[i+1:], i+1):
+                    for hue3 in hues[j+1:]:
+                        diff1 = abs(hue2 - hue1)
+                        diff2 = abs(hue3 - hue2)
+                        diff3 = abs(hue1 - hue3)
+                        
+                        # Check if approximately 120 degrees apart
+                        if (100 <= diff1 <= 140 and 100 <= diff2 <= 140 and 100 <= diff3 <= 140):
+                            return 'Triadic', 8.0
+        
+        # Check for split-complementary
+        if len(hues) >= 3:
+            return 'Split-Complementary', 7.5
+        
+        # Default to complex if no clear pattern
+        hue_range = max(hues) - min(hues)
+        if hue_range > 180:
+            return 'Complex', 6.0
+        else:
+            return 'Limited Palette', 7.0
+
     def get_color_recommendations(self, dominant_colors, harmony):
         """Generate color improvement recommendations"""
         return [
@@ -612,22 +1040,461 @@ class ImageAnalysisService:
             }
         ]
     
-    # Scoring methods for aesthetic calculation
+    # Scoring methods for aesthetic calculation - FULLY DYNAMIC
     def score_color_harmony(self, pil_image):
-        return 7.5
+        """Calculate color harmony using computer vision and color theory"""
+        try:
+            # Convert to numpy array for processing
+            img_array = np.array(pil_image)
+            
+            # Convert to HSV for better color analysis
+            hsv = cv2.cvtColor(img_array, cv2.COLOR_RGB2HSV)
+            
+            # Extract hue values (0-179 in OpenCV)
+            hues = hsv[:, :, 0].flatten()
+            saturations = hsv[:, :, 1].flatten()
+            
+            # Filter out low saturation pixels (grays/whites/blacks)
+            valid_hues = hues[saturations > 30]
+            
+            if len(valid_hues) == 0:
+                return 5.0  # Monochromatic images get neutral score
+            
+            # Calculate hue distribution
+            hue_hist, _ = np.histogram(valid_hues, bins=12, range=(0, 180))
+            hue_distribution = hue_hist / np.sum(hue_hist)
+            
+            # Check for color harmony patterns
+            harmony_score = 0
+            
+            # Monochromatic harmony (single dominant hue)
+            if np.max(hue_distribution) > 0.7:
+                harmony_score = 8.5
+            
+            # Complementary harmony (opposite colors)
+            elif self._check_complementary_harmony(hue_distribution):
+                harmony_score = 9.0
+            
+            # Analogous harmony (adjacent colors)
+            elif self._check_analogous_harmony(hue_distribution):
+                harmony_score = 8.0
+            
+            # Triadic harmony
+            elif self._check_triadic_harmony(hue_distribution):
+                harmony_score = 8.5
+            
+            else:
+                # Calculate based on color distribution variance
+                hue_variance = np.var(hue_distribution)
+                harmony_score = max(3.0, 7.0 - hue_variance * 10)
+            
+            # Adjust for saturation consistency
+            sat_consistency = 1.0 - (np.std(saturations) / 128.0)
+            harmony_score *= (0.8 + 0.2 * sat_consistency)
+            
+            return min(max(harmony_score, 1.0), 10.0)
+            
+        except Exception as e:
+            print(f"Error in color harmony analysis: {e}")
+            return 6.0
     
     def score_composition(self, image_rgb):
-        return 7.0
+        """Calculate composition score using rule of thirds, balance, and leading lines"""
+        try:
+            height, width = image_rgb.shape[:2]
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            
+            composition_score = 0
+            
+            # Rule of thirds analysis
+            thirds_score = self._analyze_rule_of_thirds(gray)
+            composition_score += thirds_score * 0.4
+            
+            # Visual balance analysis
+            balance_score = self._analyze_visual_balance_detailed(gray)
+            composition_score += balance_score * 0.3
+            
+            # Leading lines detection
+            lines_score = self._detect_leading_lines_score(gray)
+            composition_score += lines_score * 0.2
+            
+            # Edge distribution (good composition has edges throughout)
+            edges = cv2.Canny(gray, 50, 150)
+            edge_distribution = self._analyze_edge_distribution(edges)
+            composition_score += edge_distribution * 0.1
+            
+            return min(max(composition_score, 1.0), 10.0)
+            
+        except Exception as e:
+            print(f"Error in composition analysis: {e}")
+            return 6.0
     
     def score_visual_balance(self, image_rgb):
-        return 7.5
+        """Calculate visual balance using weight distribution and symmetry"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            height, width = gray.shape
+            
+            # Calculate center of mass
+            y, x = np.ogrid[:height, :width]
+            total_mass = np.sum(gray)
+            
+            if total_mass == 0:
+                return 5.0
+            
+            center_x = np.sum(x * gray) / total_mass
+            center_y = np.sum(y * gray) / total_mass
+            
+            # Ideal center is at image center
+            ideal_x, ideal_y = width / 2, height / 2
+            
+            # Calculate distance from ideal center (normalized)
+            distance = np.sqrt((center_x - ideal_x)**2 + (center_y - ideal_y)**2)
+            max_distance = np.sqrt((width/2)**2 + (height/2)**2)
+            normalized_distance = distance / max_distance
+            
+            # Balance score (closer to center = better balance)
+            balance_score = 10 * (1 - normalized_distance)
+            
+            # Analyze symmetry
+            symmetry_score = self._analyze_symmetry_score(gray)
+            
+            # Combine balance and symmetry
+            final_score = balance_score * 0.7 + symmetry_score * 0.3
+            
+            return min(max(final_score, 1.0), 10.0)
+            
+        except Exception as e:
+            print(f"Error in visual balance analysis: {e}")
+            return 6.0
     
     def score_visual_interest(self, image_rgb):
-        return 6.5
+        """Calculate visual interest using texture, contrast, and detail complexity"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            
+            # Texture analysis using Local Binary Pattern
+            texture_score = self._analyze_texture_complexity(gray)
+            
+            # Contrast analysis
+            contrast = gray.std()
+            contrast_score = min(contrast / 50.0 * 10, 10)
+            
+            # Edge density (more edges = more visual interest)
+            edges = cv2.Canny(gray, 50, 150)
+            edge_density = np.sum(edges > 0) / edges.size
+            edge_score = min(edge_density * 100, 10)
+            
+            # Detail complexity using gradient magnitude
+            grad_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
+            grad_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+            gradient_magnitude = np.sqrt(grad_x**2 + grad_y**2)
+            detail_score = min(np.mean(gradient_magnitude) / 20, 10)
+            
+            # Weighted combination
+            interest_score = (
+                texture_score * 0.3 +
+                contrast_score * 0.3 +
+                edge_score * 0.25 +
+                detail_score * 0.15
+            )
+            
+            return min(max(interest_score, 1.0), 10.0)
+            
+        except Exception as e:
+            print(f"Error in visual interest analysis: {e}")
+            return 5.5
     
     def score_technical_quality(self, image_rgb, pil_image):
-        return 7.0
+        """Calculate technical quality using sharpness, noise, exposure, and artifacts"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            
+            # Sharpness using Laplacian variance
+            laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+            sharpness_score = min(laplacian_var / 1000 * 10, 10)
+            
+            # Noise estimation using high-frequency components
+            noise_level = self._estimate_noise_level(gray)
+            noise_score = max(0, 10 - noise_level / 5)
+            
+            # Exposure analysis
+            exposure_score = self._analyze_exposure_quality(gray)
+            
+            # Brightness distribution
+            brightness_score = self._analyze_brightness_distribution(gray)
+            
+            # Contrast quality
+            contrast = gray.std()
+            contrast_score = min(max(contrast / 60 * 10, 2), 10)
+            
+            # Weighted combination
+            technical_score = (
+                sharpness_score * 0.3 +
+                noise_score * 0.25 +
+                exposure_score * 0.2 +
+                brightness_score * 0.15 +
+                contrast_score * 0.1
+            )
+            
+            return min(max(technical_score, 1.0), 10.0)
+            
+        except Exception as e:
+            print(f"Error in technical quality analysis: {e}")
+            return 6.0
+
+    # Helper methods for advanced image analysis
+    def _check_complementary_harmony(self, hue_distribution):
+        """Check for complementary color harmony"""
+        for i in range(len(hue_distribution)):
+            complement_idx = (i + 6) % 12  # Opposite on color wheel
+            if hue_distribution[i] > 0.3 and hue_distribution[complement_idx] > 0.3:
+                return True
+        return False
     
+    def _check_analogous_harmony(self, hue_distribution):
+        """Check for analogous color harmony (adjacent colors)"""
+        for i in range(len(hue_distribution)):
+            adjacent_sum = (hue_distribution[i] + 
+                          hue_distribution[(i+1) % 12] + 
+                          hue_distribution[(i+2) % 12])
+            if adjacent_sum > 0.7:
+                return True
+        return False
+    
+    def _check_triadic_harmony(self, hue_distribution):
+        """Check for triadic color harmony"""
+        for i in range(len(hue_distribution)):
+            triad_sum = (hue_distribution[i] + 
+                        hue_distribution[(i+4) % 12] + 
+                        hue_distribution[(i+8) % 12])
+            if triad_sum > 0.6 and all(hue_distribution[j] > 0.15 for j in [i, (i+4)%12, (i+8)%12]):
+                return True
+        return False
+    
+    def _analyze_rule_of_thirds(self, gray):
+        """Analyze composition using rule of thirds"""
+        height, width = gray.shape
+        
+        # Calculate rule of thirds grid lines
+        third_h = height // 3
+        third_w = width // 3
+        
+        # Define intersection points (rule of thirds points)
+        intersections = [
+            (third_h, third_w), (third_h, 2*third_w),
+            (2*third_h, third_w), (2*third_h, 2*third_w)
+        ]
+        
+        # Calculate interest points near intersections
+        total_score = 0
+        
+        # Look for high contrast areas near rule of thirds points
+        for y, x in intersections:
+            # Sample area around intersection
+            window_size = min(width//10, height//10, 20)
+            y_start = max(0, y - window_size//2)
+            y_end = min(height, y + window_size//2)
+            x_start = max(0, x - window_size//2)
+            x_end = min(width, x + window_size//2)
+            
+            window = gray[y_start:y_end, x_start:x_end]
+            
+            # Calculate variance (high variance = interesting detail)
+            if window.size > 0:
+                variance = np.var(window)
+                total_score += min(variance / 1000, 2.5)  # Max 2.5 per intersection
+        
+        # Also check for edge alignment with rule of thirds lines
+        edges = cv2.Canny(gray, 50, 150)
+        
+        # Check horizontal thirds
+        h_line_strength = 0
+        for h_line in [third_h, 2*third_h]:
+            line_region = edges[max(0, h_line-2):min(height, h_line+3), :]
+            h_line_strength += np.sum(line_region) / 255
+        
+        # Check vertical thirds  
+        v_line_strength = 0
+        for v_line in [third_w, 2*third_w]:
+            line_region = edges[:, max(0, v_line-2):min(width, v_line+3)]
+            v_line_strength += np.sum(line_region) / 255
+        
+        # Normalize line strengths
+        total_pixels = width * height
+        line_score = min((h_line_strength + v_line_strength) / total_pixels * 1000, 2.0)
+        
+        final_score = total_score + line_score
+        return min(max(final_score, 1.0), 10.0)
+    
+    def _analyze_visual_balance_detailed(self, gray):
+        """Detailed visual balance analysis"""
+        height, width = gray.shape
+        
+        # Divide image into quadrants
+        h_mid, w_mid = height // 2, width // 2
+        quadrants = [
+            gray[:h_mid, :w_mid],      # Top-left
+            gray[:h_mid, w_mid:],      # Top-right
+            gray[h_mid:, :w_mid],      # Bottom-left
+            gray[h_mid:, w_mid:]       # Bottom-right
+        ]
+        
+        # Calculate visual weight of each quadrant
+        weights = [np.sum(quad) for quad in quadrants]
+        total_weight = sum(weights)
+        
+        if total_weight == 0:
+            return 5.0
+        
+        # Normalize weights
+        weights = [w / total_weight for w in weights]
+        
+        # Calculate balance scores
+        horizontal_balance = 1 - abs((weights[0] + weights[2]) - (weights[1] + weights[3]))
+        vertical_balance = 1 - abs((weights[0] + weights[1]) - (weights[2] + weights[3]))
+        diagonal_balance = 1 - abs((weights[0] + weights[3]) - (weights[1] + weights[2]))
+        
+        balance_score = (horizontal_balance + vertical_balance + diagonal_balance) / 3 * 10
+        return min(max(balance_score, 1.0), 10.0)
+    
+    def _detect_leading_lines_score(self, gray):
+        """Detect and score leading lines"""
+        edges = cv2.Canny(gray, 50, 150)
+        lines = cv2.HoughLines(edges, 1, np.pi/180, threshold=100)
+        
+        if lines is None:
+            return 3.0
+        
+        # Analyze line directions and convergence
+        line_count = len(lines)
+        
+        # More lines generally indicate more complex composition
+        line_score = min(line_count / 20 * 10, 8.0)
+        
+        # Check for converging lines (perspective/depth)
+        if line_count > 5:
+            line_score += 1.0
+        
+        return min(line_score, 10.0)
+    
+    def _analyze_edge_distribution(self, edges):
+        """Analyze how edges are distributed across the image"""
+        height, width = edges.shape
+        
+        # Divide into grid sections
+        grid_size = 4
+        section_height, section_width = height // grid_size, width // grid_size
+        
+        edge_counts = []
+        for i in range(grid_size):
+            for j in range(grid_size):
+                section = edges[i*section_height:(i+1)*section_height,
+                              j*section_width:(j+1)*section_width]
+                edge_counts.append(np.sum(section > 0))
+        
+        # Good distribution means edges are spread throughout
+        if len(edge_counts) == 0:
+            return 3.0
+            
+        # Calculate distribution evenness
+        mean_edges = np.mean(edge_counts)
+        if mean_edges == 0:
+            return 3.0
+            
+        # Lower variance relative to mean = more even distribution
+        distribution_score = max(0, 10 - (np.std(edge_counts) / mean_edges) * 3)
+        return min(distribution_score, 10.0)
+    
+    def _analyze_symmetry_score(self, gray):
+        """Analyze image symmetry"""
+        height, width = gray.shape
+        
+        # Vertical symmetry
+        left_half = gray[:, :width//2]
+        right_half = np.fliplr(gray[:, width//2:])
+        
+        # Make sure both halves are same size
+        min_width = min(left_half.shape[1], right_half.shape[1])
+        left_half = left_half[:, :min_width]
+        right_half = right_half[:, :min_width]
+        
+        vertical_diff = np.mean(np.abs(left_half.astype(float) - right_half.astype(float)))
+        vertical_symmetry = max(0, 10 - vertical_diff / 25.5)
+        
+        # Horizontal symmetry
+        top_half = gray[:height//2, :]
+        bottom_half = np.flipud(gray[height//2:, :])
+        
+        min_height = min(top_half.shape[0], bottom_half.shape[0])
+        top_half = top_half[:min_height, :]
+        bottom_half = bottom_half[:min_height, :]
+        
+        horizontal_diff = np.mean(np.abs(top_half.astype(float) - bottom_half.astype(float)))
+        horizontal_symmetry = max(0, 10 - horizontal_diff / 25.5)
+        
+        # Return better of the two symmetries
+        return max(vertical_symmetry, horizontal_symmetry)
+    
+    def _analyze_texture_complexity(self, gray):
+        """Analyze texture complexity using local patterns"""
+        try:
+            # Calculate local standard deviation as texture measure
+            kernel = np.ones((5,5), np.float32) / 25
+            mean_filtered = cv2.filter2D(gray.astype(np.float32), -1, kernel)
+            sqr_diff = (gray.astype(np.float32) - mean_filtered) ** 2
+            local_variance = cv2.filter2D(sqr_diff, -1, kernel)
+            local_std = np.sqrt(local_variance)
+            
+            texture_score = min(np.mean(local_std) / 30 * 10, 10)
+            return max(texture_score, 1.0)
+        except:
+            return 5.0
+    
+    def _estimate_noise_level(self, gray):
+        """Estimate noise level in image"""
+        # Use high-pass filter to isolate noise
+        kernel = np.array([[-1,-1,-1],[-1,8,-1],[-1,-1,-1]])
+        filtered = cv2.filter2D(gray.astype(np.float32), -1, kernel)
+        noise_level = np.std(filtered)
+        return noise_level
+    
+    def _analyze_exposure_quality(self, gray):
+        """Analyze exposure quality"""
+        hist = cv2.calcHist([gray], [0], None, [256], [0, 256])
+        hist = hist.flatten()
+        
+        # Check for clipping
+        shadows_clipped = hist[0] / gray.size
+        highlights_clipped = hist[255] / gray.size
+        
+        # Penalize heavy clipping
+        clipping_penalty = (shadows_clipped + highlights_clipped) * 20
+        
+        # Check histogram distribution
+        mean_brightness = np.mean(gray)
+        ideal_mean = 128
+        brightness_deviation = abs(mean_brightness - ideal_mean) / 128
+        
+        exposure_score = 10 - clipping_penalty - brightness_deviation * 3
+        return min(max(exposure_score, 1.0), 10.0)
+    
+    def _analyze_brightness_distribution(self, gray):
+        """Analyze brightness distribution quality"""
+        hist = cv2.calcHist([gray], [0], None, [256], [0, 256])
+        hist = hist.flatten() / gray.size
+        
+        # Good distribution uses most of the tonal range
+        used_tones = np.sum(hist > 0.001)  # Tones with at least 0.1% of pixels
+        tone_score = used_tones / 256 * 10
+        
+        # Avoid extreme concentrations
+        max_concentration = np.max(hist)
+        concentration_penalty = max(0, (max_concentration - 0.1) * 20)
+        
+        distribution_score = tone_score - concentration_penalty
+        return min(max(distribution_score, 1.0), 10.0)
+
     def interpret_aesthetic_score(self, score):
         """Interpret aesthetic score"""
         if score >= 8.5:
@@ -705,15 +1572,176 @@ class ImageAnalysisService:
         return min(max(final_score, 0), 100)  # Ensure 0-100 range
     
     def _analyze_engagement_factors(self, image_rgb, pil_image, platform):
-        """Analyze factors that drive social media engagement"""
+        """Analyze factors that drive social media engagement using computer vision"""
+        # Calculate visual appeal based on actual image characteristics
+        visual_appeal = self._calculate_visual_appeal(image_rgb)
+        
+        # Calculate emotional impact using face detection and color psychology
+        emotional_impact = self._calculate_emotional_impact(image_rgb, pil_image)
+        
+        # Calculate shareability based on composition and visual interest
+        shareability = self._calculate_shareability(image_rgb, pil_image)
+        
+        # Calculate memorability using contrast, uniqueness, and complexity
+        memorability = self._calculate_memorability(image_rgb)
+        
+        # Calculate trend alignment based on color trends and composition patterns
+        trend_alignment = self._calculate_trend_alignment(image_rgb, pil_image, platform)
+        
         return {
-            'visual_appeal': min(85 + np.random.randint(-10, 15), 100),
-            'emotional_impact': min(78 + np.random.randint(-8, 12), 100),
-            'shareability': min(82 + np.random.randint(-12, 18), 100),
-            'memorability': min(75 + np.random.randint(-5, 15), 100),
-            'trend_alignment': min(70 + np.random.randint(-10, 20), 100)
+            'visual_appeal': int(min(max(visual_appeal, 10), 100)),
+            'emotional_impact': int(min(max(emotional_impact, 10), 100)),
+            'shareability': int(min(max(shareability, 10), 100)),
+            'memorability': int(min(max(memorability, 10), 100)),
+            'trend_alignment': int(min(max(trend_alignment, 10), 100))
         }
+
+    def _calculate_visual_appeal(self, image_rgb):
+        """Calculate visual appeal using color vibrancy, contrast, and composition"""
+        try:
+            # Color vibrancy analysis
+            hsv = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2HSV)
+            saturation = hsv[:, :, 2]
+            vibrancy = np.mean(saturation) / 255 * 40  # 0-40 points
+            
+            # Contrast analysis
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            contrast = gray.std() / 128 * 30  # 0-30 points
+            
+            # Edge richness (detail)
+            edges = cv2.Canny(gray, 50, 150)
+            edge_density = np.sum(edges > 0) / edges.size * 30  # 0-30 points
+            
+            return vibrancy + contrast + edge_density
+        except:
+            return 65
     
+    def _calculate_emotional_impact(self, image_rgb, pil_image):
+        """Calculate emotional impact using face detection and color psychology"""
+        try:
+            # Face detection for emotional connection
+            faces_score = 0
+            results = self.face_detection.process(image_rgb)
+            if results.detections:
+                faces_score = min(len(results.detections) * 15, 30)  # Up to 30 points
+            
+            # Color psychology analysis
+            hsv = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2HSV)
+            hues = hsv[:, :, 0]
+            
+            # Warm colors (reds, oranges, yellows) = higher emotional impact
+            warm_hues = np.logical_or(hues < 30, hues > 150)  # Red and violet spectrum
+            warm_percentage = np.sum(warm_hues) / hues.size
+            color_emotion = warm_percentage * 25  # 0-25 points
+            
+            # Brightness for mood
+            brightness = np.mean(image_rgb) / 255
+            brightness_emotion = (1 - abs(brightness - 0.6)) * 25  # Optimal around 60% brightness
+            
+            # Contrast for drama
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            contrast_emotion = min(gray.std() / 60, 1) * 20  # 0-20 points
+            
+            return faces_score + color_emotion + brightness_emotion + contrast_emotion
+        except:
+            return 72
+    
+    def _calculate_shareability(self, image_rgb, pil_image):
+        """Calculate shareability based on composition and visual clarity"""
+        try:
+            # Rule of thirds compliance
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            thirds_score = self._analyze_rule_of_thirds(gray) * 3  # 0-30 points
+            
+            # Visual clarity (sharpness)
+            laplacian_var = cv2.Laplacian(gray, cv2.CV_64F).var()
+            clarity_score = min(laplacian_var / 500, 1) * 25  # 0-25 points
+            
+            # Color harmony
+            harmony_score = self.score_color_harmony(pil_image) * 2.5  # 0-25 points
+            
+            # Aspect ratio suitability for sharing
+            height, width = image_rgb.shape[:2]
+            aspect_ratio = width / height
+            # Prefer ratios good for social media (1:1, 4:5, 16:9)
+            optimal_ratios = [1.0, 0.8, 1.78]
+            ratio_fitness = max([1 - abs(aspect_ratio - ratio) for ratio in optimal_ratios])
+            ratio_score = ratio_fitness * 20  # 0-20 points
+            
+            return thirds_score + clarity_score + harmony_score + ratio_score
+        except:
+            return 78
+    
+    def _calculate_memorability(self, image_rgb):
+        """Calculate memorability using uniqueness and visual complexity"""
+        try:
+            gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+            
+            # Visual complexity (more complex = more memorable)
+            complexity = self._analyze_texture_complexity(gray) * 3  # 0-30 points
+            
+            # Contrast (high contrast = more memorable)
+            contrast = min(gray.std() / 50, 1) * 25  # 0-25 points
+            
+            # Edge density (detail richness)
+            edges = cv2.Canny(gray, 50, 150)
+            edge_density = np.sum(edges > 0) / edges.size * 100
+            edge_score = min(edge_density, 25)  # 0-25 points
+            
+            # Uniqueness (variance in local regions)
+            h, w = gray.shape
+            regions = []
+            for i in range(0, h, h//4):
+                for j in range(0, w, w//4):
+                    region = gray[i:i+h//4, j:j+w//4]
+                    if region.size > 0:
+                        regions.append(np.std(region))
+            
+            uniqueness = np.std(regions) if regions else 0
+            uniqueness_score = min(uniqueness / 10, 1) * 20  # 0-20 points
+            
+            return complexity + contrast + edge_score + uniqueness_score
+        except:
+            return 68
+    
+    def _calculate_trend_alignment(self, image_rgb, pil_image, platform):
+        """Calculate trend alignment based on current social media trends"""
+        try:
+            # Color trend analysis (vibrant colors trending)
+            hsv = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2HSV)
+            saturation = hsv[:, :, 1]
+            vibrancy = np.mean(saturation) / 255 * 25  # 0-25 points
+            
+            # Brightness trends (well-lit images perform better)
+            brightness = np.mean(image_rgb) / 255
+            brightness_trend = (1 - abs(brightness - 0.7)) * 20  # Optimal around 70%
+            
+            # Composition trends (dynamic, off-center)
+            balance_score = self.score_visual_balance(image_rgb)
+            # Lower balance = more dynamic = more trendy
+            dynamic_score = (10 - balance_score) * 1.5  # 0-15 points
+            
+            # Platform-specific trends
+            platform_bonus = 0
+            if platform == 'instagram':
+                # Instagram favors square/portrait formats
+                height, width = image_rgb.shape[:2]
+                aspect_ratio = width / height
+                if 0.8 <= aspect_ratio <= 1.2:  # Square-ish
+                    platform_bonus = 15
+                elif aspect_ratio < 0.8:  # Portrait
+                    platform_bonus = 10
+            
+            # Face presence (trending on social media)
+            face_bonus = 0
+            results = self.face_detection.process(image_rgb)
+            if results.detections:
+                face_bonus = 15
+            
+            return vibrancy + brightness_trend + dynamic_score + platform_bonus + face_bonus
+        except:
+            return 65
+
     def _analyze_platform_optimization(self, image_rgb, pil_image, platform):
         """Analyze how well the image is optimized for the platform"""
         height, width = image_rgb.shape[:2]

@@ -106,9 +106,22 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
       </div>
       
       <div className="result-content">
-        {Object.entries(results).map(([key, value]) => 
-          renderResultItem(key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()), value)
-        )}
+        {Object.entries(results).map(([key, value]) => {
+          // Filter for social media relevant items only
+          const socialMediaKeys = [
+            'aesthetic_score', 'aestheticScore', 'platform', 
+            'engagement_potential', 'hashtag_recommendations', 
+            'best_posting_time', 'platform_optimization'
+          ];
+          
+          // If this is social media analysis, show only relevant items
+          const isSocialMedia = results.platform || results.result?.platform;
+          if (isSocialMedia && !socialMediaKeys.includes(key) && !key.includes('score')) {
+            return null; // Skip non-social media items
+          }
+          
+          return renderResultItem(key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()), value);
+        })}
       </div>
       
       <div className="result-actions">
