@@ -3,7 +3,7 @@ import ApiService from '../services/ApiService';
 import './ConnectionStatus.css';
 
 const ConnectionStatus = () => {
-  const [isConnected, setIsConnected] = useState(null);
+  const [connectionStatus, setConnectionStatus] = useState(null);
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
@@ -13,10 +13,10 @@ const ConnectionStatus = () => {
   const checkConnection = async () => {
     setIsChecking(true);
     try {
-      const connected = await ApiService.testConnection();
-      setIsConnected(connected);
+      const status = await ApiService.testConnection();
+      setConnectionStatus(status);
     } catch (error) {
-      setIsConnected(false);
+      setConnectionStatus({ connected: false, gpu_available: false });
     } finally {
       setIsChecking(false);
     }
@@ -31,14 +31,35 @@ const ConnectionStatus = () => {
     );
   }
 
+  const getStatusText = () => {
+    if (!connectionStatus?.connected) {
+      return 'Demo Mode';
+    }
+    
+    if (connectionStatus.gpu_available) {
+      return `🚀 GPU Mode - ${connectionStatus.gpu_name || 'GPU Enabled'}`;
+    }
+    
+    return 'CPU Mode';
+  };
+
+  const getStatusClass = () => {
+    if (!connectionStatus?.connected) return 'disconnected';
+    return connectionStatus.gpu_available ? 'gpu-enabled' : 'connected';
+  };
+
   return (
-    <div className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
+    <div className={`connection-status ${getStatusClass()}`}>
       <div className="status-indicator">
-        {isConnected ? '🟢' : '🔴'}
+        {!connectionStatus?.connected ? '�' : 
+         connectionStatus.gpu_available ? '⚡' : '�'}
       </div>
       <span>
-        {isConnected ? 'Backend Connected' : 'Demo Mode'}
+        {getStatusText()}
       </span>
+      {connectionStatus?.gpu_memory && (
+        <span className="gpu-memory">({connectionStatus.gpu_memory})</span>
+      )}
       <button 
         className="refresh-btn" 
         onClick={checkConnection}

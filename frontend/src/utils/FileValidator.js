@@ -134,9 +134,21 @@ class FileValidator {
     // Check if file type is allowed
     const allowedTypes = options.allowedTypes || this.getAllowedTypes(options.category);
     
-    if (allowedTypes && !allowedTypes.includes(file.type)) {
-      result.isValid = false;
-      result.errors.push(`File type "${file.type}" is not allowed`);
+    if (allowedTypes && allowedTypes.length > 0) {
+      const isAllowed = allowedTypes.some(allowedType => {
+        // Handle wildcard types like "image/*"
+        if (allowedType.endsWith('/*')) {
+          const baseType = allowedType.slice(0, -2);
+          return file.type.startsWith(baseType + '/');
+        }
+        // Handle exact matches
+        return file.type === allowedType;
+      });
+      
+      if (!isAllowed) {
+        result.isValid = false;
+        result.errors.push(`File type "${file.type}" is not allowed`);
+      }
     }
 
     // Check MIME type vs file extension consistency
@@ -292,13 +304,6 @@ class FileValidator {
           const arrayBuffer = e.target.result;
           const bytes = new Uint8Array(arrayBuffer, 0, Math.min(arrayBuffer.byteLength, 512));
           
-          // Check for common malware signatures (basic check)
-          const suspiciousBytes = [
-            [0x4D, 0x5A], // PE executable
-            [0x50, 0x4B], // ZIP archive (could contain malware)
-            [0xFF, 0xD8]  // JPEG (should be validated further for images)
-          ];
-
           // For images, verify they start with proper headers
           if (file.type.startsWith('image/')) {
             const isValidImage = this.validateImageHeader(bytes, file.type);

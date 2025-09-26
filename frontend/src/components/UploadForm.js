@@ -34,7 +34,8 @@ const UploadForm = ({
       snapchat: { image: 5 * 1024 * 1024, video: 60 * 1024 * 1024 },
       linkedin: { image: 8 * 1024 * 1024, video: 75 * 1024 * 1024 },
       facebook: { image: 10 * 1024 * 1024, video: 1024 * 1024 * 1024 },
-      pinterest: { image: 10 * 1024 * 1024 }
+      pinterest: { image: 10 * 1024 * 1024 },
+      'ai-analysis': { image: 15 * 1024 * 1024 } // 15MB for detailed AI analysis
     };
 
     const maxSize = platformSizeLimits[platform]?.[category] || FileValidator.MAX_SIZES[category];
@@ -157,7 +158,9 @@ const UploadForm = ({
             <div className="upload-text">
               <h3>Drop your file here or click to browse</h3>
               <p>Accepted formats: {acceptedTypes}</p>
-              <p className="platform-info">Platform: {platform}</p>
+              <p className="platform-info">
+                {platform === 'ai-analysis' ? '🤖 AI Analysis Mode' : `Platform: ${platform}`}
+              </p>
             </div>
           </label>
           
