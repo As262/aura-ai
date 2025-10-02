@@ -1,6 +1,14 @@
 import cv2
 import numpy as np
-import mediapipe as mp
+try:
+    import mediapipe as mp
+    MEDIAPIPE_AVAILABLE = True
+    print("✅ MediaPipe loaded successfully")
+except ImportError:
+    mp = None
+    MEDIAPIPE_AVAILABLE = False
+    print("⚠️  MediaPipe not available. Running in CPU-only mode with limited pose detection.")
+
 from PIL import Image, ImageEnhance, ImageStat
 import torch
 import torchvision.transforms as transforms
@@ -28,27 +36,39 @@ class ImageAnalysisService:
             print(f"   CUDA Version: {torch.version.cuda}")
             print(f"   GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f} GB")
             
-        # Initialize MediaPipe with optimized settings for GPU
-        self.mp_pose = mp.solutions.pose
-        self.mp_face_mesh = mp.solutions.face_mesh
-        self.mp_face_detection = mp.solutions.face_detection
-        self.mp_drawing = mp.solutions.drawing_utils
-        self.pose = self.mp_pose.Pose(
-            static_image_mode=True,
-            model_complexity=2,  # Higher complexity for better accuracy on GPU
-            enable_segmentation=True,
-            min_detection_confidence=0.5
-        )
-        self.face_mesh = self.mp_face_mesh.FaceMesh(
-            static_image_mode=True,
-            max_num_faces=1,
-            refine_landmarks=True,
-            min_detection_confidence=0.5
-        )
-        self.face_detection = self.mp_face_detection.FaceDetection(
-            model_selection=1,  # Use full-range model for better accuracy
-            min_detection_confidence=0.5
-        )
+        # Initialize MediaPipe with optimized settings for GPU (if available)
+        if MEDIAPIPE_AVAILABLE:
+            self.mp_pose = mp.solutions.pose
+            self.mp_face_mesh = mp.solutions.face_mesh
+            self.mp_face_detection = mp.solutions.face_detection
+            self.mp_drawing = mp.solutions.drawing_utils
+            self.pose = self.mp_pose.Pose(
+                static_image_mode=True,
+                model_complexity=2,  # Higher complexity for better accuracy on GPU
+                enable_segmentation=True,
+                min_detection_confidence=0.5
+            )
+            self.face_mesh = self.mp_face_mesh.FaceMesh(
+                static_image_mode=True,
+                max_num_faces=1,
+                refine_landmarks=True,
+                min_detection_confidence=0.5
+            )
+            self.face_detection = self.mp_face_detection.FaceDetection(
+                model_selection=1,  # Use full-range model for better accuracy
+                min_detection_confidence=0.5
+            )
+            print("✅ MediaPipe pose and face detection initialized")
+        else:
+            # CPU-only mode without MediaPipe
+            self.mp_pose = None
+            self.mp_face_mesh = None
+            self.mp_face_detection = None
+            self.mp_drawing = None
+            self.pose = None
+            self.face_mesh = None
+            self.face_detection = None
+            print("⚠️  Running in CPU-only mode without MediaPipe pose detection")
         
         # Pre-warm GPU if available
         if torch.cuda.is_available():
@@ -181,6 +201,18 @@ class ImageAnalysisService:
     
     def analyze_pose(self, image_rgb):
         """Analyze human pose in the image"""
+        if not MEDIAPIPE_AVAILABLE or self.pose is None:
+            return {
+                'detected': False,
+                'message': 'MediaPipe not available - pose detection disabled',
+                'suggestions': [{
+                    'category': 'System',
+                    'priority': 'Info',
+                    'suggestion': 'Install MediaPipe to enable pose detection features',
+                    'technical_details': 'pip install mediapipe to enable pose analysis'
+                }]
+            }
+            
         results = self.pose.process(image_rgb)
         
         if not results.pose_landmarks:
@@ -1619,11 +1651,15 @@ class ImageAnalysisService:
     def _calculate_emotional_impact(self, image_rgb, pil_image):
         """Calculate emotional impact using face detection and color psychology"""
         try:
-            # Face detection for emotional connection
+            # Face detection for emotional connection (if MediaPipe available)
             faces_score = 0
-            results = self.face_detection.process(image_rgb)
-            if results.detections:
-                faces_score = min(len(results.detections) * 15, 30)  # Up to 30 points
+            if MEDIAPIPE_AVAILABLE and self.face_detection is not None:
+                results = self.face_detection.process(image_rgb)
+                if results.detections:
+                    faces_score = min(len(results.detections) * 15, 30)  # Up to 30 points
+            else:
+                # Fallback: Use basic color analysis to estimate human presence
+                faces_score = 15  # Default score when face detection unavailable
             
             # Color psychology analysis
             hsv = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2HSV)
