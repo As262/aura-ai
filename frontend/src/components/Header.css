@@ -69,6 +69,23 @@
   align-items: center;
 }
 
+.usage-badge {
+  font-weight: 700;
+  background: var(--card-bg);
+  color: var(--text-color);
+  padding: 0.35rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.usage-sub {
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--muted-text-color, #666);
+  margin-left: 0.4rem;
+}
+
 /* User Menu Styles */
 .user-menu {
   display: flex;

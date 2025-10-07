@@ -52,33 +52,6 @@ class ApiService {
     return await this.makeRequest('/health/');
   }
 
-  // User authentication
-  static async registerUser(userData) {
-    return await this.makeRequest('/register/', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
-  }
-
-  static async loginUser(credentials) {
-    return await this.makeRequest('/login/', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
-  }
-
-  // User profile
-  static async getUserProfile() {
-    return await this.makeRequest('/profile/');
-  }
-
-  static async updateUserProfile(profileData) {
-    return await this.makeRequest('/profile/', {
-      method: 'PUT',
-      body: JSON.stringify(profileData),
-    });
-  }
-
   // Aesthetic Analysis (Social Media focused)
   static async analyzeAesthetic(file, caption = '', platform = 'instagram') {
     try {
@@ -474,6 +447,39 @@ class ApiService {
       console.error('❌ Backend connection failed:', error);
       return { connected: false, gpu_available: false };
     }
+  }
+
+  // Fetch usage status (ip-based)
+  static async getUsageStatus() {
+    return await this.makeRequest('/usage-status/');
+  }
+
+  static async incrementUsage() {
+    return await this.makeRequest('/usage-increment/', {
+      method: 'POST'
+    });
+  }
+
+  // Helper method to refresh usage after analysis
+  static async refreshUsage() {
+    // Trigger usage refresh by calling the usage status
+    const result = await this.getUsageStatus();
+    if (result.success && window.__AURA_USAGE_REFRESH_CALLBACK__) {
+      window.__AURA_USAGE_REFRESH_CALLBACK__(result.data);
+    }
+    return result;
+  }
+
+  // Wrapper to perform analysis and auto-refresh usage
+  static async performAnalysisWithUsageUpdate(analysisFunction) {
+    const result = await analysisFunction();
+    
+    // If analysis was successful, refresh usage data
+    if (result.success) {
+      setTimeout(() => this.refreshUsage(), 500); // Small delay to ensure backend has updated
+    }
+    
+    return result;
   }
 }
 

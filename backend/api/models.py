@@ -1,18 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user.username}'s Profile"
 
 
 class AestheticAnalysis(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='analyses/')
     result = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -25,7 +14,6 @@ class AestheticAnalysis(models.Model):
 
 
 class ConversationAnalysis(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     conversation_text = models.TextField()
     analysis_result = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,3 +23,15 @@ class ConversationAnalysis(models.Model):
 
     def __str__(self):
         return f"Conversation Analysis {self.id} - {self.created_at.strftime('%Y-%m-%d %H:%M')}"
+
+
+class IPUsage(models.Model):
+    ip_address = models.CharField(max_length=64, unique=True)
+    count = models.IntegerField(default=0)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-last_updated']
+
+    def __str__(self):
+        return f"IPUsage {self.ip_address} = {self.count}"

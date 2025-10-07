@@ -1,10 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import FeatureCard from '../components/FeatureCard';
 import './LandingPage.css';
 
 const LandingPage = () => {
-  const navigate = useNavigate();
 
   const scrollToFeatures = () => {
     document.getElementById('features').scrollIntoView({ 
@@ -13,7 +11,9 @@ const LandingPage = () => {
   };
 
   const handleGetStarted = () => {
-    navigate('/login');
+    document.getElementById('features').scrollIntoView({ 
+      behavior: 'smooth' 
+    });
   };
 
   return (

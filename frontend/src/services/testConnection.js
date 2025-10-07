@@ -18,31 +18,6 @@ const testBackendConnection = async () => {
     const connected = await ApiService.testConnection();
     console.log(`🔗 Connection status: ${connected ? 'Connected' : 'Disconnected'}`);
 
-    // Test user registration (will fail if user exists, that's okay)
-    const testUser = {
-      username: 'testuser123',
-      email: 'test@example.com',
-      password: 'testpass123'
-    };
-
-    const registerResult = await ApiService.registerUser(testUser);
-    if (registerResult.success) {
-      console.log('✅ User registration test passed');
-    } else {
-      console.log('ℹ️ User registration test result:', registerResult.error);
-    }
-
-    // Test login
-    const loginResult = await ApiService.loginUser({
-      username: testUser.username,
-      password: testUser.password
-    });
-    if (loginResult.success) {
-      console.log('✅ Login test passed');
-    } else {
-      console.log('ℹ️ Login test result:', loginResult.error);
-    }
-
     console.log('🎉 Backend connection tests completed!');
     
   } catch (error) {
