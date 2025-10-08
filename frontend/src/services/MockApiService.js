@@ -464,6 +464,105 @@ class MockApiService {
     ];
     return scores[Math.floor(Math.random() * scores.length)];
   }
+
+  // Conversation Analysis Helper Methods
+  static getRandomReplyDelay() {
+    const delays = [
+      { average: '2-5 minutes', type: 'Quick Responder', description: 'You typically respond very quickly to messages' },
+      { average: '15-30 minutes', type: 'Thoughtful Responder', description: 'You take time to craft meaningful responses' },
+      { average: '1-3 hours', type: 'Casual Responder', description: 'You respond when convenient in your schedule' },
+      { average: '6+ hours', type: 'Delayed Responder', description: 'You prefer to respond after some reflection time' }
+    ];
+    return delays[Math.floor(Math.random() * delays.length)];
+  }
+
+  static getRandomBalance() {
+    const balances = [
+      { ratio: '60/40', type: 'Conversation Driver', description: 'You tend to lead conversations and share more' },
+      { ratio: '40/60', type: 'Active Listener', description: 'You focus more on listening and asking questions' },
+      { ratio: '50/50', type: 'Balanced Communicator', description: 'Perfect balance between talking and listening' },
+      { ratio: '70/30', type: 'Storyteller', description: 'You love sharing stories and experiences' }
+    ];
+    return balances[Math.floor(Math.random() * balances.length)];
+  }
+
+  static getRandomCommStyle() {
+    const styles = [
+      { style: 'Direct & Clear', description: 'You communicate straightforwardly and get to the point' },
+      { style: 'Warm & Supportive', description: 'Your messages show care and emotional support' },
+      { style: 'Humorous & Playful', description: 'You use humor and playfulness in conversations' },
+      { style: 'Analytical & Detailed', description: 'You provide thorough explanations and context' },
+      { style: 'Empathetic & Understanding', description: 'You show deep understanding of others\' feelings' }
+    ];
+    return styles[Math.floor(Math.random() * styles.length)];
+  }
+
+  static getRandomMood() {
+    const moods = [
+      { dominant: 'Positive & Upbeat', percentage: this.generateScore(70, 95), description: 'Your messages radiate positivity' },
+      { dominant: 'Calm & Steady', percentage: this.generateScore(60, 85), description: 'You maintain a consistent, peaceful tone' },
+      { dominant: 'Enthusiastic & Energetic', percentage: this.generateScore(65, 90), description: 'Your excitement comes through in messages' },
+      { dominant: 'Thoughtful & Reflective', percentage: this.generateScore(55, 80), description: 'You bring depth and consideration to conversations' }
+    ];
+    return moods[Math.floor(Math.random() * moods.length)];
+  }
+
+  static getRandomRomanticCues() {
+    const cues = [
+      { level: 'Low', percentage: this.generateScore(10, 30), description: 'Primarily friendly and platonic communication' },
+      { level: 'Moderate', percentage: this.generateScore(40, 60), description: 'Some flirtation and romantic interest shows through' },
+      { level: 'High', percentage: this.generateScore(70, 90), description: 'Clear romantic interest and flirtatious communication' },
+      { level: 'Very High', percentage: this.generateScore(85, 98), description: 'Intense romantic communication and deep affection' }
+    ];
+    return cues[Math.floor(Math.random() * cues.length)];
+  }
+
+  static getRandomPersonalityTraits() {
+    const traits = [
+      'Extroverted & Social',
+      'Introverted & Thoughtful', 
+      'Optimistic & Positive',
+      'Analytical & Logical',
+      'Creative & Imaginative',
+      'Empathetic & Caring',
+      'Adventurous & Spontaneous',
+      'Reliable & Consistent',
+      'Humorous & Witty',
+      'Passionate & Intense'
+    ];
+    return traits.slice(0, 3 + Math.floor(Math.random() * 3)); // Return 3-5 traits
+  }
+
+  static getRandomResponseLength() {
+    const lengths = [
+      { type: 'Concise Communicator', average: '5-15 words', description: 'You prefer short, to-the-point messages' },
+      { type: 'Detailed Communicator', average: '25-50 words', description: 'You provide comprehensive responses with context' },
+      { type: 'Storyteller', average: '50+ words', description: 'You share detailed stories and explanations' },
+      { type: 'Mixed Style', average: 'Varies', description: 'Your message length adapts to the conversation context' }
+    ];
+    return lengths[Math.floor(Math.random() * lengths.length)];
+  }
+
+  static getRandomEmojiPattern() {
+    const patterns = [
+      { usage: 'High', frequency: this.generateScore(15, 25), style: 'Expressive & Emotional', description: 'You use emojis frequently to convey emotions' },
+      { usage: 'Moderate', frequency: this.generateScore(8, 15), style: 'Selective & Meaningful', description: 'You use emojis strategically for emphasis' },
+      { usage: 'Low', frequency: this.generateScore(1, 7), style: 'Minimal & Text-focused', description: 'You prefer words over emojis' },
+      { usage: 'Varied', frequency: this.generateScore(5, 20), style: 'Context-dependent', description: 'Your emoji use varies with the conversation tone' }
+    ];
+    return patterns[Math.floor(Math.random() * patterns.length)];
+  }
+
+  static getRandomStarterStyle() {
+    const styles = [
+      { type: 'Question Asker', description: 'You often start conversations with thoughtful questions' },
+      { type: 'Story Sharer', description: 'You begin with interesting stories or experiences' },
+      { type: 'Direct Communicator', description: 'You get straight to the point when starting conversations' },
+      { type: 'Warm Greeter', description: 'You always start with friendly greetings and check-ins' },
+      { type: 'Topic Introducer', description: 'You bring up interesting topics to discuss' }
+    ];
+    return styles[Math.floor(Math.random() * styles.length)];
+  }
 }
 
 export default MockApiService;

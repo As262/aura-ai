@@ -444,6 +444,28 @@ def _increment_usage_for_ip(ip):
         return count
 
 
+def _reset_usage_for_ip(ip):
+    """Reset usage count to 0 for the specified IP address"""
+    try:
+        obj = IPUsage.objects.filter(ip_address=ip).first()
+        if obj:
+            obj.count = 0
+            obj.save()
+            print(f"✅ Reset usage count to 0 for IP: {ip}")
+        else:
+            print(f"ℹ️  No usage record found for IP: {ip}")
+        # Also clear from in-memory cache
+        if ip in _IP_USAGE_COUNTS:
+            _IP_USAGE_COUNTS[ip] = 0
+        # Clear debounce cache
+        if ip in _DEBOUNCE_CACHE:
+            del _DEBOUNCE_CACHE[ip]
+        return True
+    except Exception as e:
+        print(f"❌ Error resetting usage for IP {ip}: {e}")
+        return False
+
+
 def _check_usage_limit(ip):
     """Check if IP can still use the service (hasn't exceeded limit)"""
     current_usage = _get_usage_count_for_ip(ip)
@@ -529,3 +551,32 @@ def usage_increment(request):
     # update debounce cache so quick subsequent reads see latest value
     _DEBOUNCE_CACHE[ip] = (time.time(), payload)
     return Response(payload)
+
+
+@api_view(['POST'])
+def reset_usage(request):
+    """Reset usage count for requesting IP - for testing purposes only"""
+    ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '')
+    
+    # Optional: Allow resetting specific IP if provided in request body
+    if request.data and 'ip_address' in request.data:
+        ip = request.data['ip_address']
+    
+    success = _reset_usage_for_ip(ip)
+    
+    if success:
+        return Response({
+            'message': f'Usage count reset to 0 for IP: {ip}',
+            'ip_address': ip,
+            'usage_count': 0,
+            'remaining': _USAGE_LIMIT,
+            'limit': _USAGE_LIMIT,
+            'can_use': True,
+            'percentage_used': 0.0,
+            'request_id': str(uuid.uuid4()),
+            'server_timestamp': timezone.now().isoformat(),
+        })
+    else:
+        return Response({
+            'error': f'Failed to reset usage for IP: {ip}'
+        }, status=500)
