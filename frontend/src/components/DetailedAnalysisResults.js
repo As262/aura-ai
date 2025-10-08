@@ -22,7 +22,6 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
   if (!analysis) {
     return (
       <div className="no-analysis">
-        <p>Upload an image to get detailed AI analysis and improvement suggestions!</p>
       </div>
     );
   }

@@ -18,23 +18,14 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(13, 17, 23, 0.3);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #00ff88, #00d4ff, #8b5cf6, transparent);
-  opacity: 0.5;
+  /* stronger, stable background to avoid dimming/flicker on refresh */
+  background: linear-gradient(180deg, rgba(7,10,15,0.95), rgba(13,17,23,0.95));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  /* remove hard border line and replace with subtle shadow for separation */
+  border-bottom: none;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.45), inset 0 -1px 0 rgba(255,255,255,0.01);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .header-container {
@@ -263,13 +254,12 @@
 
   .nav {
     position: fixed;
-    top: 70px;
+    top: 70px; /* positioned below header */
     left: 0;
     right: 0;
     flex-direction: column;
-    background: rgba(7, 10, 15, 0.95);
-    backdrop-filter: blur(24px);
-    border-top: 1px solid rgba(0, 255, 136, 0.2);
+    background: rgba(7, 10, 15, 0.98);
+    backdrop-filter: blur(10px);
     padding: 2rem;
     gap: 1rem;
     transform: translateY(-100%);

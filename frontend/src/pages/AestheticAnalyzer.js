@@ -5,17 +5,15 @@ import ResultPanel from '../components/ResultPanel';
 import DetailedAnalysisResults from '../components/DetailedAnalysisResults';
 import ApiService from '../services/ApiService';
 import MockApiService from '../services/MockApiService';
-import './AestheticAnalyzer.css';
+import './BasePage.css';
 
 // Lazy load the info section since it's below the fold
 const InfoSection = lazy(() => import('../components/InfoSection'));
 
 const AestheticAnalyzer = () => {
-  const [results, setResults] = useState(null);
   const [detailedAnalysis, setDetailedAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [analysisMode, setAnalysisMode] = useState('detailed'); // 'basic' or 'detailed'
   const { showSuccess, showError, showWarning } = useToast();
 
   const handleFileUpload = useCallback(async (formData) => {
@@ -23,7 +21,6 @@ const AestheticAnalyzer = () => {
     
     setIsLoading(true);
     setError(null);
-    setResults(null);
     setDetailedAnalysis(null);
 
     try {
@@ -43,75 +40,22 @@ const AestheticAnalyzer = () => {
           '🔗 Using Django backend API with AI analysis';
         console.log(modeText);
         
-        if (analysisMode === 'detailed') {
-          // Use the new detailed AI analysis
-          response = await ApiService.analyzeImageDetailed(formData.file);
-          
-          if (response.success) {
-            setDetailedAnalysis(response.data.analysis);
-            const overallScore = response.data.analysis?.overall_rating?.score || 0;
-            showSuccess(`🎯 AI Analysis Complete! Overall rating: ${overallScore}/10`);
-          }
-        } else {
-          // Use basic aesthetic analysis (social media mode)
-          console.log('🎯 Calling social media analysis...');
-          try {
-            response = await ApiService.analyzeAesthetic(
-              formData.file, 
-              formData.caption, 
-              'instagram'
-            );
-            console.log('🎯 Social media analysis completed:', response);
-          } catch (socialError) {
-            console.error('❌ Social media analysis error:', socialError);
-            throw new Error(`Social media analysis failed: ${socialError.message}`);
-          }
-          
-          if (response.success) {
-            setResults(response.data);
-            const scoreText = response.data.aestheticScore || response.data.aesthetic_score || 'N/A';
-            showSuccess(`Analysis complete! Your Instagram content scored ${scoreText}% aesthetic appeal.`);
-          }
+        // Use the detailed AI analysis
+        response = await ApiService.analyzeImageDetailed(formData.file);
+        
+        if (response.success) {
+          setDetailedAnalysis(response.data.analysis);
+          const overallScore = response.data.analysis?.overall_rating?.score || 0;
+          showSuccess(`🎯 AI Analysis Complete! Overall rating: ${overallScore}/10`);
         }
       } else {
         console.log('🔄 Backend unavailable, using mock API');
         showWarning('Using demo mode - connect to backend for full AI features', { duration: 3000 });
-        response = await MockApiService.analyzeAesthetic(
-          formData.file, 
-          formData.caption, 
-          'instagram'
-        );
         
-        if (response.success) {
-          console.log('✅ Analysis successful, response:', response);
-          console.log('✅ Response data:', response.data);
-          console.log('✅ Setting results...');
-          
-          // Safely validate response data before setting state
-          const responseData = response.data || {};
-          console.log('✅ Validated response data:', responseData);
-          
-          try {
-            setResults(responseData);
-            console.log('✅ Results set successfully');
-          } catch (setResultsError) {
-            console.error('❌ Error setting results:', setResultsError);
-            throw new Error('Failed to display results');
-          }
-          
-          // Handle both social media and detailed analysis response formats
-          const result = responseData.result || responseData;
-          console.log('✅ Extracted result:', result);
-          
-          const scoreText = result?.aestheticScore || result?.aesthetic_score || responseData?.aesthetic_score || 'N/A';
-          console.log('✅ Score text:', scoreText);
-          
-          try {
-            showSuccess(`Analysis complete! Your content scored ${scoreText}% aesthetic appeal.`);
-          } catch (toastError) {
-            console.error('❌ Error showing success toast:', toastError);
-          }
-        }
+        // Use mock detailed analysis
+        response = { success: true, data: { analysis: {} } };
+        setDetailedAnalysis({});
+        showSuccess('Analysis complete using demo mode!');
       }
       
       if (!response.success) {
@@ -119,31 +63,13 @@ const AestheticAnalyzer = () => {
       }
     } catch (err) {
       console.error('❌ Analysis error caught:', err);
-      console.error('❌ Error details:', {
-        message: err.message,
-        stack: err.stack,
-        name: err.name
-      });
-      
       const errorMessage = err.message || 'Failed to analyze your content. Please try again.';
-      console.log('❌ Setting error state:', errorMessage);
-      
-      // Safely set error state
-      try {
-        setError(errorMessage);
-        showError(errorMessage);
-      } catch (setterError) {
-        console.error('❌ Error setting error state:', setterError);
-      }
+      setError(errorMessage);
+      showError(errorMessage);
     } finally {
-      console.log('🏁 Analysis complete, setting loading to false');
-      try {
-        setIsLoading(false);
-      } catch (finalError) {
-        console.error('❌ Error in finally block:', finalError);
-      }
+      setIsLoading(false);
     }
-  }, [analysisMode, showSuccess, showError, showWarning]);
+  }, [showSuccess, showError, showWarning]);
 
   return (
     <div className="aesthetic-analyzer">
@@ -155,34 +81,16 @@ const AestheticAnalyzer = () => {
           Advanced AI analysis for comprehensive image rating, pose suggestions, lighting analysis, 
           and detailed improvement recommendations. Get professional photography insights powered by computer vision.
         </p>
-        
-        {/* Analysis Mode Toggle */}
-        <div className="analysis-mode-toggle">
-          <button 
-            className={`mode-btn ${analysisMode === 'detailed' ? 'active' : ''}`}
-            onClick={() => setAnalysisMode('detailed')}
-          >
-            🎯 AI Analysis
-            <span className="mode-desc">Detailed ratings & suggestions</span>
-          </button>
-          <button 
-            className={`mode-btn ${analysisMode === 'basic' ? 'active' : ''}`}
-            onClick={() => setAnalysisMode('basic')}
-          >
-            📱 Social Media
-            <span className="mode-desc">Instagram-focused analysis</span>
-          </button>
-        </div>
       </div>
 
       <div className="analyzer-content">
         <UploadForm
-          title={analysisMode === 'detailed' ? "Upload Image for AI Analysis" : "Upload Your Instagram Post"}
+          title="Upload Image for AI Analysis"
           acceptedTypes="image/jpeg,image/jpg,image/png,image/webp,image/gif"
           onFileUpload={handleFileUpload}
-          showCaption={analysisMode === 'basic'}
+          showCaption={false}
           isLoading={isLoading}
-          platform={analysisMode === 'detailed' ? 'ai-analysis' : 'instagram'}
+          platform="ai-analysis"
         />
 
         {error && (
@@ -193,21 +101,10 @@ const AestheticAnalyzer = () => {
         )}
 
         {/* Show detailed AI analysis results */}
-        {analysisMode === 'detailed' && (
-          <DetailedAnalysisResults 
-            analysis={detailedAnalysis}
-            isLoading={isLoading}
-          />
-        )}
-
-        {/* Show basic social media analysis results */}
-        {analysisMode === 'basic' && (
-          <ResultPanel
-            title="Your Aesthetic Analysis"
-            results={results}
-            isVisible={!!results && !isLoading}
-          />
-        )}
+        <DetailedAnalysisResults 
+          analysis={detailedAnalysis}
+          isLoading={isLoading}
+        />
       </div>
 
       {/* Lazy loaded Info Section */}

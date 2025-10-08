@@ -3,7 +3,7 @@ import UploadForm from '../components/UploadForm';
 import ResultPanel from '../components/ResultPanel';
 import ApiService from '../services/ApiService';
 import MockApiService from '../services/MockApiService';
-import './ConvoDecoder.css';
+import './BasePage.css';
 
 const ConvoDecoder = () => {
   const [results, setResults] = useState(null);
