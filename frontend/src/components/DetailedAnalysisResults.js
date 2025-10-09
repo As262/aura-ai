@@ -1,5 +1,6 @@
 import React from 'react';
 import './DetailedAnalysisResults.css';
+import './CompositionTips.css';
 
 const DetailedAnalysisResults = ({ analysis, isLoading }) => {
   if (isLoading) {
@@ -123,7 +124,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                 <h4>Sharpness</h4>
                 <div className="metric-value">
                   <span className="score">{technical_quality.sharpness.score?.toFixed(1)}</span>
-                  <span className="level">{technical_quality.sharpness.level}</span>
+                  <span className="level">{technical_quality.sharpness.rating}</span>
                 </div>
               </div>
             )}
@@ -143,7 +144,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                 <h4>Brightness</h4>
                 <div className="metric-value">
                   <span className="score">{technical_quality.brightness.value?.toFixed(0)}</span>
-                  <span className="level">{technical_quality.brightness.rating}</span>
+                  <span className="level">{technical_quality.brightness.optimal ? 'Optimal' : 'Adjust'}</span>
                 </div>
               </div>
             )}
@@ -153,7 +154,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                 <h4>Contrast</h4>
                 <div className="metric-value">
                   <span className="score">{technical_quality.contrast.value?.toFixed(0)}</span>
-                  <span className="level">{technical_quality.contrast.rating}</span>
+                  <span className="level">{technical_quality.contrast.optimal ? 'Optimal' : 'Adjust'}</span>
                 </div>
               </div>
             )}
@@ -210,29 +211,14 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
           <div className="lighting-metrics">
             <div className="metric">
               <h4>Overall Quality</h4>
-              <span className="level">{lighting_analysis.overall_quality}</span>
+              <span className="score">{lighting_analysis.overall_score}/10</span>
+              <span className="level">{lighting_analysis.quality}</span>
             </div>
-            
-            {lighting_analysis.brightness && (
-              <div className="metric">
-                <h4>Brightness Distribution</h4>
-                <span className="level">{lighting_analysis.brightness.distribution}</span>
-              </div>
-            )}
             
             {lighting_analysis.shadows && (
               <div className="metric">
                 <h4>Shadows</h4>
                 <span className="score">{lighting_analysis.shadows.percentage}%</span>
-                <span className="level">{lighting_analysis.shadows.level}</span>
-              </div>
-            )}
-            
-            {lighting_analysis.color_temperature && (
-              <div className="metric">
-                <h4>Color Temperature</h4>
-                <span className="score">{lighting_analysis.color_temperature.kelvin}K</span>
-                <span className="level">{lighting_analysis.color_temperature.description}</span>
               </div>
             )}
           </div>
@@ -243,10 +229,58 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {composition_analysis && (
         <div className="analysis-section composition-analysis">
           <h2>📐 Composition Analysis</h2>
-          <p className="section-summary">{interpretations.composition_tips}</p>
           
+          {/* Detected Composition Type */}
+          {composition_analysis.detected_type && (
+            <div className="detected-composition">
+              <div className="composition-header">
+                <h3>Detected Composition Style</h3>
+                <span className={`composition-badge ${composition_analysis.quality?.toLowerCase().replace(' ', '-')}`}>
+                  {composition_analysis.quality}
+                </span>
+              </div>
+              <div className="composition-details">
+                <div className="composition-name">
+                  <strong>{composition_analysis.detected_type}</strong>
+                  <span className="composition-score">Score: {composition_analysis.score}/10</span>
+                </div>
+                <p className="composition-description">{composition_analysis.description}</p>
+                <p className="composition-ideal"><strong>Best For:</strong> {composition_analysis.ideal_for}</p>
+              </div>
+              
+              {composition_analysis.secondary_type && (
+                <div className="secondary-composition">
+                  <p><strong>Also shows elements of:</strong> {composition_analysis.secondary_type}</p>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Traditional composition metrics for backward compatibility */}
           <div className="composition-metrics">
-            {composition_analysis.rule_of_thirds && (
+            {composition_analysis.analysis_details && (
+              <>
+                <div className="metric">
+                  <h4>Rule of Thirds</h4>
+                  <span className="score">{composition_analysis.analysis_details.rule_of_thirds}/10</span>
+                </div>
+                <div className="metric">
+                  <h4>Symmetry</h4>
+                  <span className="score">{composition_analysis.analysis_details.symmetry}/10</span>
+                </div>
+                <div className="metric">
+                  <h4>Leading Lines</h4>
+                  <span className="score">{composition_analysis.analysis_details.leading_lines}/10</span>
+                </div>
+                <div className="metric">
+                  <h4>Golden Ratio</h4>
+                  <span className="score">{composition_analysis.analysis_details.golden_ratio}/10</span>
+                </div>
+              </>
+            )}
+            
+            {/* Fallback for old format */}
+            {!composition_analysis.analysis_details && composition_analysis.rule_of_thirds && (
               <div className="metric">
                 <h4>Rule of Thirds</h4>
                 <span className="score">{composition_analysis.rule_of_thirds.score}/10</span>
@@ -254,7 +288,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
               </div>
             )}
             
-            {composition_analysis.balance && (
+            {!composition_analysis.analysis_details && composition_analysis.balance && (
               <div className="metric">
                 <h4>Visual Balance</h4>
                 <span className="score">{composition_analysis.balance.score}/10</span>
@@ -262,13 +296,57 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
               </div>
             )}
             
-            {composition_analysis.symmetry && (
+            {!composition_analysis.analysis_details && composition_analysis.symmetry && (
               <div className="metric">
                 <h4>Symmetry</h4>
                 <span className="score">{composition_analysis.symmetry.score}/10</span>
                 <span className="level">{composition_analysis.symmetry.type}</span>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Dynamic Tips Section - NEW! */}
+      {analysis.tips && analysis.tips.length > 0 && (
+        <div className="analysis-section tips-section">
+          <h2>💡 Personalized Tips & Suggestions</h2>
+          <p className="section-intro">Based on your image's composition, lighting, and technical analysis</p>
+          
+          <div className="tips-container">
+            {analysis.tips.map((tip, index) => (
+              <div key={index} className={`tip-card priority-${tip.priority?.toLowerCase()}`}>
+                <div className="tip-header">
+                  <span className={`priority-badge ${tip.priority?.toLowerCase()}`}>
+                    {tip.priority} Priority
+                  </span>
+                  <span className="category-badge">{tip.category}</span>
+                </div>
+                
+                <div className="tip-content">
+                  <div className="current-status">
+                    <strong>Current:</strong> {tip.current}
+                  </div>
+                  
+                  <div className="tip-suggestion">
+                    <strong>💡 Tip:</strong> {tip.tip}
+                  </div>
+                  
+                  {tip.alternative && tip.alternative.type && tip.alternative.score && (
+                    <div className="tip-alternative">
+                      <strong>Better Composition:</strong>
+                      <div className="alternative-details">
+                        <p><strong>{tip.alternative.type}</strong> (Score: {tip.alternative.score}/10)</p>
+                        <p>{tip.alternative.reason}</p>
+                        <div className="how-to">
+                          <strong>How to achieve this:</strong> {tip.alternative.how_to}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -312,7 +390,6 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
               <div className="metric">
                 <h4>Saturation</h4>
                 <span className="score">{color_analysis.saturation.score}/10</span>
-                <span className="level">{color_analysis.saturation.level}</span>
               </div>
             )}
           </div>

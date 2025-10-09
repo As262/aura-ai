@@ -11,7 +11,7 @@ from .serializers import (
     AestheticAnalysisSerializer,
     ConversationAnalysisSerializer
 )
-from .ai_services import ImageAnalysisService
+from .ai_services_optimized import OptimizedImageAnalysisService as ImageAnalysisService
 import json
 import os
 import tempfile
