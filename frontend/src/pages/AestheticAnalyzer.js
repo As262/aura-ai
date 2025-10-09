@@ -111,6 +111,17 @@ const AestheticAnalyzer = () => {
       <Suspense fallback={<div style={{ height: '400px' }} />}>
         <InfoSection />
       </Suspense>
+
+      {/* Privacy Notice */}
+      <div className="privacy-notice">
+        <div className="privacy-content">
+          <h3>🔒 Your Privacy Matters</h3>
+          <p>
+            All images are processed locally and are never stored on our servers. 
+            Your photos remain completely private and secure.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

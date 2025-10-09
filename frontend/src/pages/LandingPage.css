@@ -93,7 +93,11 @@
   display: flex;
   gap: var(--space-8);
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  justify-content: center;
+  overflow-x: auto;
+  /* Ensure stats don't break on smaller screens */
+  min-width: 0;
 }
 
 .stat-item {
@@ -476,13 +480,24 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+  
   .hero-section {
     padding: var(--space-16) 0 var(--space-12);
+  }
+  
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    text-align: center;
   }
   
   .hero-actions {
     flex-direction: column;
     align-items: center;
+    gap: var(--space-4);
   }
   
   .btn-lg {
@@ -492,6 +507,8 @@
   
   .hero-stats {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-6);
   }
   
   .features-grid {
@@ -508,15 +525,46 @@
     width: 250px;
     height: 250px;
   }
+  
+  .text-hero {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  
+  .hero-description {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-3);
+  }
+  
   .hero-badge {
     font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .text-hero {
+    font-size: 2rem;
+    line-height: 1.1;
+  }
+  
+  .hero-description {
+    font-size: 0.95rem;
   }
   
   .stat-number {
     font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+  
+  .hero-stats {
+    gap: var(--space-4);
   }
   
   .tech-grid {

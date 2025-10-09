@@ -7,6 +7,7 @@ import { ToastProvider } from './components/Toast';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ConnectionStatus from './components/ConnectionStatus';
+import ScrollToTop from './components/ScrollToTop';
 import LandingPage from './pages/LandingPage';
 import AestheticAnalyzer from './pages/AestheticAnalyzer';
 import ConvoDecoder from './pages/ConvoDecoder';
@@ -22,6 +23,7 @@ function App() {
           <Router>
             <div className="App">
               <Header />
+              <ScrollToTop />
               <ConnectionStatus />
               <main className="main-content">
                 <Routes>

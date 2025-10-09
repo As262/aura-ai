@@ -65,7 +65,7 @@ const LandingPage = () => {
                 </div>
                 <div className="stat-divider"></div>
                 <div className="stat-item">
-                  <div className="stat-number">&lt;1s</div>
+                  <div className="stat-number">~10s</div>
                   <div className="stat-label">Processing</div>
                 </div>
                 <div className="stat-divider"></div>
@@ -108,9 +108,6 @@ const LandingPage = () => {
           
           <div className="features-grid">
             <div className="feature-card glass fade-on-scroll">
-              <div className="feature-icon">
-                <div className="icon-sphere">🎨</div>
-              </div>
               <h3 className="text-lg">Aesthetic Analysis</h3>
               <p className="text-body">
                 Advanced computer vision to understand visual aesthetics, color harmony, 
@@ -127,9 +124,6 @@ const LandingPage = () => {
             </div>
 
             <div className="feature-card glass fade-on-scroll">
-              <div className="feature-icon">
-                <div className="icon-sphere">💬</div>
-              </div>
               <h3 className="text-lg">Conversation Decoding</h3>
               <p className="text-body">
                 Natural language processing to analyze communication patterns, 
@@ -143,25 +137,6 @@ const LandingPage = () => {
               <Link to="/convo-decoder" className="feature-link">
                 Decode Messages →
               </Link>
-            </div>
-
-            <div className="feature-card glass fade-on-scroll">
-              <div className="feature-icon">
-                <div className="icon-sphere">⚡</div>
-              </div>
-              <h3 className="text-lg">Real-time Processing</h3>
-              <p className="text-body">
-                Lightning-fast neural network inference with optimized architectures 
-                for instant results and seamless experience.
-              </p>
-              <div className="feature-tech">
-                <span className="tech-tag">CUDA</span>
-                <span className="tech-tag">TensorRT</span>
-                <span className="tech-tag">ONNX</span>
-              </div>
-              <div className="feature-link">
-                Powered by GPU →
-              </div>
             </div>
           </div>
         </div>
@@ -196,29 +171,6 @@ const LandingPage = () => {
                 <h4>Edge Computing</h4>
                 <p>Optimized for performance</p>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-content glass fade-on-scroll">
-            <h2 className="text-xl">
-              Ready to <span className="text-gradient">Explore the Future</span>?
-            </h2>
-            <p className="text-body">
-              Join thousands of creators and innovators using Aura AI to unlock new possibilities. 
-              Start your journey into the world of neural intelligence today.
-            </p>
-            <div className="cta-actions">
-              <Link to="/aesthetic-analyzer" className="btn btn-primary btn-lg">
-                Start Creating
-              </Link>
-              <Link to="/convo-decoder" className="btn btn-ghost btn-lg">
-                Learn More
-              </Link>
             </div>
           </div>
         </div>

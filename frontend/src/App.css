@@ -10,6 +10,17 @@
   box-sizing: border-box;
 }
 
+/* Smooth scrolling for the entire document */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure body takes full height and is scrollable */
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
 /* Global Link Reset - Remove all decorations */
 a,
 a:link,
@@ -560,5 +571,37 @@ body {
   
   .card {
     padding: var(--space-6);
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding-top: 60px;
+  }
+  
+  .container {
+    padding: 0 var(--space-3);
+  }
+  
+  .btn {
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.9rem;
+  }
+  
+  .card {
+    padding: var(--space-4);
+    margin: var(--space-2);
+  }
+  
+  .text-hero {
+    font-size: 2rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem !important;
   }
 }
