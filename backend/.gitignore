@@ -64,3 +64,13 @@ env/
 ENV/
 env.bak/
 venv.bak/
+venv311/
+
+# ML Models - Ignore large checkpoint files (>100MB)
+ml_models/trained/checkpoint_*.pth
+*.pth.tar
+training/training_data/
+
+# Keep only best models
+!ml_models/trained/composition_model_best.pth
+!ml_models/trained/composition_model_final.pth
