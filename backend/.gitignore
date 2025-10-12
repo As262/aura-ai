@@ -64,11 +64,3 @@ env/
 ENV/
 env.bak/
 venv.bak/
-
-# ML Models - Ignore large checkpoint files (>100MB)
-ml_models/trained/checkpoint_*.pth
-ml_models/trained/*.pth.tar
-
-# Training data (optional - uncomment if too large)
-# training_data/
-# training/training_data/
