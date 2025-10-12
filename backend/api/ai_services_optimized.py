@@ -21,6 +21,18 @@ except ImportError:
 from PIL import Image, ImageEnhance, ImageStat
 import torch
 from skimage import measure, filters
+import os
+import sys
+from pathlib import Path
+
+# Import hybrid composition detector
+try:
+    sys.path.append(str(Path(__file__).parent.parent))
+    from ml_models.composition_model import HybridCompositionDetector
+    HYBRID_MODEL_AVAILABLE = True
+except ImportError:
+    HYBRID_MODEL_AVAILABLE = False
+    print("⚠️ Hybrid ML model not available. Using rule-based detection only.")
 
 
 class OptimizedImageAnalysisService:
@@ -78,6 +90,16 @@ class OptimizedImageAnalysisService:
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.use_gpu = torch.cuda.is_available()
         
+        # Initialize Hybrid ML Composition Detector
+        if HYBRID_MODEL_AVAILABLE:
+            model_path = Path(__file__).parent.parent / 'ml_models' / 'trained' / 'composition_model_best.pth'
+            self.hybrid_detector = HybridCompositionDetector(
+                model_path=str(model_path) if model_path.exists() else None,
+                confidence_threshold=0.6
+            )
+        else:
+            self.hybrid_detector = None
+        
         # Initialize MediaPipe
         if MEDIAPIPE_AVAILABLE:
             self.pose = mp.solutions.pose.Pose(
@@ -96,6 +118,9 @@ class OptimizedImageAnalysisService:
         
         # Thread pool for parallel processing
         self.executor = ThreadPoolExecutor(max_workers=4)
+        
+        # Store current image path for hybrid detection
+        self.current_image_path = None
     
     def analyze_image(self, image_path):
         """
@@ -110,6 +135,9 @@ class OptimizedImageAnalysisService:
         Returns comprehensive analysis with composition type and dynamic tips
         """
         start_time = time.time()
+        
+        # Store image path for hybrid detection
+        self.current_image_path = image_path
         
         # Load and optimize image
         image = cv2.imread(image_path)
@@ -212,6 +240,51 @@ class OptimizedImageAnalysisService:
         frame_in_frame_score = self._check_frame_in_frame(gray)
         composition_scores['frame_within_frame'] = frame_in_frame_score
         
+        # ==== HYBRID ML + RULE-BASED DETECTION ====
+        # Try ML model first if available
+        if self.hybrid_detector and self.hybrid_detector.model_loaded and self.current_image_path:
+            try:
+                hybrid_result = self.hybrid_detector.detect_composition(
+                    self.current_image_path,
+                    composition_scores
+                )
+                
+                # Use ML result if reliable
+                if hybrid_result['reliable'] and hybrid_result['method'] in ['ml', 'hybrid']:
+                    primary_type = hybrid_result['detected_type']
+                    primary_score = hybrid_result['confidence'] * 10  # Convert to 0-10 scale
+                    
+                    # Update all scores from ML model
+                    if 'all_scores' in hybrid_result:
+                        composition_scores = {k: v * 10 for k, v in hybrid_result['all_scores'].items()}
+                    
+                    print(f"🤖 {hybrid_result['method'].upper()} Detection: {primary_type} ({hybrid_result['confidence']:.2%})")
+                    
+                    # Skip rule-based priority logic, use ML result
+                    return {
+                        'detected_type': self.COMPOSITION_TYPES[primary_type]['name'],
+                        'type_key': primary_type,
+                        'description': self.COMPOSITION_TYPES[primary_type]['description'],
+                        'ideal_for': self.COMPOSITION_TYPES[primary_type]['ideal_for'],
+                        'score': round(min(primary_score, 10.0), 1),
+                        'quality': self._get_quality_rating(primary_score),
+                        'secondary_type': None,
+                        'all_scores': {k: round(min(v, 10.0), 1) for k, v in composition_scores.items()},
+                        'analysis_details': {
+                            'rule_of_thirds': round(composition_scores.get('rule_of_thirds', 0), 1),
+                            'centered': round(composition_scores.get('centered', 0), 1),
+                            'leading_lines': round(composition_scores.get('leading_lines', 0), 1),
+                            'diagonal': round(composition_scores.get('diagonal', 0), 1),
+                            'symmetry': round(composition_scores.get('symmetrical', 0), 1),
+                            'golden_ratio': round(composition_scores.get('golden_ratio', 0), 1)
+                        },
+                        'method': hybrid_result['method'],
+                        'ml_confidence': round(hybrid_result['confidence'] * 100, 1)
+                    }
+            except Exception as e:
+                print(f"⚠️ Hybrid detection failed, using rule-based: {e}")
+        
+        # ==== RULE-BASED PRIORITY LOGIC (Fallback) ====
         # Smart priority logic - only suppress when there's true conflict
         # Priority 1: Strong leading lines (roads, paths) should NOT be suppressed
         if leading_lines_score >= 8.0:
