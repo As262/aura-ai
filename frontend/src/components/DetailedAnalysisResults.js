@@ -116,7 +116,6 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {technical_quality && (
         <div className="analysis-section technical-quality">
           <h2>🔧 Technical Quality</h2>
-          <p className="section-summary">{interpretations.technical_summary}</p>
           
           <div className="technical-metrics">
             {technical_quality.sharpness && (
@@ -168,7 +167,6 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
           <h2>🧍 Pose Analysis</h2>
           {pose_analysis.detected ? (
             <>
-              <p className="section-summary">{interpretations.pose_feedback}</p>
               <div className="pose-metrics">
                 <div className="metric">
                   <h4>Quality Score</h4>
@@ -206,7 +204,6 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {lighting_analysis && (
         <div className="analysis-section lighting-analysis">
           <h2>💡 Lighting Analysis</h2>
-          <p className="section-summary">{interpretations.lighting_feedback}</p>
           
           <div className="lighting-metrics">
             <div className="metric">
@@ -355,7 +352,6 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {color_analysis && (
         <div className="analysis-section color-analysis">
           <h2>🎨 Color Analysis</h2>
-          <p className="section-summary">{interpretations.color_insights}</p>
           
           {color_analysis.dominant_colors && (
             <div className="color-palette">

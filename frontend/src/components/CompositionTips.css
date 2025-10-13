@@ -274,3 +274,128 @@
     align-items: flex-start;
   }
 }
+
+/* ============================================
+   LIGHT MODE SUPPORT FOR TIPS SECTION
+   ============================================ */
+
+/* Main Tips Section Container */
+:root[data-theme="light"] .analysis-section.tips-section {
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%) !important;
+  border: 2px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* Section Title */
+:root[data-theme="light"] .analysis-section.tips-section h2 {
+  color: #1a202c !important;
+}
+
+/* Section Introduction Text */
+:root[data-theme="light"] .analysis-section.tips-section .section-intro {
+  color: #4a5568 !important;
+}
+
+/* Tip Cards Base Styling */
+:root[data-theme="light"] .analysis-section.tips-section .tip-card {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  color: #2d3748;
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .tip-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+}
+
+/* Priority-Based Card Backgrounds */
+:root[data-theme="light"] .analysis-section.tips-section .tip-card.priority-high {
+  border-left-color: #ef4444;
+  background: linear-gradient(to right, #ffffff 70%, #fef2f2 100%) !important;
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .tip-card.priority-medium {
+  border-left-color: #f59e0b;
+  background: linear-gradient(to right, #ffffff 70%, #fffbeb 100%) !important;
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .tip-card.priority-low {
+  border-left-color: #3b82f6;
+  background: linear-gradient(to right, #ffffff 70%, #eff6ff 100%) !important;
+}
+
+/* Priority Badges */
+:root[data-theme="light"] .analysis-section.tips-section .priority-badge.high {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .priority-badge.medium {
+  background: #fffbeb !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .priority-badge.low {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Category Badge */
+:root[data-theme="light"] .analysis-section.tips-section .category-badge {
+  background: #f3f4f6 !important;
+  color: #4b5563 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Current Status Text */
+:root[data-theme="light"] .analysis-section.tips-section .current-status {
+  color: #4a5568 !important;
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .current-status strong {
+  color: #1a202c !important;
+}
+
+/* Tip Suggestion Text */
+:root[data-theme="light"] .analysis-section.tips-section .tip-suggestion {
+  color: #2d3748 !important;
+}
+
+:root[data-theme="light"] .analysis-section.tips-section .tip-suggestion strong {
+  color: #059669 !important;
+  font-weight: 600;
+}
+
+/* Tip Alternative Section */
+:root[data-theme="light"] .tip-alternative {
+  background: #f9fafb;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .tip-alternative strong {
+  color: #7c3aed;
+}
+
+:root[data-theme="light"] .alternative-details p {
+  color: #374151;
+}
+
+:root[data-theme="light"] .alternative-details p strong {
+  color: #111827;
+}
+
+/* How-To Section */
+:root[data-theme="light"] .how-to {
+  background: #eff6ff;
+  border-left: 3px solid #3b82f6;
+  color: #1e40af;
+}
+
+:root[data-theme="light"] .how-to strong {
+  color: #1d4ed8;
+}
