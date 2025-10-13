@@ -94,6 +94,9 @@
   align-items: center;
   gap: 2rem;
   position: relative;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
 
 .nav-link {
@@ -258,6 +261,24 @@
 .usage-sub {
   opacity: 0.7;
   font-size: 0.75rem;
+}
+
+/* Desktop Nav (always visible above 768px) */
+@media (min-width: 769px) {
+  .nav {
+    display: flex !important;
+    position: relative !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    flex-direction: row !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  
+  .mobile-menu-button {
+    display: none !important;
+  }
 }
 
 /* Mobile Menu Button */
