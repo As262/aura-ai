@@ -13,11 +13,17 @@
 /* Smooth scrolling for the entire document */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 /* Ensure body takes full height and is scrollable */
 body {
   min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#root {
   overflow-x: hidden;
 }
 
@@ -224,6 +230,15 @@ body {
     background-color var(--transition-slow);
 }
 
+/* Light Mode App Background */
+:root[data-theme="light"] .App {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(0, 199, 106, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+    linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+}
+
 /* Animated Neural Network Overlay */
 .App::before {
   content: '';
@@ -243,6 +258,11 @@ body {
   animation: neuralPulse 20s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
+}
+
+/* Light Mode Overlay */
+:root[data-theme="light"] .App::before {
+  opacity: 0.03;
 }
 
 @keyframes neuralPulse {
@@ -265,6 +285,19 @@ body {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: var(--shadow-2xl);
+}
+
+/* Light Mode Glass */
+:root[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="light"] .glass-intense {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* Main Layout */
@@ -385,6 +418,16 @@ body {
   box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
 }
 
+/* Light Mode Button Primary */
+:root[data-theme="light"] .btn-primary {
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 199, 106, 0.3);
+}
+
+:root[data-theme="light"] .btn-primary:hover {
+  box-shadow: 0 8px 30px rgba(0, 199, 106, 0.4);
+}
+
 .btn-secondary {
   background: linear-gradient(135deg, var(--neural-violet), var(--neural-fuchsia));
   color: var(--text-primary);
@@ -396,6 +439,16 @@ body {
   box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
 }
 
+/* Light Mode Button Secondary */
+:root[data-theme="light"] .btn-secondary {
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+}
+
+:root[data-theme="light"] .btn-secondary:hover {
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+}
+
 .btn-ghost {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
@@ -405,6 +458,18 @@ body {
 .btn-ghost:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
+}
+
+/* Light Mode Button Ghost */
+:root[data-theme="light"] .btn-ghost {
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--text-primary);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+:root[data-theme="light"] .btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.25);
 }
 
 .btn-lg {
@@ -456,6 +521,26 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* Light Mode Cards */
+:root[data-theme="light"] .card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 199, 106, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+:root[data-theme="light"] .card::before {
+  background: linear-gradient(90deg, transparent, var(--accent-neon), transparent);
+}
+
+:root[data-theme="light"] .card:hover {
+  border-color: rgba(0, 199, 106, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 199, 106, 0.15);
+}
+
+:root[data-theme="light"] .card-interactive:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
 /* Form Elements */
 .form-input {
   width: 100%;
@@ -479,6 +564,24 @@ body {
   border-color: var(--accent-neon);
   box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
   background: rgba(255, 255, 255, 0.08);
+}
+
+/* Light Mode Form Inputs */
+:root[data-theme="light"] .form-input {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="light"] .form-input::placeholder {
+  color: rgba(31, 41, 55, 0.4);
+}
+
+:root[data-theme="light"] .form-input:focus {
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 0 3px rgba(0, 199, 106, 0.15);
+  background: rgba(255, 255, 255, 1);
 }
 
 /* Utility Classes */
@@ -543,10 +646,29 @@ body {
   background: linear-gradient(var(--accent-cyan), var(--neural-violet));
 }
 
+/* Light Mode Scrollbar */
+:root[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-neon), var(--accent-cyan));
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--accent-cyan), var(--neural-violet));
+}
+
 /* Selection */
 ::selection {
   background: rgba(0, 255, 136, 0.2);
   color: var(--text-primary);
+}
+
+/* Light Mode Selection */
+:root[data-theme="light"] ::selection {
+  background: rgba(0, 199, 106, 0.25);
+  color: #1f2937;
 }
 
 /* Focus States */

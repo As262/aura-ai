@@ -205,7 +205,7 @@ const UploadForm = ({
                   <h3>Drop your file here or click to browse</h3>
                   <p>Accepted formats: {acceptedTypes}</p>
                   <p className="platform-info">
-                    {platform === 'ai-analysis' ? '🤖 AI Analysis Mode' : `Platform: ${platform}`}
+                    {platform === 'ai-analysis' ? ' AI Analysis Mode' : `Platform: ${platform}`}
                   </p>
                 </div>
               </>
@@ -227,6 +227,17 @@ const UploadForm = ({
             <ul>
               {validationErrors.map((error, index) => (
                 <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {validationWarnings.length > 0 && (
+          <div className="validation-messages warning-messages" role="alert" aria-live="polite">
+            <h4>⚠️ File Validation Warnings:</h4>
+            <ul>
+              {validationWarnings.map((warning, index) => (
+                <li key={index}>{warning}</li>
               ))}
             </ul>
           </div>

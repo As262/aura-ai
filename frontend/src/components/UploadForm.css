@@ -361,6 +361,30 @@
   color: var(--error-700);
 }
 
+.warning-messages {
+  background-color: rgba(251, 191, 36, 0.1);
+  border-left: 4px solid #f59e0b;
+  color: #d97706;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.warning-messages h4 {
+  color: #b45309;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.warning-messages ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.warning-messages li {
+  margin-bottom: 0.25rem;
+}
+
 .platform-info {
   font-size: var(--font-size-xs);
   color: var(--text-muted);
@@ -389,106 +413,195 @@
   backdrop-filter: blur(4px);
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .upload-form {
-    background: linear-gradient(145deg, #1e293b, #0f172a);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  }
+/* ============================================ */
+/* LIGHT MODE - Default Styles (Already Set)   */
+/* ============================================ */
+/* The default styles above are already light mode */
 
-  .upload-title {
-    color: #f1f5f9;
-    background: linear-gradient(45deg, #f1f5f9, #cbd5e0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+/* ============================================ */
+/* DARK MODE THEME STYLES                       */
+/* ============================================ */
 
-  .upload-area {
-    border-color: #475569;
-    background: linear-gradient(145deg, #334155, #1e293b);
-  }
+:root[data-theme="dark"] .upload-form {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
 
-  .upload-area:hover {
-    border-color: #4ade80;
-    background: linear-gradient(145deg, #1e3a28, #22543d);
-  }
+:root[data-theme="dark"] .upload-title {
+  color: #f1f5f9;
+  background: linear-gradient(45deg, #f1f5f9, #cbd5e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  .upload-area.drag-active {
-    border-color: #4ade80;
-    background: linear-gradient(145deg, #1e3a28, #22543d);
-  }
+:root[data-theme="dark"] .upload-area {
+  border-color: #475569;
+  background: linear-gradient(145deg, #334155, #1e293b);
+}
 
-  .upload-icon {
-    background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e0 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+:root[data-theme="dark"] .upload-area:hover {
+  border-color: #4ade80;
+  background: linear-gradient(145deg, #1e3a28, #22543d);
+}
 
-  .upload-text h3 {
-    color: #e2e8f0;
-  }
+:root[data-theme="dark"] .upload-area.drag-active {
+  border-color: #4ade80;
+  background: linear-gradient(145deg, #1e3a28, #22543d);
+}
 
-  .upload-text p {
-    color: #94a3b8;
-  }
+:root[data-theme="dark"] .upload-icon {
+  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  .platform-info {
-    color: #94a3b8;
-  }
+:root[data-theme="dark"] .upload-text h3 {
+  color: #e2e8f0;
+}
 
-  .preview-image {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  }
+:root[data-theme="dark"] .upload-text p {
+  color: #94a3b8;
+}
 
-  .preview-overlay {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
-  }
+:root[data-theme="dark"] .platform-info {
+  color: #94a3b8;
+}
 
-  .loading-overlay {
-    background: rgba(15, 23, 42, 0.9);
-  }
+:root[data-theme="dark"] .preview-image {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
 
-  .loading-overlay p {
-    color: #e2e8f0;
-  }
+:root[data-theme="dark"] .preview-overlay {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+}
 
-  .spinner {
-    border-color: #334155;
-    border-top-color: #4ade80;
-  }
+:root[data-theme="dark"] .loading-overlay {
+  background: rgba(15, 23, 42, 0.9);
+}
 
-  .caption-label {
-    color: #e2e8f0;
-  }
+:root[data-theme="dark"] .loading-overlay p {
+  color: #e2e8f0;
+}
 
-  .caption-input {
-    background: #334155;
-    border-color: #475569;
-    color: #f1f5f9;
-  }
+:root[data-theme="dark"] .spinner {
+  border-color: #334155;
+  border-top-color: #4ade80;
+}
 
-  .caption-input:focus {
-    border-color: #4ade80;
-    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
-  }
+:root[data-theme="dark"] .caption-label {
+  color: #e2e8f0;
+}
 
-  .caption-input::placeholder {
-    color: #64748b;
-  }
+:root[data-theme="dark"] .caption-input {
+  background: #334155;
+  border-color: #475569;
+  color: #f1f5f9;
+}
 
-  .validation-messages {
-    background-color: rgba(51, 65, 85, 0.5);
-  }
+:root[data-theme="dark"] .caption-input:focus {
+  border-color: #4ade80;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+}
 
-  .error-messages {
-    background-color: rgba(127, 29, 29, 0.3);
-    border-left-color: #ef4444;
-    color: #fca5a5;
-  }
+:root[data-theme="dark"] .caption-input::placeholder {
+  color: #64748b;
+}
 
-  .error-messages h4 {
-    color: #fecaca;
-  }
+:root[data-theme="dark"] .validation-messages {
+  background-color: rgba(51, 65, 85, 0.5);
+}
+
+:root[data-theme="dark"] .error-messages {
+  background-color: rgba(127, 29, 29, 0.3);
+  border-left-color: #ef4444;
+  color: #fca5a5;
+}
+
+:root[data-theme="dark"] .error-messages h4 {
+  color: #fecaca;
+}
+
+/* ============================================ */
+/* ENHANCED LIGHT MODE STYLES                   */
+/* ============================================ */
+
+:root[data-theme="light"] .upload-form {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="light"] .upload-title {
+  color: #1e293b;
+  background: linear-gradient(45deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root[data-theme="light"] .upload-area {
+  border: 3px dashed #cbd5e0;
+  background: linear-gradient(145deg, #f7fafc, #edf2f7);
+}
+
+:root[data-theme="light"] .upload-area:hover {
+  border-color: #00c76a;
+  background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+}
+
+:root[data-theme="light"] .upload-area.drag-active {
+  border-color: #00c76a;
+  background: linear-gradient(145deg, #f0fdf4, #dcfce7);
+}
+
+:root[data-theme="light"] .upload-icon {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:root[data-theme="light"] .upload-text h3 {
+  color: #2d3748;
+}
+
+:root[data-theme="light"] .upload-text p {
+  color: #718096;
+}
+
+:root[data-theme="light"] .platform-info {
+  color: #64748b;
+}
+
+:root[data-theme="light"] .loading-overlay {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+:root[data-theme="light"] .loading-overlay p {
+  color: #4a5568;
+}
+
+:root[data-theme="light"] .spinner {
+  border-color: #e2e8f0;
+  border-top-color: #00c76a;
+}
+
+:root[data-theme="light"] .caption-label {
+  color: #2d3748;
+}
+
+:root[data-theme="light"] .caption-input {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #1e293b;
+}
+
+:root[data-theme="light"] .caption-input:focus {
+  border-color: #00c76a;
+  box-shadow: 0 0 0 3px rgba(0, 199, 106, 0.1);
+}
+
+:root[data-theme="light"] .caption-input::placeholder {
+  color: #a0aec0;
 }

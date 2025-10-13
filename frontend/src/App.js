@@ -11,6 +11,7 @@ import ScrollToTop from './components/ScrollToTop';
 import LandingPage from './pages/LandingPage';
 import AestheticAnalyzer from './pages/AestheticAnalyzer';
 import ConvoDecoder from './pages/ConvoDecoder';
+import Pricing from './pages/Pricing';
 import UsageDebugPage from './pages/UsageDebugPage';
 import './App.css';
 
@@ -41,6 +42,14 @@ function App() {
                     element={
                       <ErrorBoundary>
                         <ConvoDecoder />
+                      </ErrorBoundary>
+                    } 
+                  />
+                  <Route 
+                    path="/pricing" 
+                    element={
+                      <ErrorBoundary>
+                        <Pricing />
                       </ErrorBoundary>
                     } 
                   />

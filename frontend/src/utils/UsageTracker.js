@@ -96,6 +96,23 @@ class UsageTracker {
     return false;
   }
 
+  // Add uses to a feature (for purchasing)
+  addUses(feature, usesToAdd) {
+    const data = this.getUsageData();
+    if (data[feature]) {
+      data[feature].limit += usesToAdd;
+      data[feature].remaining += usesToAdd;
+      this.saveUsageData(data);
+      
+      window.dispatchEvent(new CustomEvent('usageUpdated', { 
+        detail: { feature, usage: data[feature] } 
+      }));
+      
+      return true;
+    }
+    return false;
+  }
+
   // Reset usage for a specific feature
   resetFeature(feature) {
     const data = this.getUsageData();

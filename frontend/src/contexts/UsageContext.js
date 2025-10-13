@@ -73,6 +73,14 @@ export function UsageProvider({ children }) {
     });
   }, []);
 
+  const addUses = useCallback((feature, usesToAdd) => {
+    const success = UsageTracker.addUses(feature, usesToAdd);
+    if (success) {
+      refresh();
+    }
+    return success;
+  }, [refresh]);
+
   const resetFeature = useCallback((feature) => {
     UsageTracker.resetFeature(feature);
     refresh();
@@ -93,6 +101,7 @@ export function UsageProvider({ children }) {
       refresh,
       performAnalysis,
       isRefreshing,
+      addUses,
       resetFeature,
       resetAll,
       getFeatureUsage

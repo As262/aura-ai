@@ -50,11 +50,11 @@ const LandingPage = () => {
               <div className="hero-actions">
                 <Link to="/aesthetic-analyzer" className="btn btn-primary btn-lg">
                   <span>Analyze Images</span>
-                  <span className="btn-icon">🎨</span>
+                  <span className="btn-icon"></span>
                 </Link>
                 <Link to="/convo-decoder" className="btn btn-secondary btn-lg">
                   <span>Decode Conversations</span>
-                  <span className="btn-icon">💬</span>
+                  <span className="btn-icon"></span>
                 </Link>
               </div>
               
@@ -166,10 +166,10 @@ const LandingPage = () => {
                 <h4>NLP Processing</h4>
                 <p>Context-aware language models</p>
               </div>
-              <div className="tech-item fade-on-scroll">
-                <div className="tech-icon">⚡</div>
-                <h4>Edge Computing</h4>
-                <p>Optimized for performance</p>
+              <div className="tech-item fade-on-scroll privacy-card">
+                <div className="tech-icon">🔒</div>
+                <h4>Privacy First</h4>
+                <p>Your data stays local. Nothing stored, nothing shared. Complete privacy guaranteed.</p>
               </div>
             </div>
           </div>
