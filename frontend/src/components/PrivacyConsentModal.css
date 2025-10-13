@@ -1,0 +1,190 @@
+/* Privacy Consent Modal Styles */
+.privacy-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.25s ease;
+  padding: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.privacy-modal-content {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2),
+              0 0 0 1px rgba(139, 92, 246, 0.2);
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  padding: 25px 30px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.privacy-compact-body {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.privacy-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  animation: subtle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.privacy-message {
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.privacy-modal-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.privacy-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.privacy-btn-decline {
+  background: #e2e8f0;
+  color: #475569;
+  border: 1px solid #cbd5e0;
+}
+
+.privacy-btn-decline:hover {
+  background: #cbd5e0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.privacy-btn-accept {
+  background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+  color: white;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+}
+
+.privacy-btn-accept:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.privacy-btn:active {
+  transform: translateY(0);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .privacy-modal-content {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+  }
+
+  .privacy-message {
+    color: #f1f5f9;
+  }
+
+  .privacy-btn-decline {
+    background: #334155;
+    color: #e2e8f0;
+    border-color: #475569;
+  }
+
+  .privacy-btn-decline:hover {
+    background: #475569;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .privacy-modal-overlay {
+    padding: 15px;
+  }
+
+  .privacy-modal-content {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .privacy-compact-body {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .privacy-message {
+    font-size: 0.9rem;
+  }
+
+  .privacy-modal-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .privacy-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-modal-content {
+    padding: 18px;
+  }
+
+  .privacy-icon {
+    font-size: 1.5rem;
+  }
+
+  .privacy-message {
+    font-size: 0.85rem;
+  }
+
+  .privacy-btn {
+    font-size: 0.85rem;
+    padding: 9px 16px;
+  }
+}

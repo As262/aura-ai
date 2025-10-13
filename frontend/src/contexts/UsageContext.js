@@ -1,45 +1,101 @@
-import React, { createContext, useContext } from 'react';
-import useUsageStatus from '../hooks/useUsageStatus';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import UsageTracker from '../utils/UsageTracker';
 
 const UsageContext = createContext(null);
 
 export function UsageProvider({ children }) {
-  const { usage, refresh } = useUsageStatus();
+  const [usage, setUsage] = useState({
+    aesthetic_analyzer: UsageTracker.getFeatureUsage('aesthetic_analyzer'),
+    convo_decoder: UsageTracker.getFeatureUsage('convo_decoder')
+  });
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const performAnalysis = async (analysisFunction) => {
+  // Listen for usage updates from UsageTracker
+  useEffect(() => {
+    const handleUsageUpdate = () => {
+      setUsage({
+        aesthetic_analyzer: UsageTracker.getFeatureUsage('aesthetic_analyzer'),
+        convo_decoder: UsageTracker.getFeatureUsage('convo_decoder')
+      });
+    };
+
+    window.addEventListener('usageUpdated', handleUsageUpdate);
+    return () => window.removeEventListener('usageUpdated', handleUsageUpdate);
+  }, []);
+
+  const performAnalysis = useCallback(async (feature, analysisFunction) => {
+    // Validate feature
+    if (!feature || !['aesthetic_analyzer', 'convo_decoder'].includes(feature)) {
+      console.error('Invalid feature:', feature);
+      return {
+        success: false,
+        error: 'Invalid feature specified'
+      };
+    }
+
     // Check if user can still use the service
-    if (usage && !usage.can_use) {
+    const canUse = UsageTracker.canUseFeature(feature);
+    if (!canUse) {
+      const featureUsage = UsageTracker.getFeatureUsage(feature);
       return {
         success: false,
         error: 'Usage limit exceeded',
         usage_limit_exceeded: true,
-        current_usage: usage.usage_count,
-        limit: usage.limit
+        current_usage: featureUsage.count,
+        limit: featureUsage.limit
       };
     }
 
     // Perform the analysis
     const result = await analysisFunction();
     
-    // If successful, refresh usage data
+    // If successful, increment usage
     if (result.success) {
-      setTimeout(() => refresh(), 500);
+      setIsRefreshing(true);
+      UsageTracker.incrementUsage(feature);
+      
+      setTimeout(() => {
+        setUsage({
+          aesthetic_analyzer: UsageTracker.getFeatureUsage('aesthetic_analyzer'),
+          convo_decoder: UsageTracker.getFeatureUsage('convo_decoder')
+        });
+        setIsRefreshing(false);
+      }, 300);
     }
     
     return result;
-  };
+  }, []);
 
-  const incrementMock = () => {
-    // This is a placeholder for manual increment calls
-    console.warn('incrementUsage not implemented on client');
-  };
+  const refresh = useCallback(() => {
+    setUsage({
+      aesthetic_analyzer: UsageTracker.getFeatureUsage('aesthetic_analyzer'),
+      convo_decoder: UsageTracker.getFeatureUsage('convo_decoder')
+    });
+  }, []);
+
+  const resetFeature = useCallback((feature) => {
+    UsageTracker.resetFeature(feature);
+    refresh();
+  }, [refresh]);
+
+  const resetAll = useCallback(() => {
+    UsageTracker.resetAll();
+    refresh();
+  }, [refresh]);
+
+  const getFeatureUsage = useCallback((feature) => {
+    return usage[feature] || { count: 0, limit: 0, remaining: 0 };
+  }, [usage]);
 
   return (
     <UsageContext.Provider value={{ 
-      usage, 
-      refresh, 
-      incrementUsage: incrementMock,
-      performAnalysis
+      usage,
+      refresh,
+      performAnalysis,
+      isRefreshing,
+      resetFeature,
+      resetAll,
+      getFeatureUsage
     }}>
       {children}
     </UsageContext.Provider>

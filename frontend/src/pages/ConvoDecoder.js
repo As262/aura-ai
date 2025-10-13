@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useToast } from '../components/Toast';
+import { useUsage } from '../contexts/UsageContext';
 import UploadForm from '../components/UploadForm';
 import ResultPanel from '../components/ResultPanel';
+import PrivacyConsentModal from '../components/PrivacyConsentModal';
 import ApiService from '../services/ApiService';
 import MockApiService from '../services/MockApiService';
 import './BasePage.css';
@@ -9,37 +12,87 @@ const ConvoDecoder = () => {
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [pendingFile, setPendingFile] = useState(null);
+  const [shouldClearPreview, setShouldClearPreview] = useState(false);
+  const { showSuccess, showError, showWarning } = useToast();
+  const { performAnalysis, getFeatureUsage } = useUsage();
 
-  const handleFileUpload = async (formData) => {
+  const handleFileUploadRequest = useCallback((formData) => {
+    // Show privacy consent modal first
+    setPendingFile(formData);
+    setShowPrivacyModal(true);
+  }, []);
+
+  const handlePrivacyAccept = useCallback(async () => {
+    setShowPrivacyModal(false);
+    
+    if (!pendingFile) return;
+    
+    // Check usage limit first
+    const featureUsage = getFeatureUsage('convo_decoder');
+    if (featureUsage.remaining <= 0) {
+      showError(`Usage limit reached! You've used all ${featureUsage.limit} analyses. Come back later!`);
+      setPendingFile(null);
+      setShouldClearPreview(true);
+      return;
+    }
+    
     setIsLoading(true);
     setError(null);
     setResults(null);
 
-    try {
-      // Try real API first, fallback to mock if backend is unavailable
-      let response;
-      const backendAvailable = await ApiService.testConnection();
-      
-      if (backendAvailable) {
-        console.log('🔗 Using Django backend API');
-        response = await ApiService.analyzeConversation(formData.file);
-      } else {
-        console.log('🔄 Backend unavailable, using mock API');
-        response = await MockApiService.analyzeConversation(formData.file);
+    // Wrap the analysis in performAnalysis to track usage
+    await performAnalysis('convo_decoder', async () => {
+      try {
+        showWarning('💬 Analyzing your conversation...', { 
+          persistent: true,
+          id: 'convo-loading'
+        });
+
+        // Try real API first, fallback to mock if backend is unavailable
+        let response;
+        const connectionStatus = await ApiService.testConnection();
+        
+        if (connectionStatus.connected) {
+          console.log('🔗 Using Django backend API');
+          response = await ApiService.analyzeConversation(pendingFile.file);
+        } else {
+          console.log('🔄 Backend unavailable, using mock API');
+          showWarning('Using demo mode - connect to backend for full features', { duration: 3000 });
+          response = await MockApiService.analyzeConversation(pendingFile.file);
+        }
+        
+        if (response.success) {
+          setResults(response.data);
+          showSuccess('✅ Conversation analysis complete!');
+          return { success: true };
+        } else {
+          throw new Error(response.error || 'Analysis failed');
+        }
+      } catch (err) {
+        const errorMessage = 'Failed to analyze your conversation. Please try again.';
+        setError(errorMessage);
+        showError(errorMessage);
+        console.error('Analysis error:', err);
+        return { success: false, error: errorMessage };
       }
-      
-      if (response.success) {
-        setResults(response.data);
-      } else {
-        throw new Error(response.error || 'Analysis failed');
-      }
-    } catch (err) {
-      setError('Failed to analyze your conversation. Please try again.');
-      console.error('Analysis error:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    });
+
+    setIsLoading(false);
+    setPendingFile(null);
+  }, [pendingFile, performAnalysis, getFeatureUsage, showSuccess, showError, showWarning]);
+
+  const handlePrivacyDecline = useCallback(() => {
+    setShowPrivacyModal(false);
+    setPendingFile(null);
+    setShouldClearPreview(true);
+    showWarning('Upload cancelled. Your privacy is important to us.');
+  }, [showWarning]);
+
+  const handlePreviewCleared = useCallback(() => {
+    setShouldClearPreview(false);
+  }, []);
 
   return (
     <div className="convo-decoder">
@@ -54,12 +107,20 @@ const ConvoDecoder = () => {
       </div>
 
       <div className="analyzer-content">
+        <PrivacyConsentModal
+          isOpen={showPrivacyModal}
+          onAccept={handlePrivacyAccept}
+          onDecline={handlePrivacyDecline}
+        />
+        
         <UploadForm
           title="Upload Your Chat Log"
           acceptedTypes=".txt,.json,.csv,.log"
-          onFileUpload={handleFileUpload}
+          onFileUpload={handleFileUploadRequest}
           showCaption={false}
           isLoading={isLoading}
+          shouldClearPreview={shouldClearPreview}
+          onPreviewCleared={handlePreviewCleared}
         />
 
         {error && (

@@ -116,15 +116,37 @@ const Header = () => {
 };
 
 function UsageBadge() {
-  const { usage } = useUsage() || {};
-  if (!usage) return <div className="usage-badge">--/--</div>;
+  const location = useLocation();
+  const { getFeatureUsage } = useUsage() || {};
+  
+  if (!getFeatureUsage) return <div className="usage-badge">--/--</div>;
 
-  const used = usage.usage_count ?? 0;
-  const limit = usage.limit ?? 0;
-  const remaining = usage.remaining ?? Math.max(0, limit - used);
+  // Determine which feature to show based on current route
+  let feature = null;
+  let featureName = '';
+  
+  if (location.pathname === '/aesthetic-analyzer') {
+    feature = 'aesthetic_analyzer';
+    featureName = 'Aesthetic Analyzer';
+  } else if (location.pathname === '/convo-decoder') {
+    feature = 'convo_decoder';
+    featureName = 'Convo Decoder';
+  }
+
+  // If not on a feature page, don't show usage badge
+  if (!feature) return null;
+
+  const featureUsage = getFeatureUsage(feature);
+  const used = featureUsage.count ?? 0;
+  const limit = featureUsage.limit ?? 0;
+  const remaining = featureUsage.remaining ?? 0;
 
   return (
-    <div className="usage-badge" title={`${remaining} uses left`} aria-live="polite">
+    <div 
+      className="usage-badge" 
+      title={`${featureName}: ${remaining} uses left`} 
+      aria-live="polite"
+    >
       {used}/{limit} <span className="usage-sub">({remaining} left)</span>
     </div>
   );
