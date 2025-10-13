@@ -5,6 +5,7 @@ class FileValidator {
     image: 10 * 1024 * 1024, // 10MB
     video: 100 * 1024 * 1024, // 100MB
     text: 1 * 1024 * 1024, // 1MB
+    conversation: 10 * 1024 * 1024, // 10MB for conversation files
     default: 5 * 1024 * 1024 // 5MB
   };
 
@@ -31,6 +32,14 @@ class FileValidator {
       'text/csv',
       'application/json',
       'text/log'
+    ],
+    conversation: [
+      'text/plain',
+      'text/csv',
+      'application/json',
+      'text/log',
+      'application/pdf',
+      'text/x-log'
     ]
   };
 
@@ -132,9 +141,29 @@ class FileValidator {
     const result = { isValid: true, errors: [] };
     
     // Check if file type is allowed
-    const allowedTypes = options.allowedTypes || this.getAllowedTypes(options.category);
+    let allowedTypes = options.allowedTypes || this.getAllowedTypes(options.category);
     
+    // If allowedTypes are file extensions (like ".txt,.pdf"), convert to MIME types
     if (allowedTypes && allowedTypes.length > 0) {
+      const convertedTypes = [];
+      allowedTypes.forEach(allowedType => {
+        if (typeof allowedType === 'string') {
+          // If it's a file extension (starts with .)
+          if (allowedType.startsWith('.')) {
+            const ext = allowedType.substring(1).toLowerCase();
+            const mimeTypes = this.getMimeTypesForExtension(ext);
+            convertedTypes.push(...mimeTypes);
+          } else {
+            convertedTypes.push(allowedType);
+          }
+        }
+      });
+      
+      // Use converted types if we found any
+      if (convertedTypes.length > 0) {
+        allowedTypes = convertedTypes;
+      }
+      
       const isAllowed = allowedTypes.some(allowedType => {
         // Handle wildcard types like "image/*"
         if (allowedType.endsWith('/*')) {
@@ -149,15 +178,6 @@ class FileValidator {
         result.isValid = false;
         result.errors.push(`File type "${file.type}" is not allowed`);
       }
-    }
-
-    // Check MIME type vs file extension consistency
-    const extension = this.getFileExtension(file.name);
-    const expectedMimeTypes = this.getMimeTypesForExtension(extension);
-    
-    if (expectedMimeTypes.length > 0 && !expectedMimeTypes.includes(file.type)) {
-      result.isValid = false;
-      result.errors.push(`File extension "${extension}" doesn't match MIME type "${file.type}"`);
     }
 
     return result;
@@ -265,9 +285,10 @@ class FileValidator {
       'avi': ['video/x-msvideo'],
       'webm': ['video/webm'],
       'txt': ['text/plain'],
-      'csv': ['text/csv'],
-      'json': ['application/json'],
-      'log': ['text/log']
+      'csv': ['text/csv', 'text/plain'],
+      'json': ['application/json', 'text/plain'],
+      'log': ['text/log', 'text/plain', 'text/x-log'],
+      'pdf': ['application/pdf']
     };
 
     return mimeMap[extension.toLowerCase()] || [];
