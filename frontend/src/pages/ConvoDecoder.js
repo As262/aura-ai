@@ -98,7 +98,8 @@ const ConvoDecoder = () => {
     <div className="convo-decoder">
       <div className="page-header">
         <h1 className="page-title">
-          💬 Convo Decoder
+          <span className="page-emoji">💬</span>
+          <span className="page-title-text">Convo Decoder</span>
         </h1>
         <p className="page-description">
           Upload your chat logs to uncover your unique communication patterns, response style, 

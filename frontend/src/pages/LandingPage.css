@@ -1595,14 +1595,15 @@
 }
 
 :root[data-theme="light"] .stat-item {
-  /* background: rgba(255, 255, 255, 0.9); */
-  border: 2px solid rgba(0, 199, 106, 0.15);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 :root[data-theme="light"] .stat-item:hover {
-  border-color: rgba(0, 199, 106, 0.3);
-  box-shadow: 0 8px 25px rgba(0, 199, 106, 0.15);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 :root[data-theme="light"] .stat-label {

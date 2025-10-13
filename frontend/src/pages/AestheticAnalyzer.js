@@ -118,7 +118,8 @@ const AestheticAnalyzer = () => {
     <div className="aesthetic-analyzer">
       <div className="page-header">
         <h1 className="page-title">
-          🤖 AI-Powered Aesthetic Analyzer
+          <span className="page-emoji">🤖</span>
+          <span className="page-title-text">AI-Powered Aesthetic Analyzer</span>
         </h1>
         <p className="page-description">
           Advanced AI analysis for comprehensive image rating, pose suggestions, lighting analysis, 

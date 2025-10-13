@@ -399,3 +399,27 @@
 :root[data-theme="light"] .how-to strong {
   color: #1d4ed8;
 }
+
+/* Detected Composition Section - Force ALL text to white */
+:root[data-theme="light"] .detected-composition,
+:root[data-theme="light"] .detected-composition *,
+:root[data-theme="light"] .detected-composition p,
+:root[data-theme="light"] .detected-composition span,
+:root[data-theme="light"] .detected-composition div,
+:root[data-theme="light"] .detected-composition strong,
+:root[data-theme="light"] .detected-composition h3,
+:root[data-theme="light"] .detected-composition h4 {
+  color: #ffffff !important;
+}
+
+:root[data-theme="light"] .detected-composition {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+:root[data-theme="light"] .composition-details {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+:root[data-theme="light"] .composition-details * {
+  color: #ffffff !important;
+}

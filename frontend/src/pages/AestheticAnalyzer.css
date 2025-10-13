@@ -16,14 +16,31 @@
 .page-title {
   font-size: 3rem;
   font-weight: 800;
-  color: var(--text-color) !important;
   margin-bottom: 1rem;
   text-shadow: none;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  /* Remove any gradient or selection styling */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.page-title .page-emoji {
+  font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  color: inherit;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  background-clip: initial;
+  display: inline-block;
+}
+
+.page-title .page-title-text {
+  color: var(--text-color) !important;
   background: none !important;
   -webkit-background-clip: initial !important;
   -webkit-text-fill-color: initial !important;
@@ -315,4 +332,17 @@
 
 .analyzer-content > * {
   animation: fadeInUp 0.4s ease-out;
+}
+
+/* Light Mode Support */
+:root[data-theme="light"] .page-title {
+  color: #1a202c !important;
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: #1a202c !important;
+  background-clip: initial !important;
+}
+
+:root[data-theme="light"] .page-description {
+  color: #4a5568 !important;
 }

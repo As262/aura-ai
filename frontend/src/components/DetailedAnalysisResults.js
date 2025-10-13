@@ -115,7 +115,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {/* Technical Quality */}
       {technical_quality && (
         <div className="analysis-section technical-quality">
-          <h2>🔧 Technical Quality</h2>
+          <h2><span className="emoji">🔧</span><span className="title-text">Technical Quality</span></h2>
           
           <div className="technical-metrics">
             {technical_quality.sharpness && (
@@ -164,7 +164,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {/* Pose Analysis */}
       {pose_analysis && (
         <div className="analysis-section pose-analysis">
-          <h2>🧍 Pose Analysis</h2>
+          <h2><span className="emoji">🧍</span><span className="title-text">Pose Analysis</span></h2>
           {pose_analysis.detected ? (
             <>
               <div className="pose-metrics">
@@ -203,7 +203,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {/* Lighting Analysis */}
       {lighting_analysis && (
         <div className="analysis-section lighting-analysis">
-          <h2>💡 Lighting Analysis</h2>
+          <h2><span className="emoji">💡</span><span className="title-text">Lighting Analysis</span></h2>
           
           <div className="lighting-metrics">
             <div className="metric">
@@ -225,7 +225,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {/* Composition Analysis */}
       {composition_analysis && (
         <div className="analysis-section composition-analysis">
-          <h2>📐 Composition Analysis</h2>
+          <h2><span className="emoji">📐</span><span className="title-text">Composition Analysis</span></h2>
           
           {/* Detected Composition Type */}
           {composition_analysis.detected_type && (
@@ -307,7 +307,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {/* Dynamic Tips Section - NEW! */}
       {analysis.tips && analysis.tips.length > 0 && (
         <div className="analysis-section tips-section">
-          <h2>💡 Personalized Tips & Suggestions</h2>
+          <h2><span className="emoji">💡</span><span className="title-text">Personalized Tips & Suggestions</span></h2>
           <p className="section-intro">Based on your image's composition, lighting, and technical analysis</p>
           
           <div className="tips-container">
@@ -351,7 +351,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
       {/* Color Analysis */}
       {color_analysis && (
         <div className="analysis-section color-analysis">
-          <h2>🎨 Color Analysis</h2>
+          <h2><span className="emoji">🎨</span><span className="title-text">Color Analysis</span></h2>
           
           {color_analysis.dominant_colors && (
             <div className="color-palette">
