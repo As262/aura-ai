@@ -169,7 +169,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
             <>
               <div className="pose-metrics">
                 <div className="metric">
-                  <h4>Quality Score</h4>
+                  <h4>Score</h4>
                   <span className="score">{pose_analysis.quality_score?.toFixed(1)}/10</span>
                 </div>
                 {pose_analysis.analysis && (
