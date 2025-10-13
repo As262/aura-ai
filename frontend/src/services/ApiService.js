@@ -153,24 +153,18 @@ class ApiService {
   // Conversation Analysis
   static async analyzeConversation(file) {
     try {
-      // Validate file for conversation analysis
+      // Validate file for conversation analysis - support all conversation formats
       this.validateFile(file, [
-        'text/plain', 
-        'application/json', 
+        'text/plain',
+        'application/json',
         'text/csv',
+        'text/log',
+        'text/x-log',
+        'application/pdf',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      ]);
+      ], 10 * 1024 * 1024); // 10MB limit
 
-      // For text files, read content and send as text
-      if (file.type === 'text/plain' || file.type === 'application/json') {
-        const text = await this.readFileAsText(file);
-        return await this.makeRequest('/conversation-analysis/', {
-          method: 'POST',
-          body: JSON.stringify({ conversation_text: text }),
-        });
-      }
-
-      // For other files, send as form data
+      // Always send as FormData for consistency
       const formData = new FormData();
       formData.append('file', file);
 

@@ -122,12 +122,26 @@ class AestheticAnalysisView(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ConversationAnalysisView(generics.CreateAPIView):
-    serializer_class = ConversationAnalysisSerializer
+class ConversationAnalysisView(APIView):
+    """
+    Conversation analysis endpoint with file upload support
+    Supports: TXT, JSON, CSV, LOG, PDF files
+    """
+    permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
     
-    def create(self, request, *args, **kwargs):
+    # Ensure MultiPartParser is used
+    def get_parsers(self):
+        from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+        return [MultiPartParser(), FormParser(), JSONParser()]
+    
+    def post(self, request):
+        print("🚀 Conversation Analysis API called")
+        print(f"📄 Request data keys: {list(request.data.keys())}")
+        print(f"📄 Request files: {list(request.FILES.keys())}")
+        
         # Check usage limit before processing
-        req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_For', '')
+        req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '')
         can_use, current_usage = _check_usage_limit(req_ip)
         
         if not can_use:
@@ -139,44 +153,117 @@ class ConversationAnalysisView(generics.CreateAPIView):
                 'limit': _USAGE_LIMIT
             }, status=status.HTTP_429_TOO_MANY_REQUESTS)
         
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            # Mock conversation analysis - replace with actual AI analysis
-            conversation_text = serializer.validated_data['conversation_text']
+        try:
+            # Handle file upload
+            if 'file' in request.FILES:
+                print("✅ File found in request")
+                uploaded_file = request.FILES['file']
+                print(f"📄 File: {uploaded_file.name}, Type: {uploaded_file.content_type}, Size: {uploaded_file.size}")
+                
+                # Save file temporarily
+                with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(uploaded_file.name)[1]) as tmp_file:
+                    for chunk in uploaded_file.chunks():
+                        tmp_file.write(chunk)
+                    tmp_file_path = tmp_file.name
+                
+                try:
+                    # Import conversation decoder
+                    from .conversation_decoder import ConversationDecoder
+                    from ml_models.conversation_interest_model import ConversationAnalysisService
+                    
+                    print(f"🔍 Decoding conversation file...")
+                    decoder = ConversationDecoder()
+                    decoded_data = decoder.decode_file(tmp_file_path)
+                    
+                    print(f"✅ Decoded {decoded_data['metadata']['total_messages']} messages")
+                    
+                    # Run ML analysis
+                    print(f"🤖 Running ML analysis...")
+                    model_path = os.path.join(
+                        os.path.dirname(__file__),
+                        '..',
+                        'ml_models',
+                        'trained',
+                        'conversation_interest_model_best.pth'
+                    )
+                    
+                    analysis_service = ConversationAnalysisService(model_path if os.path.exists(model_path) else None)
+                    analysis_result = analysis_service.analyze_conversation(decoded_data['messages'])
+                    
+                    print(f"✅ Analysis complete!")
+                    
+                    # Clean up temporary file
+                    os.unlink(tmp_file_path)
+                    
+                    # Increment usage
+                    try:
+                        _increment_usage_for_ip(req_ip)
+                    except Exception:
+                        pass
+                    
+                    return Response({
+                        'success': True,
+                        'data': analysis_result,
+                        'message': 'Conversation analysis completed successfully'
+                    }, status=status.HTTP_200_OK)
+                    
+                except Exception as e:
+                    # Clean up temporary file
+                    if os.path.exists(tmp_file_path):
+                        os.unlink(tmp_file_path)
+                    
+                    print(f"❌ Analysis error: {str(e)}")
+                    import traceback
+                    traceback.print_exc()
+                    
+                    # Return user-friendly error
+                    return Response({
+                        'success': False,
+                        'error': f'Failed to analyze conversation: {str(e)}',
+                        'details': 'Please ensure the file contains valid conversation data'
+                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-            mock_analysis = {
-                "sentiment": "positive",
-                "confidence": 0.85,
-                "key_topics": ["technology", "future", "innovation"],
-                "emotion_breakdown": {
-                    "joy": 0.4,
-                    "excitement": 0.3,
-                    "neutral": 0.2,
-                    "concern": 0.1
-                },
-                "communication_style": "enthusiastic",
-                "suggestions": [
-                    "Great use of positive language",
-                    "Consider more specific examples",
-                    "Maintain the enthusiastic tone"
-                ],
-                "word_count": len(conversation_text.split()),
-                "readability_score": 7.2
-            }
+            # Handle raw text (legacy support)
+            elif 'conversation_text' in request.data:
+                print("✅ Text data found in request")
+                conversation_text = request.data['conversation_text']
+                
+                # Simple mock analysis for raw text
+                mock_analysis = {
+                    "sentiment": "positive",
+                    "confidence": 0.85,
+                    "key_topics": ["general", "conversation"],
+                    "word_count": len(conversation_text.split()),
+                    "message": "Text-based analysis (legacy mode)"
+                }
+                
+                # Increment usage
+                try:
+                    _increment_usage_for_ip(req_ip)
+                except Exception:
+                    pass
+                
+                return Response({
+                    'success': True,
+                    'data': mock_analysis,
+                    'message': 'Text analysis completed'
+                }, status=status.HTTP_200_OK)
             
-            analysis = serializer.save(
-                analysis_result=mock_analysis
-            )
-            try:
-                req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '')
-                _increment_usage_for_ip(req_ip)
-            except Exception:
-                pass
+            else:
+                print("❌ No file or text data found")
+                return Response(
+                    {'error': 'No file or conversation_text provided'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+                
+        except Exception as e:
+            print(f"❌ Server error: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return Response(
-                ConversationAnalysisSerializer(analysis).data,
-                status=status.HTTP_201_CREATED
+                {'error': f'Server error: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SocialMediaAnalysisView(APIView):

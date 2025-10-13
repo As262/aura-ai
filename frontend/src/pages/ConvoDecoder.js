@@ -116,12 +116,13 @@ const ConvoDecoder = () => {
         
         <UploadForm
           title="Upload Your Chat Log"
-          acceptedTypes=".txt,.json,.csv,.log"
+          acceptedTypes=".txt,.json,.csv,.log,.pdf"
           onFileUpload={handleFileUploadRequest}
           showCaption={false}
           isLoading={isLoading}
           shouldClearPreview={shouldClearPreview}
           onPreviewCleared={handlePreviewCleared}
+          platform="conversation-analysis"
         />
 
         {error && (
@@ -143,24 +144,24 @@ const ConvoDecoder = () => {
         <h2 className="info-title">What We Decode</h2>
         <div className="info-grid">
           <div className="info-card">
-            <div className="info-icon">⏱️</div>
-            <h3>Response Timing</h3>
-            <p>How quickly you reply and your communication rhythm</p>
+            <div className="info-icon">📊</div>
+            <h3>Interest Level</h3>
+            <p>How interested the other person is in your conversation (AI-powered)</p>
+          </div>
+          <div className="info-card">
+            <div className="info-icon">💡</div>
+            <h3>Improvement Tips</h3>
+            <p>Personalized suggestions to make your chats more engaging</p>
           </div>
           <div className="info-card">
             <div className="info-icon">⚖️</div>
-            <h3>Conversation Balance</h3>
-            <p>Whether you're a talker, listener, or perfectly balanced</p>
+            <h3>Engagement Metrics</h3>
+            <p>Message length balance, question ratios, and emoji usage</p>
           </div>
           <div className="info-card">
-            <div className="info-icon">🎭</div>
-            <h3>Mood Patterns</h3>
-            <p>Emotional tone and personality reflected in your messages</p>
-          </div>
-          <div className="info-card">
-            <div className="info-icon">💕</div>
-            <h3>Romantic Cues</h3>
-            <p>Flirtation level and romantic interest indicators</p>
+            <div className="info-icon">🎯</div>
+            <h3>Conversation Flow</h3>
+            <p>Response patterns and communication dynamics analysis</p>
           </div>
         </div>
       </div>

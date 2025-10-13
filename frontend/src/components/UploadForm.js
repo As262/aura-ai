@@ -28,6 +28,7 @@ const UploadForm = ({
     if (acceptedTypes.includes('image/')) category = 'image';
     else if (acceptedTypes.includes('video/')) category = 'video';
     else if (acceptedTypes.includes('text/')) category = 'text';
+    else if (platform === 'conversation-analysis' || acceptedTypes.includes('.txt') || acceptedTypes.includes('.log')) category = 'conversation';
 
     // Platform-specific size limits
     const platformSizeLimits = {
@@ -39,7 +40,8 @@ const UploadForm = ({
       linkedin: { image: 8 * 1024 * 1024, video: 75 * 1024 * 1024 },
       facebook: { image: 10 * 1024 * 1024, video: 1024 * 1024 * 1024 },
       pinterest: { image: 10 * 1024 * 1024 },
-      'ai-analysis': { image: 15 * 1024 * 1024 } // 15MB for detailed AI analysis
+      'ai-analysis': { image: 15 * 1024 * 1024 }, // 15MB for detailed AI analysis
+      'conversation-analysis': { conversation: 10 * 1024 * 1024 } // 10MB for conversation files
     };
 
     const maxSize = platformSizeLimits[platform]?.[category] || FileValidator.MAX_SIZES[category];

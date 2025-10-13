@@ -1,0 +1,52 @@
+[
+  {
+    "sender": "Emma",
+    "message": "Hey! Just saw your story. That beach looks incredible!",
+    "timestamp": "2024-01-15T14:30:00Z"
+  },
+  {
+    "sender": "Alex",
+    "message": "Thanks! It was such a perfect day! ☀️",
+    "timestamp": "2024-01-15T14:31:00Z"
+  },
+  {
+    "sender": "Emma",
+    "message": "Which beach is that?",
+    "timestamp": "2024-01-15T14:32:00Z"
+  },
+  {
+    "sender": "Alex",
+    "message": "Santa Monica! Have you been?",
+    "timestamp": "2024-01-15T14:33:00Z"
+  },
+  {
+    "sender": "Emma",
+    "message": "Yes! I love it there. The sunset is always amazing",
+    "timestamp": "2024-01-15T14:34:00Z"
+  },
+  {
+    "sender": "Alex",
+    "message": "Right?! We should go together sometime!",
+    "timestamp": "2024-01-15T14:35:00Z"
+  },
+  {
+    "sender": "Emma",
+    "message": "That would be so fun! I'm down",
+    "timestamp": "2024-01-15T14:36:00Z"
+  },
+  {
+    "sender": "Alex",
+    "message": "Awesome! Next weekend?",
+    "timestamp": "2024-01-15T14:37:00Z"
+  },
+  {
+    "sender": "Emma",
+    "message": "Perfect timing! I'll bring snacks 🍿",
+    "timestamp": "2024-01-15T14:38:00Z"
+  },
+  {
+    "sender": "Alex",
+    "message": "You're the best! Can't wait! 🎉",
+    "timestamp": "2024-01-15T14:39:00Z"
+  }
+]
