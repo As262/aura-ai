@@ -12,6 +12,8 @@ from .serializers import (
     ConversationAnalysisSerializer
 )
 from .ai_services_optimized import OptimizedImageAnalysisService as ImageAnalysisService
+from .conversation_decoder import ConversationDecoder
+from ml_models.conversation_interest_model import ConversationAnalysisService
 import json
 import os
 import tempfile
@@ -122,12 +124,163 @@ class AestheticAnalysisView(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ConversationAnalysisView(generics.CreateAPIView):
-    serializer_class = ConversationAnalysisSerializer
+class ConversationAnalysisView(APIView):
+    """
+    Multi-format conversation analysis endpoint
+    Supports: PDF, TXT, JSON, CSV, LOG files
+    """
+    permission_classes = [AllowAny]
+    parser_classes = [MultiPartParser, FormParser]
     
-    def create(self, request, *args, **kwargs):
+    def _basic_conversation_analysis(self, messages, user_identifier=None):
+        """
+        Fallback basic conversation analysis when ML model is unavailable
+        """
+        # Identify participants
+        senders = {}
+        for msg in messages:
+            sender = msg['sender']
+            senders[sender] = senders.get(sender, 0) + 1
+        
+        top_senders = sorted(senders.items(), key=lambda x: x[1], reverse=True)[:2]
+        
+        if len(top_senders) < 2:
+            return {
+                'error': 'Need at least 2 participants',
+                'participants_found': len(top_senders)
+            }
+        
+        user = user_identifier if user_identifier else top_senders[0][0]
+        other = next((s for s, _ in top_senders if s != user), top_senders[1][0])
+        
+        your_messages = [msg for msg in messages if msg['sender'] == user]
+        their_messages = [msg for msg in messages if msg['sender'] == other]
+        
+        # Calculate basic metrics
+        your_avg_len = sum(len(m['message'].split()) for m in your_messages) / max(len(your_messages), 1)
+        their_avg_len = sum(len(m['message'].split()) for m in their_messages) / max(len(their_messages), 1)
+        
+        your_questions = sum(1 for m in your_messages if '?' in m['message'])
+        their_questions = sum(1 for m in their_messages if '?' in m['message'])
+        
+        # Estimate interest level based on simple heuristics
+        interest_score = 50.0  # Start at moderate
+        
+        # Longer responses = more interest
+        if their_avg_len > your_avg_len * 0.8:
+            interest_score += 15
+        
+        # Questions back = more interest
+        if their_questions > 0:
+            interest_score += 15
+        
+        # Check for positive indicators
+        positive_count = sum(
+            1 for m in their_messages 
+            if any(word in m['message'].lower() for word in ['haha', 'lol', '😂', '😊', '!'])
+        )
+        if positive_count > len(their_messages) * 0.3:
+            interest_score += 20
+        
+        interest_score = min(max(interest_score, 0), 100)
+        
+        # Map to interest level
+        if interest_score >= 80:
+            interest_level = "Very High"
+        elif interest_score >= 65:
+            interest_level = "High"
+        elif interest_score >= 45:
+            interest_level = "Moderate"
+        elif interest_score >= 25:
+            interest_level = "Low"
+        else:
+            interest_level = "Very Low"
+        
+        # Generate 2-3 personalized suggestions based on basic analysis
+        suggestions = []
+        
+        # Suggestion 1: Based on question asking
+        if your_questions < len(your_messages) * 0.2:
+            suggestions.append({
+                'category': 'Curiosity & Questions',
+                'priority': 'High',
+                'suggestion': 'You\'re not asking many questions. Show more interest by asking about their day, opinions, and experiences.',
+                'tip': 'Use the 5 W\'s: Who, What, When, Where, Why (and How!) to keep conversations dynamic.'
+            })
+        else:
+            suggestions.append({
+                'category': 'Questions',
+                'priority': 'Info',
+                'suggestion': 'Good job asking questions! This shows genuine interest and keeps conversations flowing.',
+                'tip': 'Continue asking open-ended questions that invite detailed responses.'
+            })
+        
+        # Suggestion 2: Based on message length balance
+        if your_avg_len > their_avg_len * 2:
+            suggestions.append({
+                'category': 'Message Length',
+                'priority': 'Medium',
+                'suggestion': 'Your messages are significantly longer than theirs. Try being more concise and giving them space to contribute.',
+                'tip': 'Break long messages into smaller parts and pause to let them respond.'
+            })
+        elif your_avg_len < their_avg_len * 0.5:
+            suggestions.append({
+                'category': 'Message Length',
+                'priority': 'Medium',
+                'suggestion': 'Your messages are quite short. Try elaborating more to show you\'re invested in the conversation.',
+                'tip': 'Add your thoughts, feelings, or follow-up questions to make responses more engaging.'
+            })
+        else:
+            suggestions.append({
+                'category': 'Balance',
+                'priority': 'Info',
+                'suggestion': 'Great message length balance! You\'re matching their communication style well.',
+                'tip': 'Keep maintaining this natural back-and-forth rhythm.'
+            })
+        
+        # Suggestion 3: Based on engagement indicators
+        if positive_count > len(their_messages) * 0.3:
+            suggestions.append({
+                'category': 'Positive Signs',
+                'priority': 'Info',
+                'suggestion': 'Great news! They\'re using lots of positive language, which shows they enjoy talking to you.',
+                'tip': 'Keep doing what you\'re doing and continue building on shared interests.'
+            })
+        else:
+            suggestions.append({
+                'category': 'Engagement',
+                'priority': 'Medium',
+                'suggestion': 'Try to create more fun and engaging moments in your conversations.',
+                'tip': 'Share interesting stories, use humor appropriately, and show enthusiasm about their interests.'
+            })
+        
+        return {
+            'overall_interest_level': interest_level,
+            'interest_percentage': round(interest_score, 2),
+            'total_messages': len(messages),
+            'your_messages': len(your_messages),
+            'their_messages': len(their_messages),
+            'engagement_metrics': {
+                'your_avg_message_length': round(your_avg_len, 2),
+                'their_avg_message_length': round(their_avg_len, 2),
+                'response_length_ratio': round(their_avg_len / max(your_avg_len, 1), 2),
+                'your_questions_asked': your_questions,
+                'their_questions_asked': their_questions,
+                'their_positive_reactions': positive_count,
+                'engagement_balance': round(min(their_avg_len / max(your_avg_len, 1), 
+                                               your_avg_len / max(their_avg_len, 1)), 2)
+            },
+            'improvement_suggestions': suggestions,
+            'participants': {
+                'you': user,
+                'other_person': other
+            },
+            'analysis_mode': 'basic_fallback'
+        }
+    
+    def post(self, request):
         # Check usage limit before processing
-        req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_For', '')
+        req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '')
         can_use, current_usage = _check_usage_limit(req_ip)
         
         if not can_use:
@@ -139,44 +292,168 @@ class ConversationAnalysisView(generics.CreateAPIView):
                 'limit': _USAGE_LIMIT
             }, status=status.HTTP_429_TOO_MANY_REQUESTS)
         
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            # Mock conversation analysis - replace with actual AI analysis
-            conversation_text = serializer.validated_data['conversation_text']
+        print("🗨️ Conversation Analysis API called")
+        print(f"📄 Request files: {list(request.FILES.keys())}")
+        print(f"📄 Request data: {list(request.data.keys())}")
+        
+        try:
+            # Check if file is provided
+            if 'file' not in request.FILES:
+                return Response({
+                    'error': 'No file provided',
+                    'message': 'Please upload a conversation file (.txt, .json, .csv, .log, .pdf)',
+                    'supported_formats': ['txt', 'json', 'csv', 'log', 'pdf']
+                }, status=status.HTTP_400_BAD_REQUEST)
             
-            mock_analysis = {
-                "sentiment": "positive",
-                "confidence": 0.85,
-                "key_topics": ["technology", "future", "innovation"],
-                "emotion_breakdown": {
-                    "joy": 0.4,
-                    "excitement": 0.3,
-                    "neutral": 0.2,
-                    "concern": 0.1
-                },
-                "communication_style": "enthusiastic",
-                "suggestions": [
-                    "Great use of positive language",
-                    "Consider more specific examples",
-                    "Maintain the enthusiastic tone"
-                ],
-                "word_count": len(conversation_text.split()),
-                "readability_score": 7.2
-            }
+            uploaded_file = request.FILES['file']
+            platform = request.data.get('platform', 'instagram')  # Default platform
+            user_identifier = request.data.get('user_identifier', None)  # Optional user ID
             
-            analysis = serializer.save(
-                analysis_result=mock_analysis
-            )
+            print(f"📁 File: {uploaded_file.name}")
+            print(f"📱 Platform: {platform}")
+            
+            # Get file extension
+            file_extension = uploaded_file.name.split('.')[-1].lower()
+            
+            # Validate file type
+            supported_formats = ['txt', 'json', 'csv', 'log', 'pdf']
+            if file_extension not in supported_formats:
+                return Response({
+                    'error': 'Unsupported file format',
+                    'message': f'Please upload one of: {", ".join(supported_formats)}',
+                    'uploaded_format': file_extension
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Save file temporarily
+            with tempfile.NamedTemporaryFile(delete=False, suffix=f'.{file_extension}') as temp_file:
+                for chunk in uploaded_file.chunks():
+                    temp_file.write(chunk)
+                temp_file_path = temp_file.name
+            
             try:
-                req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '')
-                _increment_usage_for_ip(req_ip)
-            except Exception:
-                pass
-            return Response(
-                ConversationAnalysisSerializer(analysis).data,
-                status=status.HTTP_201_CREATED
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                # Phase 1: Decode conversation file
+                print("🔍 Phase 1: Decoding conversation file...")
+                decoder = ConversationDecoder()
+                decoded_data = decoder.decode_file(temp_file_path, file_extension)
+                
+                messages = decoded_data['messages']
+                metadata = decoded_data['metadata']
+                
+                print(f"✅ Decoded {len(messages)} messages")
+                
+                if len(messages) < 2:
+                    return Response({
+                        'error': 'Not enough messages',
+                        'message': 'Need at least 2 messages for analysis',
+                        'messages_found': len(messages)
+                    }, status=status.HTTP_400_BAD_REQUEST)
+                
+                # Phase 2: ML-based interest analysis
+                print("🤖 Phase 2: Running ML analysis...")
+                
+                try:
+                    # Load ML model
+                    model_path = os.path.join(
+                        os.path.dirname(__file__),
+                        '..',
+                        'ml_models',
+                        'trained',
+                        'conversation_interest_model_best.pth'
+                    )
+                    
+                    # If model doesn't exist, use untrained model
+                    if not os.path.exists(model_path):
+                        print(f"⚠️ Trained model not found at {model_path}, using untrained model")
+                        model_path = None
+                    
+                    analysis_service = ConversationAnalysisService(model_path)
+                    analysis_result = analysis_service.analyze_conversation(
+                        messages,
+                        user_identifier=user_identifier
+                    )
+                except Exception as ml_error:
+                    print(f"⚠️ ML analysis failed: {ml_error}")
+                    print("🔄 Falling back to basic analysis...")
+                    
+                    # Fallback to basic analysis if ML fails
+                    analysis_result = self._basic_conversation_analysis(messages, user_identifier)
+                
+                print(f"✅ Analysis complete!")
+                print(f"   Interest Level: {analysis_result.get('overall_interest_level', 'N/A')}")
+                print(f"   Interest %: {analysis_result.get('interest_percentage', 'N/A')}%")
+                
+                # Combine metadata
+                analysis_result['file_metadata'] = {
+                    'filename': uploaded_file.name,
+                    'format': file_extension,
+                    'platform': platform,
+                    'total_messages_decoded': len(messages),
+                    **metadata
+                }
+                
+                # Add sample messages
+                analysis_result['sample_messages'] = messages[:5]  # First 5 messages
+                
+                # Phase 3: Save to database
+                print("💾 Phase 3: Saving analysis...")
+                
+                # Convert messages to text for storage
+                conversation_text = "\n".join([
+                    f"{msg.get('sender', 'Unknown')}: {msg.get('message', '')}"
+                    for msg in messages[:100]  # Store first 100 messages
+                ])
+                
+                conversation_analysis = ConversationAnalysis.objects.create(
+                    conversation_text=conversation_text,
+                    analysis_result=analysis_result
+                )
+                
+                # Increment usage
+                try:
+                    _increment_usage_for_ip(req_ip)
+                except Exception:
+                    pass
+                
+                print("✅ All phases complete!")
+                
+                return Response({
+                    'success': True,
+                    'analysis': analysis_result,
+                    'message': 'Conversation analysis completed successfully',
+                    'analysis_id': conversation_analysis.id
+                }, status=status.HTTP_201_CREATED)
+                
+            finally:
+                # Clean up temporary file
+                if os.path.exists(temp_file_path):
+                    os.unlink(temp_file_path)
+            
+        except Exception as e:
+            print(f"❌ Conversation analysis error: {str(e)}")
+            import traceback
+            error_traceback = traceback.format_exc()
+            print(error_traceback)
+            
+            # Provide more specific error messages
+            error_message = str(e)
+            error_details = 'Please ensure the file is properly formatted'
+            
+            # Check for specific error types
+            if 'module' in error_message.lower() or 'import' in error_message.lower():
+                error_details = 'AI model dependencies not installed. Please run: pip install torch torchvision scikit-learn'
+            elif 'model' in error_message.lower():
+                error_details = 'ML model not found. The analysis will use basic heuristics.'
+            elif 'decode' in error_message.lower() or 'parse' in error_message.lower():
+                error_details = 'Failed to parse conversation file. Please check the file format.'
+            elif 'memory' in error_message.lower():
+                error_details = 'File too large or insufficient memory. Try a smaller file.'
+            
+            return Response({
+                'error': 'Analysis failed',
+                'message': error_message,
+                'details': error_details,
+                'traceback': error_traceback if settings.DEBUG else None
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class SocialMediaAnalysisView(APIView):

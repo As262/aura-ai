@@ -55,7 +55,7 @@ def list_all_usage():
         print("\n📊 Current Usage Statistics:")
         print("-" * 50)
         for record in usage_records:
-            print(f"IP: {record.ip_address:<15} | Usage: {record.count:<3} | Updated: {record.updated_at}")
+            print(f"IP: {record.ip_address:<15} | Usage: {record.count:<3} | Updated: {record.last_updated}")
         print("-" * 50)
         print(f"Total IPs tracked: {usage_records.count()}")
     except Exception as e:

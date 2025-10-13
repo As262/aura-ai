@@ -5,6 +5,7 @@ class FileValidator {
     image: 10 * 1024 * 1024, // 10MB
     video: 100 * 1024 * 1024, // 100MB
     text: 1 * 1024 * 1024, // 1MB
+    document: 10 * 1024 * 1024, // 10MB for PDFs
     default: 5 * 1024 * 1024 // 5MB
   };
 
@@ -27,6 +28,13 @@ class FileValidator {
       'video/3gpp'
     ],
     text: [
+      'text/plain',
+      'text/csv',
+      'application/json',
+      'text/log'
+    ],
+    document: [
+      'application/pdf',
       'text/plain',
       'text/csv',
       'application/json',
@@ -239,6 +247,7 @@ class FileValidator {
   static getFileCategory(mimeType) {
     if (mimeType.startsWith('image/')) return 'image';
     if (mimeType.startsWith('video/')) return 'video';
+    if (mimeType === 'application/pdf') return 'document';
     if (mimeType.startsWith('text/') || mimeType.includes('json')) return 'text';
     return 'default';
   }
@@ -267,7 +276,8 @@ class FileValidator {
       'txt': ['text/plain'],
       'csv': ['text/csv'],
       'json': ['application/json'],
-      'log': ['text/log']
+      'log': ['text/log'],
+      'pdf': ['application/pdf']
     };
 
     return mimeMap[extension.toLowerCase()] || [];
@@ -304,12 +314,12 @@ class FileValidator {
           const arrayBuffer = e.target.result;
           const bytes = new Uint8Array(arrayBuffer, 0, Math.min(arrayBuffer.byteLength, 512));
           
-          // For images, verify they start with proper headers
-          if (file.type.startsWith('image/')) {
+          // For images and PDFs, verify they start with proper headers
+          if (file.type.startsWith('image/') || file.type === 'application/pdf') {
             const isValidImage = this.validateImageHeader(bytes, file.type);
             if (!isValidImage) {
               result.isValid = false;
-              result.errors.push('Invalid image file header');
+              result.errors.push(`Invalid ${file.type} file header`);
             }
           }
           
@@ -334,7 +344,8 @@ class FileValidator {
       'image/jpeg': [0xFF, 0xD8, 0xFF],
       'image/png': [0x89, 0x50, 0x4E, 0x47],
       'image/gif': [0x47, 0x49, 0x46, 0x38],
-      'image/webp': [0x52, 0x49, 0x46, 0x46]
+      'image/webp': [0x52, 0x49, 0x46, 0x46],
+      'application/pdf': [0x25, 0x50, 0x44, 0x46] // %PDF
     };
 
     const signature = signatures[mimeType];

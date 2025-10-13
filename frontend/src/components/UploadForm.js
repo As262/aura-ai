@@ -23,11 +23,31 @@ const UploadForm = ({
 
   // Helper function for validation options
   const getValidationOptions = (platform, acceptedTypes) => {
-    // Parse accepted types to determine category
+    // For conversation analysis, we accept multiple file types (text + PDF)
+    // So we need to build a combined allowed types list
+    if (platform === 'conversation-analysis') {
+      return {
+        category: null, // Don't use category-based validation
+        maxSize: 10 * 1024 * 1024, // 10MB
+        // Explicitly allow all conversation file types
+        allowedTypes: [
+          'application/pdf',
+          'text/plain',
+          'text/csv',
+          'application/json',
+          'text/log',
+          'application/x-log',
+          'text/x-log'
+        ]
+      };
+    }
+    
+    // Parse accepted types to determine category for other platforms
     let category = 'default';
     if (acceptedTypes.includes('image/')) category = 'image';
     else if (acceptedTypes.includes('video/')) category = 'video';
-    else if (acceptedTypes.includes('text/')) category = 'text';
+    else if (acceptedTypes.includes('.pdf') || acceptedTypes.includes('application/pdf')) category = 'document';
+    else if (acceptedTypes.includes('text/') || acceptedTypes.includes('.txt')) category = 'text';
 
     // Platform-specific size limits
     const platformSizeLimits = {
@@ -47,7 +67,7 @@ const UploadForm = ({
     return {
       category,
       maxSize,
-      allowedTypes: acceptedTypes ? acceptedTypes.split(',').map(t => t.trim()) : null
+      allowedTypes: null // Let FileValidator use category-based types
     };
   };
 
