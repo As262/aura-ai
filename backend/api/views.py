@@ -176,6 +176,7 @@ class ConversationAnalysisView(APIView):
                     decoded_data = decoder.decode_file(tmp_file_path)
                     
                     print(f"✅ Decoded {decoded_data['metadata']['total_messages']} messages")
+                    print(f"📊 First 3 messages: {decoded_data['messages'][:3]}")
                     
                     # Run ML analysis
                     print(f"🤖 Running ML analysis...")
