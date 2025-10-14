@@ -4,6 +4,7 @@ import { useUsage } from '../contexts/UsageContext';
 import UploadForm from '../components/UploadForm';
 import DetailedAnalysisResults from '../components/DetailedAnalysisResults';
 import PrivacyConsentModal from '../components/PrivacyConsentModal';
+import OutOfUsesModal from '../components/OutOfUsesModal';
 import ApiService from '../services/ApiService';
 import './BasePage.css';
 
@@ -15,6 +16,7 @@ const AestheticAnalyzer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showOutOfUsesModal, setShowOutOfUsesModal] = useState(false);
   const [pendingFile, setPendingFile] = useState(null);
   const [shouldClearPreview, setShouldClearPreview] = useState(false);
   const { showSuccess, showError, showWarning } = useToast();
@@ -34,7 +36,9 @@ const AestheticAnalyzer = () => {
     // Check usage limit first
     const featureUsage = getFeatureUsage('aesthetic_analyzer');
     if (featureUsage.remaining <= 0) {
-      showError(`Usage limit reached! You've used all ${featureUsage.limit} analyses. Come back later!`);
+      // Show out-of-uses modal
+      setShowOutOfUsesModal(true);
+      showError(`⚠️ Usage limit reached! You've used all ${featureUsage.limit} analyses.`, { duration: 4000 });
       setPendingFile(null);
       setShouldClearPreview(true);
       return;
@@ -132,6 +136,14 @@ const AestheticAnalyzer = () => {
           isOpen={showPrivacyModal}
           onAccept={handlePrivacyAccept}
           onDecline={handlePrivacyDecline}
+        />
+        
+        <OutOfUsesModal
+          isOpen={showOutOfUsesModal}
+          onClose={() => setShowOutOfUsesModal(false)}
+          featureName="Aesthetic Analyzer"
+          usedCount={getFeatureUsage('aesthetic_analyzer').used}
+          limit={getFeatureUsage('aesthetic_analyzer').limit}
         />
         
         <UploadForm
