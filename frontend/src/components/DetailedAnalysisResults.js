@@ -205,17 +205,115 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
         <div className="analysis-section lighting-analysis">
           <h2><span className="emoji">💡</span><span className="title-text">Lighting Analysis</span></h2>
           
-          <div className="lighting-metrics">
-            <div className="metric">
-              <h4>Overall Quality</h4>
-              <span className="score">{lighting_analysis.overall_score}/10</span>
-              <span className="level">{lighting_analysis.quality}</span>
+          {/* Overall Quality Banner */}
+          <div className="quality-banner">
+            <div className="quality-main">
+              <span className="quality-label">Overall Quality</span>
+              <span className="quality-score-large">{lighting_analysis.overall_score}/10</span>
+              <span className={`quality-badge ${lighting_analysis.quality?.toLowerCase().replace(' ', '-')}`}>
+                {lighting_analysis.quality}
+              </span>
             </div>
+          </div>
+          
+          {/* Lighting Metrics Grid */}
+          <div className="lighting-metrics-grid">
+            {/* Exposure */}
+            {lighting_analysis.exposure !== undefined && (
+              <div className="metric-card">
+                <div className="metric-icon">☀️</div>
+                <h4>Exposure</h4>
+                <span className="score">{lighting_analysis.exposure}/10</span>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{width: `${(lighting_analysis.exposure / 10) * 100}%`}}
+                  />
+                </div>
+              </div>
+            )}
             
+            {/* Evenness */}
+            {lighting_analysis.evenness !== undefined && (
+              <div className="metric-card">
+                <div className="metric-icon">⚖️</div>
+                <h4>Evenness</h4>
+                <span className="score">{lighting_analysis.evenness}/10</span>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{width: `${(lighting_analysis.evenness / 10) * 100}%`}}
+                  />
+                </div>
+              </div>
+            )}
+            
+            {/* Shadows */}
             {lighting_analysis.shadows && (
-              <div className="metric">
+              <div className="metric-card">
+                <div className="metric-icon">🌑</div>
                 <h4>Shadows</h4>
-                <span className="score">{lighting_analysis.shadows.percentage}%</span>
+                <span className="percentage">{lighting_analysis.shadows.percentage}%</span>
+                <span className="score-small">Score: {lighting_analysis.shadows.score}/10</span>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill shadow" 
+                    style={{width: `${(lighting_analysis.shadows.score / 10) * 100}%`}}
+                  />
+                </div>
+              </div>
+            )}
+            
+            {/* Highlights */}
+            {lighting_analysis.highlights && (
+              <div className="metric-card">
+                <div className="metric-icon">✨</div>
+                <h4>Highlights</h4>
+                <span className="percentage">{lighting_analysis.highlights.percentage}%</span>
+                <span className="score-small">Score: {lighting_analysis.highlights.score}/10</span>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill highlight" 
+                    style={{width: `${(lighting_analysis.highlights.score / 10) * 100}%`}}
+                  />
+                </div>
+              </div>
+            )}
+            
+            {/* Mean Brightness */}
+            {lighting_analysis.mean_brightness !== undefined && (
+              <div className="metric-card">
+                <div className="metric-icon">💡</div>
+                <h4>Brightness</h4>
+                <span className="score">{Math.round(lighting_analysis.mean_brightness)}/255</span>
+                <div className="brightness-indicator">
+                  <div className="brightness-scale">
+                    <div 
+                      className="brightness-marker" 
+                      style={{left: `${(lighting_analysis.mean_brightness / 255) * 100}%`}}
+                    />
+                  </div>
+                  <div className="brightness-labels">
+                    <span>Dark</span>
+                    <span>Ideal</span>
+                    <span>Bright</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Consistency */}
+            {lighting_analysis.consistency !== undefined && (
+              <div className="metric-card">
+                <div className="metric-icon">📊</div>
+                <h4>Consistency</h4>
+                <span className="score">{lighting_analysis.consistency}/10</span>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill" 
+                    style={{width: `${(lighting_analysis.consistency / 10) * 100}%`}}
+                  />
+                </div>
               </div>
             )}
           </div>
