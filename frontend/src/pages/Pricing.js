@@ -4,8 +4,8 @@ import { useToast } from '../components/Toast';
 import './Pricing.css';
 
 const Pricing = () => {
-  const { getFeatureUsage, addUses } = useUsage();
-  const { showSuccess, showWarning } = useToast();
+  const { getFeatureUsage, addUses, resetAll } = useUsage();
+  const { showSuccess, showWarning, showError } = useToast();
   const [selectedFeature, setSelectedFeature] = useState('aesthetic_analyzer');
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -43,6 +43,27 @@ const Pricing = () => {
       setSelectedPlan(null);
     }, 2000);
   }, [selectedFeature, addUses, showSuccess, showWarning]);
+
+  const handleResetUsage = useCallback(() => {
+    // Confirm before resetting
+    const confirmed = window.confirm(
+      '🔄 Reset Usage Counts?\n\n' +
+      'This will reset:\n' +
+      '• Aesthetic Analyzer to 5 uses\n' +
+      '• Convo Decoder to 15 uses\n\n' +
+      'Are you sure you want to continue?'
+    );
+
+    if (confirmed) {
+      try {
+        resetAll();
+        showSuccess('✅ Usage counts have been reset to default!');
+      } catch (error) {
+        showError('Failed to reset usage counts. Please try again.');
+        console.error('Reset error:', error);
+      }
+    }
+  }, [resetAll, showSuccess, showError]);
 
   const featureName = selectedFeature === 'aesthetic_analyzer' ? 'Aesthetic Analyzer' : 'Convo Decoder';
 
@@ -108,6 +129,18 @@ const Pricing = () => {
             </div>
           </div>
         </div>
+        <button 
+          className="reset-usage-button"
+          onClick={handleResetUsage}
+          disabled={isProcessing}
+          title="Reset usage counts to default"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="reset-icon">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          Reset Usage
+        </button>
       </div>
 
       {/* Pricing Plans */}

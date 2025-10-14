@@ -109,6 +109,11 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6, 1.5rem);
+  flex-wrap: wrap;
 }
 
 .current-usage-card::before {
@@ -130,6 +135,8 @@
 .usage-info {
   position: relative;
   z-index: 1;
+  flex: 1;
+  min-width: 250px;
 }
 
 .usage-label {
@@ -139,6 +146,64 @@
   margin-bottom: var(--space-3, 0.75rem);
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* Reset Usage Button */
+.reset-usage-button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+  padding: var(--space-3, 0.75rem) var(--space-5, 1.25rem);
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(0, 255, 136, 0.2) 100%);
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  border-radius: var(--radius-lg, 0.75rem);
+  color: var(--text-primary, #ffffff);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.reset-usage-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.3) 0%, rgba(0, 255, 136, 0.3) 100%);
+  border-color: rgba(138, 43, 226, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(138, 43, 226, 0.3);
+}
+
+.reset-usage-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.reset-usage-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reset-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.reset-usage-button:hover:not(:disabled) .reset-icon {
+  transform: rotate(-180deg);
+}
+
+/* Light mode adjustments */
+[data-theme="light"] .reset-usage-button {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, rgba(0, 255, 136, 0.1) 100%);
+  border-color: rgba(138, 43, 226, 0.3);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .reset-usage-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.15) 0%, rgba(0, 255, 136, 0.15) 100%);
+  border-color: rgba(138, 43, 226, 0.5);
+  box-shadow: 0 4px 16px rgba(138, 43, 226, 0.2);
 }
 
 .usage-stats {
@@ -440,6 +505,21 @@
   }
 
   .feature-tab {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .current-usage-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-4, 1rem);
+  }
+
+  .usage-info {
+    min-width: 100%;
+  }
+
+  .reset-usage-button {
     width: 100%;
     justify-content: center;
   }
