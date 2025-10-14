@@ -10,6 +10,16 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
   }
 
   try {
+  
+  // Check if we have formatted_text - display it instead of JSON
+  if (results.formatted_text) {
+    return (
+      <div className="result-panel formatted-text-panel">
+        <h2 className="result-title">{title || 'Analysis Results'}</h2>
+        <pre className="formatted-analysis-text">{results.formatted_text}</pre>
+      </div>
+    );
+  }
 
   const renderResultItem = (key, value) => {
     if (Array.isArray(value)) {

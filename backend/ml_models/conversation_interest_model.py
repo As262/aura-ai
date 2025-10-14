@@ -20,38 +20,45 @@ class ConversationInterestAnalyzer(nn.Module):
     Features: response time, message length, emoji usage, question patterns
     """
     
-    def __init__(self, input_size=50, hidden_size=128, output_size=5):
+    def __init__(self, input_size=75, hidden_size=256, output_size=5):
         super(ConversationInterestAnalyzer, self).__init__()
         
-        # Network architecture
+        # Enhanced network architecture - BIGGER AND BETTER
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.bn1 = nn.BatchNorm1d(hidden_size)
         self.dropout1 = nn.Dropout(0.3)
         
-        self.fc2 = nn.Linear(hidden_size, hidden_size // 2)
-        self.bn2 = nn.BatchNorm1d(hidden_size // 2)
-        self.dropout2 = nn.Dropout(0.2)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.bn2 = nn.BatchNorm1d(hidden_size)
+        self.dropout2 = nn.Dropout(0.25)
         
-        self.fc3 = nn.Linear(hidden_size // 2, output_size)
+        self.fc3 = nn.Linear(hidden_size, hidden_size // 2)
+        self.bn3 = nn.BatchNorm1d(hidden_size // 2)
+        self.dropout3 = nn.Dropout(0.2)
         
-        # Interest level categories
+        self.fc4 = nn.Linear(hidden_size // 2, output_size)
+        
+        # Interest level categories with percentage ranges
         self.interest_categories = [
-            "Very Low",
-            "Low", 
-            "Moderate",
-            "High",
-            "Very High"
+            "Very Low (0-20%)",
+            "Low (20-40%)", 
+            "Moderate (40-60%)",
+            "High (60-80%)",
+            "Very High (80-100%)"
         ]
         
     def forward(self, x):
-        """Forward pass through the network"""
+        """Enhanced forward pass through deeper network"""
         x = F.relu(self.bn1(self.fc1(x)))
         x = self.dropout1(x)
         
         x = F.relu(self.bn2(self.fc2(x)))
         x = self.dropout2(x)
         
-        x = self.fc3(x)
+        x = F.relu(self.bn3(self.fc3(x)))
+        x = self.dropout3(x)
+        
+        x = self.fc4(x)
         return x
 
 
@@ -68,27 +75,67 @@ class ConversationAnalysisService:
             self.model.load_state_dict(torch.load(model_path, map_location=self.device))
             self.model.eval()
         
-        # Engagement indicators
+        # Enhanced engagement indicators
         self.positive_indicators = [
-            'haha', 'lol', 'lmao', '😂', '😊', '❤️', '🥰', '😍', '!', 
-            'really', 'wow', 'amazing', 'awesome', 'cool', 'nice', 'great'
+            'haha', 'lol', 'lmao', 'rofl', 'hehe', 'hihi', 
+            '😂', '😊', '❤️', '🥰', '😍', '🤩', '✨', '🙌', '💕', '😁', '😄',
+            'really', 'wow', 'amazing', 'awesome', 'cool', 'nice', 'great',
+            'love', 'beautiful', 'perfect', 'fantastic', 'wonderful', 'incredible'
         ]
         
         self.negative_indicators = [
-            'ok', 'k', 'hmm', 'idk', 'whatever', 'sure', 'fine', 'maybe'
+            'ok', 'k', 'hmm', 'idk', 'whatever', 'sure', 'fine', 'maybe',
+            'meh', 'eh', 'nah', 'dunno', 'guess', 'suppose'
         ]
+        
+        # TEXT STYLE PATTERNS - ok vs okk vs okay vs okayyy
+        self.text_style_patterns = {
+            'enthusiasm': {
+                'yesss': r'\b(yes{2,}|yess+)\b',
+                'okayyy': r'\b(okay{2,}|okayy+)\b',
+                'hiii': r'\b(hi{2,}|hii+|hey{2,})\b',
+                'byeee': r'\b(bye{2,}|byee+)\b',
+                'coool': r'\b(\w+(.)\2{2,})\b',  # Any repeated letters (coool, niceee)
+            },
+            'low_effort': {
+                'ok': r'\b(ok|okay)\b$',  # Just "ok" or "okay" alone
+                'k': r'\b(k|kk)\b$',  # Just "k"
+                'hmm': r'\b(hm+|hmm+)\b$',
+                'mhm': r'\b(mhm+|mhmm+)\b$',
+                'yeah': r'\b(yeah|yea|yah)\b$',
+            },
+            'variations': {
+                'haha_short': r'\b(ha|hah)\b',  # Low effort laugh
+                'haha_medium': r'\b(haha|hehe)\b',  # Medium laugh
+                'haha_long': r'\b(haha{2,}|hehe{2,}|lol+)\b',  # High enthusiasm laugh
+            }
+        }
+        
+        # EMOJI PATTERNS AND MEANINGS
+        self.emoji_categories = {
+            'high_interest': ['😍', '🥰', '😘', '❤️', '💕', '💖', '💗', '💓', '💝', '🤩', '✨'],
+            'happy': ['😊', '😄', '😁', '😃', '😀', '🙂', '☺️', '😌'],
+            'laughing': ['😂', '🤣', '😹', '💀'],
+            'excited': ['🤗', '🙌', '👏', '🎉', '🎊', '🥳'],
+            'thinking': ['🤔', '💭', '🧐'],
+            'neutral': ['😐', '😑', '😶', '🙄'],
+            'sad': ['😢', '😭', '😞', '😔', '☹️', '😕'],
+            'fire': ['🔥', '💯'],
+            'cool': ['😎', '🆒'],
+        }
         
         self.question_patterns = [
             r'\?$',  # Ends with ?
             r'^(what|when|where|why|how|who|which)',  # Question words
             r'^(do|does|did|can|could|would|should|will)',  # Auxiliary verbs
+            r'(what|when|where|why|how|who|which)',  # Question words anywhere
         ]
     
     def extract_features(self, your_message: str, their_response: str) -> np.ndarray:
         """
-        Extract features from message pair for ML analysis
+        Extract ENHANCED features from message pair for ML analysis
         
-        Returns 50-dimensional feature vector
+        Returns 75-dimensional feature vector with advanced text style and emoji analysis
         """
         features = []
         
@@ -194,11 +241,109 @@ class ConversationAnalysisService:
             1 if len(their_response.strip()) < 3 else 0  # Very short response
         ])
         
-        # Ensure we have exactly 50 features
-        while len(features) < 50:
+        # 8. TEXT STYLE ANALYSIS - ok vs okk vs okay vs okayyy (10 features)
+        their_lower = their_response.lower()
+        
+        # Enthusiasm patterns (repeated letters show excitement)
+        enthusiasm_score = 0
+        for pattern_name, pattern in self.text_style_patterns['enthusiasm'].items():
+            if re.search(pattern, their_lower):
+                enthusiasm_score += 1
+        
+        # Low effort patterns (single word responses)
+        low_effort_score = 0
+        for pattern_name, pattern in self.text_style_patterns['low_effort'].items():
+            if re.search(pattern, their_lower):
+                low_effort_score += 1
+        
+        # Laugh variations (haha vs hahaha vs lol)
+        laugh_score = 0
+        if re.search(self.text_style_patterns['variations']['haha_long'], their_lower):
+            laugh_score = 3  # High enthusiasm
+        elif re.search(self.text_style_patterns['variations']['haha_medium'], their_lower):
+            laugh_score = 2  # Medium
+        elif re.search(self.text_style_patterns['variations']['haha_short'], their_lower):
+            laugh_score = 1  # Low
+        
+        # Check for letter repetition patterns (coool, niceee, etc.)
+        letter_repetition = len(re.findall(r'(.)\1{2,}', their_response))  # 3+ repeated chars
+        
+        features.extend([
+            enthusiasm_score,  # How many enthusiasm patterns found
+            low_effort_score,  # How many low-effort patterns found
+            laugh_score,  # Quality of laugh (0-3)
+            letter_repetition,  # Number of repeated letter instances
+            1 if enthusiasm_score > 0 else 0,  # Has any enthusiasm
+            1 if low_effort_score > 0 else 0,  # Has any low-effort
+            1 if 'okayyy' in their_lower or 'okayy' in their_lower else 0,  # Extended okay
+            1 if their_lower.strip() in ['ok', 'k', 'okay'] else 0,  # Just ok/k/okay
+            1 if 'yesss' in their_lower or 'yess' in their_lower else 0,  # Extended yes
+            1 if 'hiii' in their_lower or 'heyy' in their_lower else 0,  # Extended greeting
+        ])
+        
+        # 9. EMOJI PATTERN ANALYSIS (10 features)
+        # Count emojis by category
+        high_interest_emojis = sum(1 for emoji in self.emoji_categories['high_interest'] if emoji in their_response)
+        happy_emojis = sum(1 for emoji in self.emoji_categories['happy'] if emoji in their_response)
+        laughing_emojis = sum(1 for emoji in self.emoji_categories['laughing'] if emoji in their_response)
+        excited_emojis = sum(1 for emoji in self.emoji_categories['excited'] if emoji in their_response)
+        thinking_emojis = sum(1 for emoji in self.emoji_categories['thinking'] if emoji in their_response)
+        neutral_emojis = sum(1 for emoji in self.emoji_categories['neutral'] if emoji in their_response)
+        sad_emojis = sum(1 for emoji in self.emoji_categories['sad'] if emoji in their_response)
+        fire_emojis = sum(1 for emoji in self.emoji_categories['fire'] if emoji in their_response)
+        
+        # Emoji diversity score
+        emoji_types_used = sum([
+            1 if high_interest_emojis > 0 else 0,
+            1 if happy_emojis > 0 else 0,
+            1 if laughing_emojis > 0 else 0,
+            1 if excited_emojis > 0 else 0,
+        ])
+        
+        features.extend([
+            high_interest_emojis,  # Love and heart emojis
+            happy_emojis,  # Smiling emojis
+            laughing_emojis,  # Laughing emojis
+            excited_emojis,  # Excited/celebrating emojis
+            thinking_emojis,  # Thinking emojis (moderate interest)
+            neutral_emojis,  # Neutral face emojis (low interest)
+            sad_emojis,  # Sad emojis (negative)
+            fire_emojis,  # Fire/100 emojis (high interest)
+            emoji_types_used,  # Diversity of emoji types
+            1 if (high_interest_emojis + laughing_emojis + excited_emojis) > 2 else 0  # Multiple positive emojis
+        ])
+        
+        # 10. ADVANCED ENGAGEMENT METRICS (5 features)
+        # Punctuation enthusiasm
+        exclamation_count = their_response.count('!')
+        multiple_exclamations = 1 if '!!' in their_response or '!!!' in their_response else 0
+        multiple_questions = 1 if '??' in their_response or '???' in their_response else 0
+        
+        # Capital letters for emphasis
+        caps_words = sum(1 for word in their_response.split() if word.isupper() and len(word) > 1)
+        
+        # Message enthusiasm score (combined metric)
+        enthusiasm_total = (
+            exclamation_count * 0.5 +
+            multiple_exclamations * 2 +
+            caps_words * 1.5 +
+            letter_repetition * 1 +
+            enthusiasm_score * 2
+        )
+        
+        features.extend([
+            exclamation_count,  # Number of !
+            multiple_exclamations,  # !! or !!!
+            multiple_questions,  # ?? or ???
+            caps_words,  # Number of ALL CAPS words
+            min(enthusiasm_total, 10) / 10  # Normalized total enthusiasm (0-1)
+        ])
+        
+        # Ensure we have exactly 75 features
+        while len(features) < 75:
             features.append(0.0)
         
-        return np.array(features[:50], dtype=np.float32)
+        return np.array(features[:75], dtype=np.float32)
     
     def analyze_conversation(self, messages: List[Dict], user_identifier: str = None) -> Dict[str, Any]:
         """
@@ -262,6 +407,9 @@ class ConversationAnalysisService:
         interest_scores = []
         detailed_pairs = []
         
+        # Set model to evaluation mode for inference
+        self.model.eval()
+        
         for your_msg, their_msg in pairs:
             features = self.extract_features(your_msg, their_msg)
             
@@ -281,9 +429,28 @@ class ConversationAnalysisService:
                 'confidence': round(confidence * 100, 2)
             })
         
-        # Calculate overall statistics
+        # Calculate overall statistics with PERCENTAGE BREAKDOWN
         avg_interest = np.mean(interest_scores)
         interest_distribution = Counter(interest_scores)
+        
+        # Calculate percentage score (0-100%)
+        interest_percentage = (avg_interest / 4) * 100
+        
+        # Detailed percentage breakdown
+        percentage_breakdown = {
+            'overall_interest': round(interest_percentage, 1),
+            'their_engagement_score': round(interest_percentage, 1),
+            'conversation_quality': round(min(interest_percentage * 1.1, 100), 1),  # Slightly boosted
+            'compatibility_score': round(interest_percentage * 0.95, 1),  # Slightly conservative
+        }
+        
+        # Confidence metrics
+        confidence_scores = []
+        for i, score in enumerate(interest_scores):
+            if i < len(detailed_pairs):
+                confidence_scores.append(detailed_pairs[i]['confidence'])
+        
+        avg_confidence = np.mean(confidence_scores) if confidence_scores else 0
         
         # Generate improvement suggestions
         suggestions = self._generate_suggestions(pairs, interest_scores, your_messages, their_messages)
@@ -293,26 +460,192 @@ class ConversationAnalysisService:
             your_messages, their_messages, pairs
         )
         
+        # Add text style analysis summary
+        text_style_summary = self._analyze_text_styles(their_messages)
+        
+        # Add emoji usage summary
+        emoji_summary = self._analyze_emoji_patterns(their_messages)
+        
+        # Interest level interpretation
+        if interest_percentage >= 80:
+            interest_interpretation = "🔥 VERY HIGH INTEREST! They're clearly very engaged and interested in you!"
+        elif interest_percentage >= 60:
+            interest_interpretation = "😊 HIGH INTEREST! The conversation is going great!"
+        elif interest_percentage >= 40:
+            interest_interpretation = "🤔 MODERATE INTEREST. There's potential, keep building connection!"
+        elif interest_percentage >= 20:
+            interest_interpretation = "😐 LOW INTEREST. Try to engage more or find common interests."
+        else:
+            interest_interpretation = "⚠️ VERY LOW INTEREST. They might not be very engaged right now."
+        
         return {
+            # Main Results
             'overall_interest_level': self.model.interest_categories[int(round(avg_interest))],
+            'interest_percentage': round(interest_percentage, 1),
+            'interest_interpretation': interest_interpretation,
+            
+            # Detailed Percentage Breakdown
+            'percentage_breakdown': percentage_breakdown,
             'average_interest_score': round(avg_interest, 2),
-            'interest_percentage': round((avg_interest / 4) * 100, 2),  # 0-4 scale to 0-100
+            'confidence_level': round(avg_confidence, 1),
+            
+            # Distribution
             'interest_distribution': {
                 self.model.interest_categories[i]: interest_distribution.get(i, 0)
                 for i in range(5)
             },
+            'distribution_percentages': {
+                self.model.interest_categories[i]: round((interest_distribution.get(i, 0) / len(pairs)) * 100, 1)
+                for i in range(5)
+            },
+            
+            # Message Stats
             'total_messages': len(messages),
             'your_messages': len(your_messages),
             'their_messages': len(their_messages),
             'conversation_pairs_analyzed': len(pairs),
+            
+            # Advanced Analysis
             'engagement_metrics': engagement_metrics,
+            'text_style_analysis': text_style_summary,
+            'emoji_analysis': emoji_summary,
+            
+            # Detailed Results
             'detailed_pair_analysis': detailed_pairs[:10],  # First 10 pairs
             'improvement_suggestions': suggestions,
+            
+            # Participants
             'participants': {
                 'you': user,
                 'other_person': other
             }
         }
+    
+    def _analyze_text_styles(self, messages: List[Dict]) -> Dict[str, Any]:
+        """Analyze text style patterns (ok vs okk vs okay vs okayyy)"""
+        
+        enthusiasm_count = 0
+        low_effort_count = 0
+        laugh_patterns = {'short': 0, 'medium': 0, 'long': 0}
+        repeated_letters = 0
+        
+        for msg in messages:
+            text = msg['message'].lower()
+            
+            # Check enthusiasm patterns
+            for pattern in self.text_style_patterns['enthusiasm'].values():
+                if re.search(pattern, text):
+                    enthusiasm_count += 1
+            
+            # Check low-effort patterns
+            for pattern in self.text_style_patterns['low_effort'].values():
+                if re.search(pattern, text):
+                    low_effort_count += 1
+            
+            # Check laugh patterns
+            if re.search(self.text_style_patterns['variations']['haha_long'], text):
+                laugh_patterns['long'] += 1
+            elif re.search(self.text_style_patterns['variations']['haha_medium'], text):
+                laugh_patterns['medium'] += 1
+            elif re.search(self.text_style_patterns['variations']['haha_short'], text):
+                laugh_patterns['short'] += 1
+            
+            # Count repeated letters
+            repeated_letters += len(re.findall(r'(.)\1{2,}', text))
+        
+        total_messages = len(messages)
+        
+        return {
+            'enthusiasm_patterns': enthusiasm_count,
+            'enthusiasm_percentage': round((enthusiasm_count / max(total_messages, 1)) * 100, 1),
+            'low_effort_responses': low_effort_count,
+            'low_effort_percentage': round((low_effort_count / max(total_messages, 1)) * 100, 1),
+            'laugh_quality': {
+                'high_enthusiasm': laugh_patterns['long'],
+                'medium_enthusiasm': laugh_patterns['medium'],
+                'low_enthusiasm': laugh_patterns['short']
+            },
+            'letter_repetition_count': repeated_letters,
+            'style_score': round(max(0, (enthusiasm_count - low_effort_count * 2) / max(total_messages, 1) * 100), 1),
+            'interpretation': self._interpret_text_style(enthusiasm_count, low_effort_count, total_messages)
+        }
+    
+    def _interpret_text_style(self, enthusiasm: int, low_effort: int, total: int) -> str:
+        """Interpret text style patterns"""
+        enthusiasm_ratio = enthusiasm / max(total, 1)
+        low_effort_ratio = low_effort / max(total, 1)
+        
+        if enthusiasm_ratio > 0.4:
+            return "🔥 Very enthusiastic texter! Lots of energy and excitement!"
+        elif enthusiasm_ratio > 0.2:
+            return "😊 Engaged texter with good energy"
+        elif low_effort_ratio > 0.4:
+            return "😐 Mostly low-effort responses (ok, k, hmm)"
+        elif low_effort_ratio > 0.2:
+            return "🤔 Mixed effort, some low-effort responses"
+        else:
+            return "👍 Balanced texting style"
+    
+    def _analyze_emoji_patterns(self, messages: List[Dict]) -> Dict[str, Any]:
+        """Analyze emoji usage patterns"""
+        
+        emoji_counts = {category: 0 for category in self.emoji_categories.keys()}
+        total_emojis = 0
+        messages_with_emojis = 0
+        
+        for msg in messages:
+            text = msg['message']
+            has_emoji = False
+            
+            for category, emoji_list in self.emoji_categories.items():
+                count = sum(1 for emoji in emoji_list if emoji in text)
+                emoji_counts[category] += count
+                total_emojis += count
+                if count > 0:
+                    has_emoji = True
+            
+            if has_emoji:
+                messages_with_emojis += 1
+        
+        total_messages = len(messages)
+        emoji_usage_rate = (messages_with_emojis / max(total_messages, 1)) * 100
+        
+        # Calculate positive emoji percentage
+        positive_emojis = (emoji_counts['high_interest'] + emoji_counts['happy'] + 
+                          emoji_counts['laughing'] + emoji_counts['excited'])
+        positive_percentage = (positive_emojis / max(total_emojis, 1)) * 100
+        
+        return {
+            'total_emojis': total_emojis,
+            'emoji_usage_rate': round(emoji_usage_rate, 1),
+            'emojis_per_message': round(total_emojis / max(total_messages, 1), 2),
+            'messages_with_emojis': messages_with_emojis,
+            'emoji_categories': {
+                'high_interest': emoji_counts['high_interest'],
+                'happy': emoji_counts['happy'],
+                'laughing': emoji_counts['laughing'],
+                'excited': emoji_counts['excited'],
+                'thinking': emoji_counts['thinking'],
+                'neutral': emoji_counts['neutral'],
+                'sad': emoji_counts['sad'],
+                'fire': emoji_counts['fire'],
+            },
+            'positive_emoji_percentage': round(positive_percentage, 1),
+            'interpretation': self._interpret_emoji_usage(emoji_usage_rate, positive_percentage, emoji_counts)
+        }
+    
+    def _interpret_emoji_usage(self, usage_rate: float, positive_pct: float, counts: Dict) -> str:
+        """Interpret emoji usage patterns"""
+        if usage_rate > 70 and positive_pct > 70:
+            return "🥰 Extremely expressive! Lots of positive emojis - great sign!"
+        elif usage_rate > 50 and positive_pct > 60:
+            return "😊 Good emoji usage with positive vibes!"
+        elif usage_rate > 30:
+            return "🙂 Moderate emoji user"
+        elif usage_rate > 10:
+            return "😐 Light emoji usage"
+        else:
+            return "📝 Minimal emoji usage - prefers plain text"
     
     def _calculate_engagement_metrics(self, your_messages: List[Dict], 
                                      their_messages: List[Dict],
@@ -359,124 +692,379 @@ class ConversationAnalysisService:
                             interest_scores: List[int],
                             your_messages: List[Dict],
                             their_messages: List[Dict]) -> List[Dict[str, str]]:
-        """Generate personalized improvement suggestions - always returns 2-3 tips"""
+        """
+        Generate DYNAMIC, AI-powered improvement suggestions based on actual conversation analysis
+        Analyzes real message content, patterns, and context to provide personalized tips
+        """
         
         all_suggestions = []
         
-        # Analyze low interest pairs
-        low_interest_pairs = [pairs[i] for i, score in enumerate(interest_scores) if score <= 1]
+        # === DYNAMIC ANALYSIS OF ACTUAL CONVERSATION CONTENT ===
+        
+        # 1. Analyze low interest pairs with SPECIFIC examples
+        low_interest_pairs = [(pairs[i], interest_scores[i]) for i, score in enumerate(interest_scores) if score <= 1]
         
         if len(low_interest_pairs) > len(pairs) * 0.4:
-            all_suggestions.append({
-                'category': 'Overall Engagement',
-                'priority': 'High',
-                'suggestion': f'Over 40% of your messages received low-interest responses. Try asking more open-ended questions and showing genuine curiosity about their interests.',
-                'tip': 'Instead of "Did you like it?", try "What did you think about it? I\'d love to hear your perspective!"'
-            })
+            # Find the ACTUAL worst performing message
+            worst_pair = min(low_interest_pairs, key=lambda x: x[1]) if low_interest_pairs else None
+            if worst_pair:
+                your_msg_preview = worst_pair[0][0][:50] + "..." if len(worst_pair[0][0]) > 50 else worst_pair[0][0]
+                their_response = worst_pair[0][1][:50] + "..." if len(worst_pair[0][1]) > 50 else worst_pair[0][1]
+                
+                all_suggestions.append({
+                    'category': 'Low Response Quality',
+                    'priority': 'High',
+                    'suggestion': f'When you said "{your_msg_preview}", they responded with "{their_response}" which shows low engagement. Try asking more open-ended questions that invite detailed responses.',
+                    'tip': f'Instead of short statements, try: "Tell me more about..." or "What was your favorite part of..."'
+                })
         
-        # Message length analysis
-        your_avg = np.mean([len(msg['message'].split()) for msg in your_messages])
-        their_avg = np.mean([len(msg['message'].split()) for msg in their_messages])
+        # 2. DYNAMIC Message length analysis with ACTUAL examples
+        your_lengths = [len(msg['message'].split()) for msg in your_messages]
+        their_lengths = [len(msg['message'].split()) for msg in their_messages]
+        your_avg = np.mean(your_lengths)
+        their_avg = np.mean(their_lengths)
         
         if your_avg > their_avg * 2:
+            # Find longest message as example
+            longest_idx = your_lengths.index(max(your_lengths))
+            long_msg = your_messages[longest_idx]['message']
+            preview = long_msg[:80] + "..." if len(long_msg) > 80 else long_msg
+            
             all_suggestions.append({
-                'category': 'Message Length',
+                'category': 'Message Balance',
                 'priority': 'Medium',
-                'suggestion': 'Your messages are significantly longer than theirs. Try being more concise and giving them more space to contribute.',
-                'tip': 'Break long messages into smaller parts and ask questions to keep the conversation flowing.'
+                'suggestion': f'Your messages average {your_avg:.1f} words while theirs average {their_avg:.1f}. For example: "{preview}" - This might overwhelm them. Try breaking thoughts into smaller chunks.',
+                'tip': f'Split long messages into 2-3 shorter ones and ask questions between them to invite their input.'
             })
         elif your_avg < their_avg * 0.5:
+            # Find shortest message as example
+            shortest_idx = your_lengths.index(min(your_lengths))
+            short_msg = your_messages[shortest_idx]['message']
+            
             all_suggestions.append({
-                'category': 'Message Length',
+                'category': 'Message Depth',
                 'priority': 'Medium',
-                'suggestion': 'Your messages are quite short. Try elaborating more to show you\'re invested in the conversation.',
-                'tip': 'Add your thoughts, feelings, or follow-up questions to make your responses more engaging.'
+                'suggestion': f'Your messages average {your_avg:.1f} words while theirs average {their_avg:.1f}. Messages like "{short_msg}" feel too brief. Show more investment by elaborating on your thoughts.',
+                'tip': f'Add context, personal feelings, or follow-up questions. Instead of "{short_msg}", explain WHY you feel that way.'
             })
         
-        # Question analysis
-        your_questions = sum(1 for msg in your_messages if '?' in msg['message'])
-        their_questions = sum(1 for msg in their_messages if '?' in msg['message'])
+        # 3. DYNAMIC Question analysis with SPECIFIC conversation context
+        your_question_msgs = [msg for msg in your_messages if '?' in msg['message']]
+        their_question_msgs = [msg for msg in their_messages if '?' in msg['message']]
+        your_questions = len(your_question_msgs)
+        their_questions = len(their_question_msgs)
         
         if your_questions < len(your_messages) * 0.2:
+            # Analyze what topics they're interested in based on their longest responses
+            interested_topics = []
+            for i, (your_msg, their_msg) in enumerate(pairs):
+                if len(their_msg.split()) > their_avg * 1.3:  # They elaborated here
+                    # Extract key words from your message that triggered interest
+                    words = [w.lower() for w in your_msg.split() if len(w) > 4 and w.isalpha()]
+                    interested_topics.extend(words[:2])  # Take first 2 meaningful words
+            
+            topic_hint = f" about {interested_topics[0]}" if interested_topics else ""
+            
             all_suggestions.append({
-                'category': 'Curiosity & Questions',
+                'category': 'Conversation Depth',
                 'priority': 'High',
-                'suggestion': 'You\'re not asking many questions. Show more interest by asking about their day, opinions, and experiences.',
-                'tip': 'Use the 5 W\'s: Who, What, When, Where, Why (and How!) to keep conversations dynamic.'
+                'suggestion': f'You asked only {your_questions} questions in {len(your_messages)} messages ({your_questions/len(your_messages)*100:.0f}%). They seem engaged when you talk{topic_hint}. Ask more questions to deepen the connection!',
+                'tip': f'Try: "What do you think about...?", "How did that make you feel?", or "Tell me more about..." to invite detailed responses.'
             })
         
         if their_questions < len(their_messages) * 0.15:
+            # Find messages where YOU elaborated but they didn't ask follow-ups
+            missed_opportunities = []
+            for msg in your_messages:
+                if len(msg['message'].split()) > your_avg * 1.5:
+                    preview = msg['message'][:60] + "..." if len(msg['message']) > 60 else msg['message']
+                    missed_opportunities.append(preview)
+            
+            example = missed_opportunities[0] if missed_opportunities else "your detailed stories"
+            
             all_suggestions.append({
-                'category': 'Engagement',
+                'category': 'Reciprocal Interest',
                 'priority': 'Medium',
-                'suggestion': 'They\'re not asking many questions back. Try sharing interesting stories or experiences that naturally invite questions.',
-                'tip': 'Leave conversational "hooks" - mention something intriguing without full details to spark curiosity.'
+                'suggestion': f'They only asked {their_questions} questions back. When you shared: "{example}", they didn\'t ask follow-ups. Make your stories more intriguing to spark curiosity.',
+                'tip': f'End statements with hooks like: "...and you won\'t believe what happened next!" or "...have you ever experienced something like that?"'
             })
         
-        # Emoji usage
+        # 4. DYNAMIC Emoji analysis with ACTUAL emoji patterns
         emoji_pattern = re.compile(r'[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF\U00002702-\U000027B0\U000024C2-\U0001F251]+')
         your_emojis = sum(len(emoji_pattern.findall(msg['message'])) for msg in your_messages)
         their_emojis = sum(len(emoji_pattern.findall(msg['message'])) for msg in their_messages)
         
+        # Analyze WHICH emojis they use
+        their_emoji_examples = []
+        for msg in their_messages[:5]:  # Check first 5 messages
+            found_emojis = emoji_pattern.findall(msg['message'])
+            their_emoji_examples.extend(found_emojis)
+        
         if your_emojis < len(your_messages) * 0.3 and their_emojis > len(their_messages) * 0.5:
+            emoji_sample = ''.join(their_emoji_examples[:5]) if their_emoji_examples else '😊😂❤️'
+            
             all_suggestions.append({
-                'category': 'Expressiveness',
-                'priority': 'Low',
-                'suggestion': 'They use emojis frequently, but you don\'t. Match their communication style by adding more emojis to show emotion.',
-                'tip': 'Use emojis to convey tone - 😊 for friendly, 😂 for funny, ❤️ for appreciation.'
+                'category': 'Communication Style Match',
+                'priority': 'Medium',
+                'suggestion': f'They use {their_emojis} emojis (like {emoji_sample}) but you only use {your_emojis}. They express emotions through emojis - match their style to connect better!',
+                'tip': f'Start using emojis like {emoji_sample} in your messages to match their expressive communication style.'
             })
         
-        # Positive indicators
-        their_positive = sum(
-            sum(1 for indicator in self.positive_indicators 
-                if indicator in msg['message'].lower())
-            for msg in their_messages
-        )
+        # 5. DYNAMIC Positive language analysis with SPECIFIC examples
+        their_positive_msgs = []
+        positive_indicators_found = []
         
-        if their_positive > len(their_messages) * 0.3:
+        for msg in their_messages:
+            msg_lower = msg['message'].lower()
+            for indicator in self.positive_indicators:
+                if indicator in msg_lower:
+                    their_positive_msgs.append(msg['message'][:50])
+                    positive_indicators_found.append(indicator)
+        
+        if len(their_positive_msgs) > len(their_messages) * 0.3:
+            example_msg = their_positive_msgs[0] if their_positive_msgs else "messages"
+            indicators = ', '.join(set(positive_indicators_found[:5]))
+            
             all_suggestions.append({
-                'category': 'Positive Signs',
+                'category': 'Positive Engagement',
                 'priority': 'Info',
-                'suggestion': 'Great news! They\'re using lots of positive language (lol, haha, etc.), which shows they enjoy talking to you.',
-                'tip': 'Keep doing what you\'re doing, but continue to evolve the conversation topics to maintain interest.'
+                'suggestion': f'Excellent! They\'re using positive language like "{indicators}" in messages like: "{example_msg}". This shows they genuinely enjoy talking to you!',
+                'tip': f'Keep the positive momentum! Continue discussing topics that make them use words like "{indicators}".'
             })
         
-        # Always add these general tips to ensure we have at least 2-3 suggestions
-        general_suggestions = [
-            {
-                'category': 'Overall',
+        # 6. DYNAMIC Text style enthusiasm analysis
+        enthusiasm_count = 0
+        low_effort_count = 0
+        their_enthusiasm_examples = []
+        their_low_effort_examples = []
+        
+        for msg in their_messages:
+            msg_lower = msg['message'].lower()
+            # Check for enthusiasm
+            for pattern in self.text_style_patterns['enthusiasm'].values():
+                if re.search(pattern, msg_lower):
+                    enthusiasm_count += 1
+                    their_enthusiasm_examples.append(msg['message'][:40])
+                    break
+            # Check for low effort
+            for pattern in self.text_style_patterns['low_effort'].values():
+                if re.search(pattern, msg_lower):
+                    low_effort_count += 1
+                    their_low_effort_examples.append(msg['message'][:20])
+                    break
+        
+        if low_effort_count > enthusiasm_count and low_effort_count > 2:
+            examples = ', '.join(their_low_effort_examples[:3])
+            all_suggestions.append({
+                'category': 'Response Quality',
+                'priority': 'High',
+                'suggestion': f'They\'re giving {low_effort_count} low-effort responses like: "{examples}". Your conversation may not be engaging enough. Try discussing topics they\'re passionate about.',
+                'tip': f'Ask about their hobbies, dreams, or recent experiences. Avoid yes/no questions!'
+            })
+        elif enthusiasm_count > 3:
+            examples = ', '.join(their_enthusiasm_examples[:2])
+            all_suggestions.append({
+                'category': 'Great Connection!',
                 'priority': 'Info',
-                'suggestion': 'Your conversation shows good engagement! Keep being yourself and showing genuine interest.',
-                'tip': 'Continue building on shared interests and asking thoughtful questions.'
-            },
-            {
-                'category': 'Growth',
-                'priority': 'Low',
-                'suggestion': 'Try introducing new topics occasionally to keep conversations fresh and exciting.',
-                'tip': 'Share interesting things you learned, funny stories, or ask for their opinion on current events.'
-            },
-            {
-                'category': 'Timing',
-                'priority': 'Low',
-                'suggestion': 'Pay attention to response times and conversation flow to keep momentum going.',
-                'tip': 'Match their energy level and response pace for better conversation rhythm.'
-            }
-        ]
+                'suggestion': f'Amazing! They\'re showing {enthusiasm_count} enthusiastic responses like: "{examples}". They\'re genuinely excited to talk to you!',
+                'tip': f'Keep this energy! Continue exploring topics that get these excited responses.'
+            })
         
-        # Add general suggestions if we don't have enough specific ones
-        for suggestion in general_suggestions:
-            if len(all_suggestions) >= 3:
-                break
-            if suggestion not in all_suggestions:
-                all_suggestions.append(suggestion)
+        # 7. DYNAMIC Topic analysis - what works best
+        high_interest_topics = []
+        for i, (your_msg, their_msg) in enumerate(pairs):
+            if interest_scores[i] >= 3:  # High interest
+                # Extract potential topics (nouns, longer words)
+                words = [w for w in your_msg.split() if len(w) > 5 and w.isalpha()]
+                if words:
+                    high_interest_topics.append(words[0].lower())
         
-        # Prioritize and return top 2-3 suggestions
+        if high_interest_topics:
+            topic_counts = Counter(high_interest_topics)
+            top_topic = topic_counts.most_common(1)[0][0] if topic_counts else None
+            
+            if top_topic:
+                all_suggestions.append({
+                    'category': 'Winning Topics',
+                    'priority': 'Info',
+                    'suggestion': f'They respond best when you mention "{top_topic}". This topic generates high engagement!',
+                    'tip': f'Explore more aspects of "{top_topic}" - ask their opinions, experiences, or preferences related to it.'
+                })
+        
+        # 8. DYNAMIC conversation flow analysis
+        if len(pairs) > 5:
+            # Check if interest is declining
+            first_half_interest = np.mean(interest_scores[:len(interest_scores)//2])
+            second_half_interest = np.mean(interest_scores[len(interest_scores)//2:])
+            
+            if first_half_interest > second_half_interest + 0.5:
+                all_suggestions.append({
+                    'category': 'Interest Declining',
+                    'priority': 'High',
+                    'suggestion': f'Their interest dropped from {first_half_interest*25:.0f}% to {second_half_interest*25:.0f}% as conversation progressed. You may be losing their attention.',
+                    'tip': f'Switch topics! Introduce something fresh and exciting to re-engage them.'
+                })
+            elif second_half_interest > first_half_interest + 0.5:
+                all_suggestions.append({
+                    'category': 'Building Momentum',
+                    'priority': 'Info',
+                    'suggestion': f'Their interest grew from {first_half_interest*25:.0f}% to {second_half_interest*25:.0f}%! The conversation is getting better!',
+                    'tip': f'You\'re warming up nicely! Keep this trajectory by deepening the current topics.'
+                })
+        
+        # 9. If still don't have enough suggestions, add smart fallbacks based on data
+        if len(all_suggestions) < 2:
+            # Analyze response time patterns (if timestamps available)
+            avg_interest = np.mean(interest_scores)
+            
+            if avg_interest >= 3:
+                all_suggestions.append({
+                    'category': 'Strong Connection',
+                    'priority': 'Info',
+                    'suggestion': f'Overall interest is {avg_interest/4*100:.0f}%! You\'re doing great. They enjoy talking to you.',
+                    'tip': 'Keep being authentic and curious. Build on what\'s working!'
+                })
+            elif avg_interest < 2:
+                all_suggestions.append({
+                    'category': 'Needs Improvement',
+                    'priority': 'High',
+                    'suggestion': f'Overall interest is {avg_interest/4*100:.0f}%. The conversation needs more energy.',
+                    'tip': 'Try being more playful, ask deeper questions, or share interesting stories!'
+                })
+        
+        # Prioritize and return top 3 suggestions
         # Sort by priority: High > Medium > Low > Info
         priority_order = {'High': 0, 'Medium': 1, 'Low': 2, 'Info': 3}
         all_suggestions.sort(key=lambda x: priority_order.get(x['priority'], 3))
         
         # Return 2-3 most important suggestions
         return all_suggestions[:3]
+    
+    def format_analysis_as_text(self, analysis_result: Dict[str, Any]) -> str:
+        """
+        Convert analysis result JSON to beautiful human-readable text format
+        """
+        
+        lines = []
+        lines.append("=" * 80)
+        lines.append("🎯 CONVERSATION ANALYSIS REPORT")
+        lines.append("=" * 80)
+        lines.append("")
+        
+        # Interest Level
+        interest_pct = analysis_result.get('interest_percentage', 0)
+        interpretation = analysis_result.get('interest_interpretation', 'Unknown')
+        confidence = analysis_result.get('confidence_level', 0)
+        
+        lines.append("📊 OVERALL INTEREST LEVEL")
+        lines.append("-" * 80)
+        lines.append(f"   Interest Score:     {interest_pct:.1f}%")
+        lines.append(f"   Interpretation:     {interpretation}")
+        lines.append(f"   Confidence:         {confidence:.1f}%")
+        lines.append("")
+        
+        # Interest breakdown with visual bar
+        if interest_pct >= 80:
+            bar = "█" * 40
+            emoji = "🔥"
+        elif interest_pct >= 60:
+            bar = "█" * 30 + "▓" * 10
+            emoji = "😊"
+        elif interest_pct >= 40:
+            bar = "█" * 20 + "▓" * 10 + "░" * 10
+            emoji = "😐"
+        elif interest_pct >= 20:
+            bar = "█" * 10 + "▓" * 10 + "░" * 20
+            emoji = "😕"
+        else:
+            bar = "█" * 5 + "░" * 35
+            emoji = "😞"
+        
+        lines.append(f"   Visual:  [{bar}] {emoji}")
+        lines.append("")
+        
+        # Percentage breakdown
+        if 'percentage_breakdown' in analysis_result:
+            breakdown = analysis_result['percentage_breakdown']
+            lines.append("📈 DETAILED BREAKDOWN")
+            lines.append("-" * 80)
+            lines.append(f"   Their Engagement:       {breakdown.get('their_engagement_score', 0):.1f}%")
+            lines.append(f"   Conversation Quality:   {breakdown.get('conversation_quality', 0):.1f}%")
+            lines.append(f"   Compatibility Score:    {breakdown.get('compatibility_score', 0):.1f}%")
+            lines.append("")
+        
+        # Text Style Analysis
+        if 'text_style_analysis' in analysis_result:
+            text_style = analysis_result['text_style_analysis']
+            lines.append("💬 TEXT STYLE ANALYSIS")
+            lines.append("-" * 80)
+            lines.append(f"   Enthusiasm Patterns:    {text_style.get('enthusiasm_patterns', 0)} detected")
+            lines.append(f"   Enthusiasm Level:       {text_style.get('enthusiasm_percentage', 0):.1f}%")
+            lines.append(f"   Low-Effort Responses:   {text_style.get('low_effort_responses', 0)} found")
+            lines.append(f"   Style Score:            {text_style.get('style_score', 0):.1f}%")
+            lines.append(f"   📝 {text_style.get('interpretation', 'N/A')}")
+            lines.append("")
+        
+        # Emoji Analysis
+        if 'emoji_analysis' in analysis_result:
+            emoji_data = analysis_result['emoji_analysis']
+            lines.append("😊 EMOJI ANALYSIS")
+            lines.append("-" * 80)
+            lines.append(f"   Total Emojis Used:      {emoji_data.get('total_emojis', 0)}")
+            lines.append(f"   Usage Rate:             {emoji_data.get('emoji_usage_rate', 0):.1f}%")
+            lines.append(f"   Positive Emojis:        {emoji_data.get('positive_emoji_percentage', 0):.1f}%")
+            lines.append(f"   Emoji Diversity:        {emoji_data.get('emoji_diversity', 0):.1f}%")
+            lines.append(f"   😊 {emoji_data.get('interpretation', 'N/A')}")
+            lines.append("")
+        
+        # Engagement metrics
+        if 'engagement_metrics' in analysis_result:
+            metrics = analysis_result['engagement_metrics']
+            lines.append("🔥 ENGAGEMENT METRICS")
+            lines.append("-" * 80)
+            lines.append(f"   Your Avg Message Length:    {metrics.get('your_avg_message_length', 0)} words")
+            lines.append(f"   Their Avg Message Length:   {metrics.get('their_avg_message_length', 0)} words")
+            lines.append(f"   Response Length Ratio:      {metrics.get('response_length_ratio', 0):.2f}x")
+            lines.append(f"   Your Questions Asked:       {metrics.get('your_questions_asked', 0)}")
+            lines.append(f"   Their Questions Asked:      {metrics.get('their_questions_asked', 0)}")
+            lines.append(f"   Question Reciprocation:     {metrics.get('question_reciprocation_rate', 0):.2f}x")
+            lines.append(f"   Your Emoji Usage:           {metrics.get('your_emoji_usage', 0)}")
+            lines.append(f"   Their Emoji Usage:          {metrics.get('their_emoji_usage', 0)}")
+            lines.append(f"   Engagement Balance:         {metrics.get('engagement_balance', 0):.2f}")
+            lines.append("")
+        
+        # Improvement suggestions
+        if 'improvement_suggestions' in analysis_result:
+            suggestions = analysis_result['improvement_suggestions']
+            lines.append("💡 PERSONALIZED SUGGESTIONS")
+            lines.append("=" * 80)
+            
+            for i, suggestion in enumerate(suggestions, 1):
+                priority = suggestion.get('priority', 'Medium')
+                category = suggestion.get('category', 'General')
+                
+                # Priority emoji
+                if priority == 'High':
+                    priority_emoji = "🔴"
+                elif priority == 'Medium':
+                    priority_emoji = "🟡"
+                else:
+                    priority_emoji = "🟢"
+                
+                lines.append("")
+                lines.append(f"{i}. {priority_emoji} {category} [{priority} Priority]")
+                lines.append("-" * 80)
+                lines.append(f"   {suggestion.get('suggestion', 'N/A')}")
+                lines.append("")
+                lines.append(f"   💎 Pro Tip: {suggestion.get('tip', 'N/A')}")
+                lines.append("")
+        
+        # Summary
+        lines.append("=" * 80)
+        lines.append("✨ END OF REPORT")
+        lines.append("=" * 80)
+        
+        return "\n".join(lines)
 
 
 def create_and_save_model(save_path: str = None):

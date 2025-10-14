@@ -190,6 +190,9 @@ class ConversationAnalysisView(APIView):
                     analysis_service = ConversationAnalysisService(model_path if os.path.exists(model_path) else None)
                     analysis_result = analysis_service.analyze_conversation(decoded_data['messages'])
                     
+                    # Generate human-readable text format
+                    formatted_text = analysis_service.format_analysis_as_text(analysis_result)
+                    
                     print(f"✅ Analysis complete!")
                     
                     # Clean up temporary file
@@ -204,6 +207,7 @@ class ConversationAnalysisView(APIView):
                     return Response({
                         'success': True,
                         'data': analysis_result,
+                        'formatted_text': formatted_text,
                         'message': 'Conversation analysis completed successfully'
                     }, status=status.HTTP_200_OK)
                     
