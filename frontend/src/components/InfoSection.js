@@ -3,27 +3,27 @@ import './InfoSection.css';
 
 const InfoSection = memo(() => (
   <div className="info-section">
-    <h2 className="info-title">Instagram Aesthetic Analysis</h2>
+    <h2 className="info-title">AI Analysis Features</h2>
     <div className="info-grid">
       <div className="info-card">
+        <div className="info-icon">⭐</div>
+        <h3>Overall Rating</h3>
+        <p>Comprehensive scoring based on technical quality, composition, and aesthetic appeal</p>
+      </div>
+      <div className="info-card">
         <div className="info-icon">🎯</div>
-        <h3>Instagram Appeal Score</h3>
-        <p>Overall visual appeal rating based on Instagram's algorithmic preferences</p>
+        <h3>Composition Analysis</h3>
+        <p>Rule of thirds, leading lines, symmetry, and other composition techniques evaluation</p>
       </div>
       <div className="info-card">
-        <div className="info-icon">💬</div>
-        <h3>Caption Analysis</h3>
-        <p>Emotional tone and engagement potential of your Instagram captions</p>
+        <div className="info-icon">💡</div>
+        <h3>Lighting Assessment</h3>
+        <p>Professional lighting analysis including exposure, contrast, and mood evaluation</p>
       </div>
       <div className="info-card">
-        <div className="info-icon">#️⃣</div>
-        <h3>Hashtag Optimization</h3>
-        <p>Instagram hashtag suggestions to maximize reach and engagement</p>
-      </div>
-      <div className="info-card">
-        <div className="info-icon">🎨</div>
-        <h3>Feed Aesthetic</h3>
-        <p>How your post fits with current Instagram aesthetic trends and styles</p>
+        <div className="info-icon">🧍</div>
+        <h3>Pose & Subject Analysis</h3>
+        <p>Body positioning, facial expressions, and subject placement recommendations</p>
       </div>
     </div>
   </div>

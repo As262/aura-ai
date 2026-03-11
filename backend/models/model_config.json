@@ -1,0 +1,20 @@
+{ 
+  "models": { 
+    "pose_detection": { 
+      "name": "MediaPipe Pose", 
+      "type": "pose_estimation", 
+      "status": "ready" 
+    }, 
+    "face_analysis": { 
+      "name": "MediaPipe Face Mesh", 
+      "type": "face_detection", 
+      "status": "ready" 
+    }, 
+    "aesthetic_scoring": { 
+      "name": "Custom Heuristic Model", 
+      "type": "aesthetic_analysis", 
+      "status": "ready" 
+    } 
+  }, 
+  "version": "1.0.0" 
+} 

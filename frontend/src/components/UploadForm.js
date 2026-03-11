@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import FileValidator from '../utils/FileValidator';
 import './UploadForm.css';
 
@@ -9,6 +9,8 @@ const UploadForm = ({
   showCaption = false, 
   isLoading = false,
   platform = 'instagram',
+  shouldClearPreview = false,
+  onPreviewCleared,
   children 
 }) => {
   const [dragActive, setDragActive] = useState(false);
@@ -16,6 +18,8 @@ const UploadForm = ({
   const [validationErrors, setValidationErrors] = useState([]);
   const [validationWarnings, setValidationWarnings] = useState([]);
   const [isValidating, setIsValidating] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   // Helper function for validation options
   const getValidationOptions = (platform, acceptedTypes) => {
@@ -24,6 +28,7 @@ const UploadForm = ({
     if (acceptedTypes.includes('image/')) category = 'image';
     else if (acceptedTypes.includes('video/')) category = 'video';
     else if (acceptedTypes.includes('text/')) category = 'text';
+    else if (platform === 'conversation-analysis' || acceptedTypes.includes('.txt') || acceptedTypes.includes('.log')) category = 'conversation';
 
     // Platform-specific size limits
     const platformSizeLimits = {
@@ -34,7 +39,9 @@ const UploadForm = ({
       snapchat: { image: 5 * 1024 * 1024, video: 60 * 1024 * 1024 },
       linkedin: { image: 8 * 1024 * 1024, video: 75 * 1024 * 1024 },
       facebook: { image: 10 * 1024 * 1024, video: 1024 * 1024 * 1024 },
-      pinterest: { image: 10 * 1024 * 1024 }
+      pinterest: { image: 10 * 1024 * 1024 },
+      'ai-analysis': { image: 15 * 1024 * 1024 }, // 15MB for detailed AI analysis
+      'conversation-analysis': { conversation: 10 * 1024 * 1024 } // 10MB for conversation files
     };
 
     const maxSize = platformSizeLimits[platform]?.[category] || FileValidator.MAX_SIZES[category];
@@ -79,6 +86,13 @@ const UploadForm = ({
       // Set any warnings
       if (basicValidation.warnings.length > 0 || advancedValidation.warnings.length > 0) {
         setValidationWarnings([...basicValidation.warnings, ...advancedValidation.warnings]);
+      }
+
+      // Create preview URL for images
+      if (file.type.startsWith('image/')) {
+        const url = URL.createObjectURL(file);
+        setPreviewUrl(url);
+        setUploadedFile(file);
       }
 
       // File is valid, proceed with upload
@@ -129,6 +143,31 @@ const UploadForm = ({
     // Form submission logic can be added here if needed
   };
 
+  // Clean up preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  // Clear preview when parent requests it
+  useEffect(() => {
+    if (shouldClearPreview) {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+      setPreviewUrl(null);
+      setUploadedFile(null);
+      setValidationErrors([]);
+      setValidationWarnings([]);
+      if (onPreviewCleared) {
+        onPreviewCleared();
+      }
+    }
+  }, [shouldClearPreview, previewUrl, onPreviewCleared]);
+
   return (
     <div className="upload-form">
       <h2 className="upload-title">{title}</h2>
@@ -151,14 +190,28 @@ const UploadForm = ({
           />
           
           <label htmlFor="file-upload" className="upload-label">
-            <div className="upload-icon">
-              📁
-            </div>
-            <div className="upload-text">
-              <h3>Drop your file here or click to browse</h3>
-              <p>Accepted formats: {acceptedTypes}</p>
-              <p className="platform-info">Platform: {platform}</p>
-            </div>
+            {previewUrl ? (
+              <div className="preview-container">
+                <img src={previewUrl} alt="Preview" className="preview-image" />
+                <div className="preview-overlay">
+                  <p className="preview-text">Click to change image</p>
+                  {uploadedFile && <p className="file-name">{uploadedFile.name}</p>}
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="upload-icon">
+                  📁
+                </div>
+                <div className="upload-text">
+                  <h3>Drop your file here or click to browse</h3>
+                  <p>Accepted formats: {acceptedTypes}</p>
+                  <p className="platform-info">
+                    {platform === 'ai-analysis' ? ' AI Analysis Mode' : `Platform: ${platform}`}
+                  </p>
+                </div>
+              </>
+            )}
           </label>
           
           {(isLoading || isValidating) && (
@@ -183,7 +236,7 @@ const UploadForm = ({
 
         {validationWarnings.length > 0 && (
           <div className="validation-messages warning-messages" role="alert" aria-live="polite">
-            <h4>⚠️ Warnings:</h4>
+            <h4>⚠️ File Validation Warnings:</h4>
             <ul>
               {validationWarnings.map((warning, index) => (
                 <li key={index}>{warning}</li>

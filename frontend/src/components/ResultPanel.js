@@ -2,8 +2,23 @@ import React from 'react';
 import './ResultPanel.css';
 
 const ResultPanel = ({ title, results, isVisible = false }) => {
+  console.log('🎯 ResultPanel props:', { title, results, isVisible });
+  
   if (!isVisible || !results) {
+    console.log('🎯 ResultPanel not rendering:', { isVisible, hasResults: !!results });
     return null;
+  }
+
+  try {
+  
+  // Check if we have formatted_text - display it instead of JSON
+  if (results.formatted_text) {
+    return (
+      <div className="result-panel formatted-text-panel">
+        <h2 className="result-title">{title || 'Analysis Results'}</h2>
+        <pre className="formatted-analysis-text">{results.formatted_text}</pre>
+      </div>
+    );
   }
 
   const renderResultItem = (key, value) => {
@@ -30,7 +45,12 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
             {Object.entries(value).map(([nestedKey, nestedValue]) => (
               <div key={nestedKey} className="result-nested-item">
                 <span className="nested-label">{nestedKey}:</span>
-                <span className="nested-value">{nestedValue}</span>
+                <span className="nested-value">
+                  {typeof nestedValue === 'object' && nestedValue !== null 
+                    ? JSON.stringify(nestedValue, null, 2)
+                    : String(nestedValue)
+                  }
+                </span>
               </div>
             ))}
           </div>
@@ -54,7 +74,10 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
             </div>
           ) : (
             <span className={`result-text ${getValueClass(key, value)}`}>
-              {value}
+              {typeof value === 'object' && value !== null 
+                ? JSON.stringify(value, null, 2)
+                : String(value)
+              }
             </span>
           )}
         </div>
@@ -93,9 +116,22 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
       </div>
       
       <div className="result-content">
-        {Object.entries(results).map(([key, value]) => 
-          renderResultItem(key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()), value)
-        )}
+        {Object.entries(results).map(([key, value]) => {
+          // Filter for social media relevant items only
+          const socialMediaKeys = [
+            'aesthetic_score', 'aestheticScore', 'platform', 
+            'engagement_potential', 'hashtag_recommendations', 
+            'best_posting_time', 'platform_optimization'
+          ];
+          
+          // If this is social media analysis, show only relevant items
+          const isSocialMedia = results.platform || results.result?.platform;
+          if (isSocialMedia && !socialMediaKeys.includes(key) && !key.includes('score')) {
+            return null; // Skip non-social media items
+          }
+          
+          return renderResultItem(key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()), value);
+        })}
       </div>
       
       <div className="result-actions">
@@ -108,6 +144,19 @@ const ResultPanel = ({ title, results, isVisible = false }) => {
       </div>
     </div>
   );
+  } catch (error) {
+    console.error('❌ ResultPanel render error:', error);
+    return (
+      <div className="result-panel error">
+        <div className="result-header">
+          <h2 className="result-title">Display Error</h2>
+        </div>
+        <div className="result-content">
+          <p>Unable to display results. Please try again.</p>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default ResultPanel;

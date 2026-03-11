@@ -1,33 +1,54 @@
+/* Ultra Modern Theme Toggle Component */
 .theme-toggle {
-  background: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 50%;
+  background: var(--surface-glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 1rem;
+  transition: var(--transition-normal);
+  margin-left: var(--space-4);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, var(--accent-neon), var(--accent-cyan));
+  opacity: 0;
+  transition: var(--transition-normal);
+  border-radius: inherit;
 }
 
 .theme-toggle:hover {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
   transform: scale(1.05);
+  border-color: var(--accent-neon);
+  box-shadow: var(--shadow-neon);
+}
+
+.theme-toggle:hover::before {
+  opacity: 0.1;
 }
 
 .theme-toggle:hover .theme-toggle-icon {
-  color: var(--bg-color);
+  color: var(--accent-neon);
+  transform: scale(1.1);
 }
 
 .theme-toggle-icon {
-  color: var(--text-color);
-  transition: all 0.3s ease;
+  color: var(--text-secondary);
+  transition: var(--transition-normal);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .theme-toggle:active {
@@ -36,17 +57,39 @@
 
 /* Smooth icon rotation animation */
 .theme-toggle-icon svg {
-  transition: transform 0.3s ease;
+  transition: var(--transition-normal);
+  width: 20px;
+  height: 20px;
 }
 
 .theme-toggle:hover .theme-toggle-icon svg {
   transform: rotate(180deg);
 }
 
+/* Light theme specific styles */
+:root[data-theme="light"] .theme-toggle {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .theme-toggle:hover {
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+:root[data-theme="light"] .theme-toggle:hover .theme-toggle-icon {
+  color: var(--accent-purple);
+}
+
 @media (max-width: 768px) {
   .theme-toggle {
     width: 40px;
     height: 40px;
-    margin-left: 0.5rem;
+    margin-left: var(--space-2);
+  }
+  
+  .theme-toggle-icon svg {
+    width: 18px;
+    height: 18px;
   }
 }
