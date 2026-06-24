@@ -108,13 +108,13 @@ class HybridCompositionDetector:
                 self.model.load_state_dict(torch.load(model_path, map_location=self.device))
                 self.model.to(self.device)
                 self.model_loaded = True
-                print(f"✅ Loaded composition model from {model_path}")
+                print(f"[OK] Loaded composition model from {model_path}")
             except Exception as e:
                 self.model_loaded = False
-                print(f"⚠️ Failed to load model: {e}")
+                print(f"[WARN] Failed to load model: {e}")
         else:
             self.model_loaded = False
-            print("⚠️ No trained model found. Using rule-based detection only.")
+            print("[WARN] No trained model found. Using rule-based detection only.")
     
     def detect_composition(self, image_path, rule_based_scores=None):
         """
@@ -160,7 +160,7 @@ class HybridCompositionDetector:
                         'rule_contribution': 1 - ml_result['confidence']
                     }
             except Exception as e:
-                print(f"⚠️ ML prediction failed: {e}")
+                print(f"[WARN] ML prediction failed: {e}")
         
         # Fallback to rule-based
         if rule_based_scores:

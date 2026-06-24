@@ -13,7 +13,7 @@ import time
 
 try:
     import mediapipe as mp
-    MEDIAPIPE_AVAILABLE = True
+    MEDIAPIPE_AVAILABLE = hasattr(mp, 'solutions')
 except ImportError:
     mp = None
     MEDIAPIPE_AVAILABLE = False
@@ -32,7 +32,7 @@ try:
     HYBRID_MODEL_AVAILABLE = True
 except ImportError:
     HYBRID_MODEL_AVAILABLE = False
-    print("⚠️ Hybrid ML model not available. Using rule-based detection only.")
+    print("[WARN] Hybrid ML model not available. Using rule-based detection only.")
 
 
 class OptimizedImageAnalysisService:
@@ -258,7 +258,7 @@ class OptimizedImageAnalysisService:
                     if 'all_scores' in hybrid_result:
                         composition_scores = {k: v * 10 for k, v in hybrid_result['all_scores'].items()}
                     
-                    print(f"🤖 {hybrid_result['method'].upper()} Detection: {primary_type} ({hybrid_result['confidence']:.2%})")
+                    print(f"[AI] {hybrid_result['method'].upper()} Detection: {primary_type} ({hybrid_result['confidence']:.2%})")
                     
                     # Skip rule-based priority logic, use ML result
                     return {
@@ -282,7 +282,7 @@ class OptimizedImageAnalysisService:
                         'ml_confidence': round(hybrid_result['confidence'] * 100, 1)
                     }
             except Exception as e:
-                print(f"⚠️ Hybrid detection failed, using rule-based: {e}")
+                print(f"[WARN] Hybrid detection failed, using rule-based: {e}")
         
         # ==== RULE-BASED PRIORITY LOGIC (Fallback) ====
         # Smart priority logic - only suppress when there's true conflict
