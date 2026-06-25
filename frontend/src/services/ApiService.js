@@ -132,8 +132,22 @@ class ApiService {
           color_insights: this.interpretColors(analysis.color_analysis)
         };
 
-        // Add priority suggestions
-        result.data.priority_actions = this.prioritizeSuggestions(analysis.improvement_suggestions || []);
+        // Add priority suggestions. The optimized backend returns `tips` (not
+        // `improvement_suggestions`); map those into the shape the UI expects,
+        // surfacing only High-priority items here so they don't duplicate the
+        // full Personalized Tips list. Each tip's `tip` text becomes `suggestion`.
+        const rawSuggestions = (analysis.improvement_suggestions && analysis.improvement_suggestions.length)
+          ? analysis.improvement_suggestions
+          : (analysis.tips || [])
+              .filter(t => (t.priority || '').toLowerCase() === 'high')
+              .map(t => ({
+                category: t.category,
+                priority: t.priority,
+                suggestion: t.tip,
+                current: t.current,
+                alternative: t.alternative,
+              }));
+        result.data.priority_actions = this.prioritizeSuggestions(rawSuggestions);
         
         // Add skill level recommendations
         result.data.skill_recommendations = this.getSkillRecommendations(analysis);
@@ -300,7 +314,7 @@ class ApiService {
     if (technical.noise?.rating === "High") issues.push("noise levels");
     else if (technical.noise?.rating === "Low") strengths.push("clean image quality");
     
-    if (technical.exposure?.overall !== "Good") issues.push("exposure");
+    if (!technical.brightness?.optimal) issues.push("exposure");
     else strengths.push("well-exposed");
     
     let summary = "";
@@ -323,7 +337,7 @@ class ApiService {
   static interpretLighting(lightingAnalysis) {
     if (!lightingAnalysis) return "Lighting analysis not available.";
     
-    const quality = lightingAnalysis.overall_quality;
+    const quality = lightingAnalysis.quality;
     const shadows = lightingAnalysis.shadows?.percentage || 0;
     
     if (quality === "Excellent") return "Perfect lighting with great balance and direction.";
@@ -401,7 +415,7 @@ class ApiService {
       });
     }
     
-    if (analysis.lighting_analysis?.overall_quality === "Needs Improvement") {
+    if (analysis.lighting_analysis?.quality === "Needs Improvement") {
       recommendations.push({
         skill: "Lighting Fundamentals",
         focus: "Master natural and artificial lighting techniques",

@@ -12,6 +12,7 @@ from .serializers import (
     ConversationAnalysisSerializer
 )
 from .ai_services_optimized import OptimizedImageAnalysisService as ImageAnalysisService
+from .ai_services_optimized import get_image_service
 import json
 import os
 import tempfile
@@ -55,7 +56,7 @@ class AestheticAnalysisView(generics.CreateAPIView):
                     tmp_file_path = tmp_file.name
                 
                 # Initialize AI service and analyze image
-                ai_service = ImageAnalysisService()
+                ai_service = get_image_service()
                 analysis_result = ai_service.analyze_image_comprehensive(tmp_file_path)
                 
                 # Clean up temporary file
@@ -190,7 +191,23 @@ class ConversationAnalysisView(APIView):
                     
                     analysis_service = ConversationAnalysisService(model_path if os.path.exists(model_path) else None)
                     analysis_result = analysis_service.analyze_conversation(decoded_data['messages'])
-                    
+
+                    # If the decoder couldn't extract a usable conversation, tell the
+                    # user clearly instead of returning a confusing "success" payload.
+                    if isinstance(analysis_result, dict) and analysis_result.get('error'):
+                        if os.path.exists(tmp_file_path):
+                            os.unlink(tmp_file_path)
+                        return Response({
+                            'success': False,
+                            'error': analysis_result['error'],
+                            'details': (
+                                f"Only {decoded_data['metadata']['total_messages']} message(s) could be read. "
+                                "Supported: WhatsApp/Instagram/Telegram .txt exports, "
+                                "JSON [{sender, message, timestamp}], CSV, or .log — with a few back-and-forth messages."
+                            ),
+                            'messages_found': decoded_data['metadata']['total_messages']
+                        }, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
                     # Generate human-readable text format
                     formatted_text = analysis_service.format_analysis_as_text(analysis_result)
                     
@@ -317,7 +334,7 @@ class SocialMediaAnalysisView(APIView):
                 
                 try:
                     # Initialize AI service and run social media analysis
-                    ai_service = ImageAnalysisService()
+                    ai_service = get_image_service()
                     print(f"🎯 Running social media analysis for platform: {platform}")
                     
                     # Use the new social media analysis method
@@ -456,7 +473,7 @@ def detailed_image_analysis(request):
         
         try:
             # Initialize AI service and perform comprehensive analysis
-            ai_service = ImageAnalysisService()
+            ai_service = get_image_service()
             analysis_result = ai_service.analyze_image_comprehensive(tmp_file_path)
             
             # Add metadata
@@ -507,7 +524,10 @@ def detailed_image_analysis(request):
 # NOTE: This is intentionally lightweight for development. Replace with
 # a persistent DB-backed model for production use.
 _IP_USAGE_COUNTS = {}  # ip -> int
-_USAGE_LIMIT = 5
+# Global per-IP analysis cap shared across all features (aesthetic + convo + social).
+# Raised from 5 so it is not a surprise wall during normal use/development.
+# Lower this for a tighter free tier in production.
+_USAGE_LIMIT = 100
 _DEBOUNCE_CACHE = {}  # ip -> (timestamp, response_data)
 _DEBOUNCE_TTL = 1.5  # seconds
 

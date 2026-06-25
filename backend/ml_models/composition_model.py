@@ -50,6 +50,12 @@ class CompositionCNN(nn.Module):
             'fill_the_frame',
             'frame_within_frame'
         ]
+
+        # Softmax temperature for confidence calibration. Kept as a plain float
+        # attribute (NOT a Parameter/buffer) so it stays out of state_dict and old
+        # checkpoints still load under strict load_state_dict. T=1.0 is a no-op;
+        # raise toward 1.5-3.0 to soften an over-confident model.
+        self.temperature = 1.0
     
     def forward(self, x):
         features = self.backbone(x)
@@ -72,11 +78,18 @@ class CompositionCNN(nn.Module):
         ])
         
         image = Image.open(image_path).convert('RGB')
-        image_tensor = transform(image).unsqueeze(0).to(device)
-        
+        image_tensor = transform(image).unsqueeze(0).to(device)  # (1,3,224,224)
+
+        # Test-time augmentation: average the original with its horizontal mirror.
+        # Every composition label is closed under horizontal flip, so this is
+        # label-safe and reduces single-crop prediction variance.
+        batch = torch.cat([image_tensor, torch.flip(image_tensor, dims=[3])], dim=0)
+
         with torch.no_grad():
-            outputs = self(image_tensor)
-            probabilities = F.softmax(outputs, dim=1)[0]
+            outputs = self(batch)                                  # (2, num_classes)
+            scaled = outputs / float(self.temperature)             # confidence calibration
+            # Softmax per row BEFORE averaging the two augmentation views.
+            probabilities = F.softmax(scaled, dim=1).mean(dim=0)   # (num_classes,)
             predicted_idx = torch.argmax(probabilities).item()
             confidence = probabilities[predicted_idx].item()
         

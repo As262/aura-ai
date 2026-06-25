@@ -6,9 +6,13 @@ Pillow>=9.0.0
 django-environ>=0.10.0
 opencv-python>=4.8.0
 mediapipe>=0.10.0
-tensorflow>=2.13.0
+# tensorflow is optional and not required (no wheels on Python 3.13/3.14); the
+# composition model runs on PyTorch. Install only on a supported Python if needed.
+# tensorflow>=2.13.0
 numpy>=1.24.0
 scikit-image>=0.20.0
+scikit-learn>=1.3.0
+vaderSentiment>=3.3.2
 scipy>=1.10.0
 matplotlib>=3.7.0
 requests>=2.31.0

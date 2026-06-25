@@ -14,6 +14,7 @@ import ConvoDecoder from './pages/ConvoDecoder';
 import Pricing from './pages/Pricing';
 import UsageDebugPage from './pages/UsageDebugPage';
 import './App.css';
+import './styles/bugatti-overrides.css';
 
 function App() {
   return (

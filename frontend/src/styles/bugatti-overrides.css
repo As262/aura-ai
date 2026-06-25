@@ -1,0 +1,290 @@
+/* ============================================================
+   BUGATTI OVERRIDES — imported LAST so it wins.
+   Re-skins the remaining smaller components (modals, toasts,
+   status, info, usage, errors) to the monochrome system without
+   rewriting each file. No gradients, shadows, or rounded corners.
+   ============================================================ */
+
+/* ---------- MODALS (Privacy + Out-of-uses) ---------- */
+.privacy-modal-overlay,
+.out-of-uses-overlay,
+.usage-limit-overlay {
+  background: rgba(0, 0, 0, 0.82) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+.privacy-modal-content,
+.out-of-uses-modal,
+.usage-limit-content {
+  background: var(--bug-surface-card) !important;
+  border: 1px solid var(--bug-hairline-strong) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--bug-body) !important;
+}
+
+.privacy-modal-content h1,
+.privacy-modal-content h2,
+.privacy-modal-content h3,
+.out-of-uses-modal h1,
+.out-of-uses-modal h2,
+.out-of-uses-modal h3,
+.usage-limit-content h1,
+.usage-limit-content h2,
+.usage-limit-content h3 {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--tracking-display) !important;
+  color: var(--bug-ink) !important;
+}
+
+.privacy-message,
+.privacy-compact-body,
+.out-of-uses-info,
+.usage-limit-message {
+  font-family: var(--font-body) !important;
+  color: var(--bug-body) !important;
+}
+
+.privacy-icon,
+.out-of-uses-icon { filter: none !important; color: var(--bug-muted) !important; }
+
+/* Modal buttons → transparent pill + outline */
+.privacy-btn,
+.out-of-uses-action,
+.upgrade-button,
+.out-of-uses-close {
+  font-family: var(--font-mono) !important;
+  font-size: 0.8125rem !important;
+  letter-spacing: var(--tracking-label) !important;
+  text-transform: uppercase !important;
+  border-radius: var(--radius-pill) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: 1px solid var(--bug-hairline-strong) !important;
+  color: var(--bug-body) !important;
+  transition: background-color var(--transition-normal), color var(--transition-normal), border-color var(--transition-normal) !important;
+}
+.privacy-btn-accept,
+.upgrade-button {
+  border-color: var(--bug-ink) !important;
+  color: var(--bug-ink) !important;
+}
+.privacy-btn-accept:hover,
+.upgrade-button:hover,
+.privacy-btn:hover,
+.out-of-uses-action:hover {
+  background: var(--bug-ink) !important;
+  color: var(--bug-canvas) !important;
+  transform: none !important;
+}
+.privacy-modal-footer { border-top: 1px solid var(--bug-hairline) !important; }
+
+/* ---------- TOAST ---------- */
+.toast {
+  background: var(--bug-surface-elevated) !important;
+  border: 1px solid var(--bug-hairline-strong) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--bug-body) !important;
+  font-family: var(--font-mono) !important;
+}
+.toast__message {
+  font-family: var(--font-mono) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.04em !important;
+  color: var(--bug-body) !important;
+}
+.toast__progress { background: var(--bug-ink) !important; }
+.toast--success { border-left: 2px solid var(--bug-success) !important; }
+.toast--error { border-left: 2px solid var(--bug-error) !important; }
+.toast--warning { border-left: 2px solid var(--bug-warning) !important; }
+.toast--info { border-left: 2px solid var(--bug-link) !important; }
+.toast__close, .toast__action { color: var(--bug-muted) !important; }
+
+/* ---------- CONNECTION STATUS ---------- */
+.connection-status {
+  background: var(--bug-surface-card) !important;
+  border: 1px solid var(--bug-hairline) !important;
+  border-radius: var(--radius-pill) !important;
+  box-shadow: none !important;
+  color: var(--bug-muted) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.625rem !important;
+  letter-spacing: var(--tracking-label) !important;
+  text-transform: uppercase !important;
+}
+.status-indicator { box-shadow: none !important; }
+.refresh-btn {
+  background: transparent !important;
+  border: 1px solid var(--bug-hairline) !important;
+  border-radius: var(--radius-full) !important;
+  color: var(--bug-muted) !important;
+}
+
+/* ---------- INFO SECTION + FEATURE CARD ---------- */
+.info-section .info-icon,
+.feature-icon { filter: none !important; }
+
+.feature-card {
+  background: var(--bug-surface-card) !important;
+  border: 1px solid var(--bug-hairline) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+.feature-card:hover {
+  transform: none !important;
+  border-color: var(--bug-hairline-strong) !important;
+  box-shadow: none !important;
+}
+.feature-title {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  background: none !important;
+  -webkit-text-fill-color: var(--bug-ink) !important;
+  color: var(--bug-ink) !important;
+}
+.feature-description { font-family: var(--font-body) !important; color: var(--bug-body) !important; }
+.btn-feature {
+  font-family: var(--font-mono) !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--tracking-label) !important;
+  border-radius: var(--radius-pill) !important;
+  background: transparent !important;
+  border: 1px solid var(--bug-ink) !important;
+  color: var(--bug-ink) !important;
+  box-shadow: none !important;
+}
+
+/* ---------- USAGE LIMIT GUARD ---------- */
+.usage-warning-banner {
+  background: var(--bug-surface-soft) !important;
+  border: 1px solid var(--bug-warning) !important;
+  border-radius: 0 !important;
+  color: var(--bug-body) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+.usage-stats {
+  font-family: var(--font-mono) !important;
+  color: var(--bug-muted) !important;
+}
+
+/* ---------- ERROR BOUNDARY ---------- */
+.error-boundary-content {
+  background: var(--bug-surface-card) !important;
+  border: 1px solid var(--bug-hairline-strong) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.error-boundary h1, .error-boundary h2 {
+  font-family: var(--font-display) !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--tracking-display) !important;
+  color: var(--bug-ink) !important;
+}
+.error-actions .btn { border-radius: var(--radius-pill) !important; }
+.error-stack, .component-stack {
+  font-family: var(--font-mono) !important;
+  background: var(--bug-canvas) !important;
+  border: 1px solid var(--bug-hairline) !important;
+  color: var(--bug-muted) !important;
+}
+
+/* ---------- INFO SECTION title (kill gradient text) ---------- */
+.info-title,
+.info-section .info-title {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--tracking-display) !important;
+  background: none !important;
+  -webkit-text-fill-color: var(--bug-ink) !important;
+  color: var(--bug-ink) !important;
+}
+
+/* ---------- PRICING PAGE ---------- */
+.pricing-page { background: var(--bug-canvas) !important; }
+.pricing-title,
+.plan-name,
+.plan-price,
+.price-amount,
+.tab-title {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  background: none !important;
+  -webkit-text-fill-color: var(--bug-ink) !important;
+  color: var(--bug-ink) !important;
+}
+.pricing-description, .pricing-info, .feature-text, .usage-label, .stat-label {
+  font-family: var(--font-body) !important;
+  color: var(--bug-body) !important;
+}
+.pricing-card,
+.current-usage-card,
+.info-card,
+.usage-stat,
+.tab-content {
+  background: var(--bug-surface-card) !important;
+  border: 1px solid var(--bug-hairline) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+.pricing-card:hover { transform: none !important; border-color: var(--bug-hairline-strong) !important; box-shadow: none !important; }
+.popular-badge {
+  background: var(--bug-ink) !important;
+  color: var(--bug-canvas) !important;
+  border-radius: 0 !important;
+  font-family: var(--font-mono) !important;
+  letter-spacing: var(--tracking-label) !important;
+  text-transform: uppercase !important;
+  box-shadow: none !important;
+}
+.feature-tab, .feature-selector {
+  background: transparent !important;
+  border: 1px solid var(--bug-hairline) !important;
+  border-radius: 0 !important;
+  color: var(--bug-muted) !important;
+  font-family: var(--font-mono) !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--tracking-label) !important;
+}
+.feature-tab.active { background: var(--bug-ink) !important; color: var(--bug-canvas) !important; }
+.feature-icon, .info-icon, .tab-icon, .title-icon, .reset-icon { filter: none !important; }
+.purchase-button,
+.reset-usage-button {
+  font-family: var(--font-mono) !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--tracking-label) !important;
+  border-radius: var(--radius-pill) !important;
+  background: transparent !important;
+  border: 1px solid var(--bug-ink) !important;
+  color: var(--bug-ink) !important;
+  box-shadow: none !important;
+}
+.purchase-button:hover, .reset-usage-button:hover {
+  background: var(--bug-ink) !important;
+  color: var(--bug-canvas) !important;
+  transform: none !important;
+}
+.processing-spinner {
+  border: 1px solid var(--bug-hairline-strong) !important;
+  border-top-color: var(--bug-ink) !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Catch-all: kill stray neon glows on focus rings etc. ---------- */
+.App [style*="text-fill-color: transparent"],
+.App .text-gradient {
+  -webkit-text-fill-color: var(--bug-ink) !important;
+}

@@ -1,116 +1,76 @@
-/* Info Section Styles - Optimized for Performance */
+/* ============================================================
+   INFO SECTION — Bugatti. Flat hairline cards, no gradients/glow.
+   (Lazy-loaded; styled directly so it stays in-system.)
+   ============================================================ */
 .info-section {
   max-width: 1200px;
-  margin: 4rem auto 0;
-  padding: 4rem 2rem;
+  margin: var(--space-16) auto 0;
+  padding: var(--space-16) var(--space-8);
   background: transparent;
-  transform: translateZ(0); /* Hardware acceleration */
   contain: layout;
 }
 
 .info-title {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-primary, #ffffff);
-  margin-bottom: 3rem;
-  will-change: auto;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-display);
+  color: var(--bug-ink);
+  margin-bottom: var(--space-10);
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  contain: layout;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0;
   width: 100%;
-  max-width: 100%;
+  border: 1px solid var(--bug-hairline);
 }
 
 .info-card {
-  padding: 2rem;
-  text-align: center;
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(138, 43, 226, 0.05) 100%);
-  border: 1px solid rgba(0, 255, 136, 0.3);
-  border-radius: 20px;
-  transition: all 0.3s ease;
+  padding: var(--space-8);
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--bug-hairline);
+  border-bottom: 1px solid var(--bug-hairline);
+  border-radius: 0;
+  transition: background-color var(--transition-normal);
   position: relative;
   overflow: hidden;
-  will-change: transform;
-  contain: layout;
 }
-
-.info-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
-  animation: infoShine 3s infinite;
-}
-
-@keyframes infoShine {
-  0% { left: -100%; }
-  50%, 100% { left: 100%; }
-}
-
+.info-card::before { content: none; }
 .info-card:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(138, 43, 226, 0.08) 100%);
-  border-color: rgba(0, 255, 136, 0.5);
-  box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
-  transform: translateY(-5px);
+  background: var(--bug-surface-card);
+  border-color: var(--bug-hairline);
+  box-shadow: none;
+  transform: none;
 }
 
-.info-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: block;
-  animation: infoIconFloat 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes infoIconFloat {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-5px) rotate(5deg); }
-}
+/* Drop the floating emoji glyphs */
+.info-icon { display: none; }
 
 .info-card h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-primary, #ffffff);
-  margin-bottom: 0.75rem;
-  position: relative;
-  z-index: 1;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bug-ink);
+  margin-bottom: var(--space-3);
 }
 
 .info-card p {
-  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
-  line-height: 1.5;
+  font-family: var(--font-body);
+  color: var(--bug-body);
+  font-size: 1rem;
+  line-height: var(--line-height-relaxed);
   margin: 0;
-  position: relative;
-  z-index: 1;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .info-section {
-    margin-top: 3rem;
-    padding: 3rem 1rem;
-    border-radius: 20px;
-  }
-  
-  .info-title {
-    font-size: 2rem;
-  }
-  
-  .info-grid {
-    gap: 1.5rem;
-  }
-  
-  .info-card {
-    padding: 1.5rem;
-  }
+  .info-section { margin-top: var(--space-12); padding: var(--space-10) var(--space-4); }
+  .info-grid { grid-template-columns: 1fr; }
 }

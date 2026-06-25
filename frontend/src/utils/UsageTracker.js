@@ -2,9 +2,13 @@
 class UsageTracker {
   constructor() {
     this.STORAGE_KEY = 'aura_ai_usage_tracking';
+    // Keep these in sync with the backend _USAGE_LIMIT (api/views.py). The
+    // backend enforces a shared per-IP cap; these are the per-feature display
+    // limits. They must not exceed the backend cap or the badge will show
+    // "uses left" while the server is already returning 429.
     this.LIMITS = {
-      aesthetic_analyzer: 5,
-      convo_decoder: 15
+      aesthetic_analyzer: 100,
+      convo_decoder: 100
     };
   }
 

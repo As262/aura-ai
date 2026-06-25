@@ -186,42 +186,95 @@ class ConversationDecoder:
             }
         }
     
+    # WhatsApp line prefix: optional '[', date (d/m/y, 2- or 4-digit year),
+    # time (12h or 24h, optional seconds, optional am/pm), optional ']' and ' - '.
+    _WA_PREFIX = re.compile(
+        r'^\[?\s*('
+        r'\d{1,2}[/.]\d{1,2}[/.]\d{2,4},?\s+'
+        r'\d{1,2}:\d{2}(?::\d{2})?\s*(?:[APap][Mm])?'
+        r')\s*\]?\s*-?\s*'
+    )
+
+    @staticmethod
+    def _normalize_text(text: str) -> str:
+        """Strip the unicode space/marker characters WhatsApp injects."""
+        return (text
+                .replace(' ', ' ')   # narrow no-break space (before am/pm)
+                .replace(' ', ' ')   # no-break space
+                .replace('‎', '')    # left-to-right mark
+                .replace('‏', ''))   # right-to-left mark
+
     def _parse_text_to_messages(self, text: str) -> List[Dict[str, Any]]:
         """
-        Parse plain text into structured messages
-        Supports multiple chat formats (WhatsApp, Telegram, Instagram)
+        Parse plain text into structured messages.
+        Detects WhatsApp-style exports (datetime-prefixed lines, multi-line
+        messages) and falls back to generic Telegram/Instagram/`Sender: Message`
+        parsing for everything else.
         """
+        text = self._normalize_text(text)
+        lines = text.split('\n')
+
+        # If any of the first lines look like a WhatsApp datetime prefix, use the
+        # WhatsApp parser (which treats non-prefixed lines as message continuations).
+        sample = [l for l in lines[:300] if l.strip()]
+        if any(self._WA_PREFIX.match(l) for l in sample):
+            return self._parse_whatsapp(lines)
+        return self._parse_generic(lines)
+
+    def _parse_whatsapp(self, lines: List[str]) -> List[Dict[str, Any]]:
         messages = []
-        
-        # Common patterns for chat exports
+        for raw in lines:
+            line = raw.rstrip()
+            m = self._WA_PREFIX.match(line)
+            if m:
+                timestamp = m.group(1).strip()
+                rest = line[m.end():]
+                # A real user message is "Sender: message". System/notification
+                # lines (encryption notice, "changed the subject", etc.) have no
+                # such "Sender: " prefix and are skipped.
+                if ': ' in rest:
+                    sender, message = rest.split(': ', 1)
+                    sender = sender.strip()
+                    if sender and len(sender) <= 40 and '\n' not in sender:
+                        messages.append({
+                            'timestamp': timestamp,
+                            'sender': sender,
+                            'message': message.strip()
+                        })
+                        continue
+                # datetime line without a valid sender -> system message, skip
+                continue
+            # No datetime prefix -> continuation of the previous message
+            if messages and line.strip():
+                messages[-1]['message'] += ' ' + line.strip()
+        return messages
+
+    def _parse_generic(self, lines: List[str]) -> List[Dict[str, Any]]:
+        messages = []
+
         patterns = [
             # Custom format: [HH:MM AM/PM] Sender: Message
             r'\[(\d{1,2}:\d{2}\s+(?:AM|PM|am|pm))\]\s+([^:]+):\s+(.+)',
-            # WhatsApp: [DD/MM/YYYY, HH:MM:SS] Sender: Message
-            r'\[(\d{1,2}/\d{1,2}/\d{4},\s+\d{1,2}:\d{2}:\d{2})\]\s+([^:]+):\s+(.+)',
-            # WhatsApp alternative: DD/MM/YYYY, HH:MM - Sender: Message
-            r'(\d{1,2}/\d{1,2}/\d{4},\s+\d{1,2}:\d{2})\s+-\s+([^:]+):\s+(.+)',
+            # WhatsApp bracket: [DD/MM/YYYY, HH:MM:SS] Sender: Message
+            r'\[(\d{1,2}/\d{1,2}/\d{2,4},\s+\d{1,2}:\d{2}(?::\d{2})?)\]\s+([^:]+):\s+(.+)',
             # Telegram: [HH:MM:SS] Sender: Message
             r'\[(\d{2}:\d{2}:\d{2})\]\s+([^:]+):\s+(.+)',
             # Instagram: Sender • HH:MM Message
-            r'([^\•]+)\s+•\s+(\d{2}:\d{2})\s+(.+)',
+            r'([^•]+)\s+•\s+(\d{2}:\d{2})\s+(.+)',
             # Generic: Sender: Message
             r'^([^:]+):\s+(.+)$'
         ]
-        
-        lines = text.split('\n')
-        
+
         for line in lines:
             line = line.strip()
             if not line:
                 continue
-            
+
             matched = False
             for pattern in patterns:
                 match = re.match(pattern, line)
                 if match:
                     groups = match.groups()
-                    
                     if len(groups) == 3:
                         timestamp, sender, message = groups
                     elif len(groups) == 2:
@@ -229,7 +282,6 @@ class ConversationDecoder:
                         timestamp = None
                     else:
                         continue
-                    
                     messages.append({
                         'timestamp': timestamp,
                         'sender': sender.strip(),
@@ -237,8 +289,7 @@ class ConversationDecoder:
                     })
                     matched = True
                     break
-            
-            # If no pattern matched, try simple sender: message format
+
             if not matched and ':' in line:
                 parts = line.split(':', 1)
                 if len(parts) == 2:
@@ -247,7 +298,7 @@ class ConversationDecoder:
                         'sender': parts[0].strip(),
                         'message': parts[1].strip()
                     })
-        
+
         return messages
     
     def _normalize_json_message(self, item: Dict) -> Dict[str, Any]:

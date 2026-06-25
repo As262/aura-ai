@@ -142,18 +142,28 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
               <div className="metric">
                 <h4>Brightness</h4>
                 <div className="metric-value">
-                  <span className="score">{technical_quality.brightness.value?.toFixed(0)}</span>
-                  <span className="level">{technical_quality.brightness.optimal ? 'Optimal' : 'Adjust'}</span>
+                  <span className="score">{technical_quality.brightness.score?.toFixed(1)}/10</span>
+                  <span className="level">{
+                    technical_quality.brightness.value < 90 ? 'Too dark'
+                    : technical_quality.brightness.value > 170 ? 'Too bright'
+                    : 'Good'
+                  }</span>
+                  <span className="metric-caption">mean {technical_quality.brightness.value?.toFixed(0)}/255</span>
                 </div>
               </div>
             )}
-            
+
             {technical_quality.contrast && (
               <div className="metric">
                 <h4>Contrast</h4>
                 <div className="metric-value">
-                  <span className="score">{technical_quality.contrast.value?.toFixed(0)}</span>
-                  <span className="level">{technical_quality.contrast.optimal ? 'Optimal' : 'Adjust'}</span>
+                  <span className="score">{technical_quality.contrast.score?.toFixed(1)}/10</span>
+                  <span className="level">{
+                    technical_quality.contrast.value < 30 ? 'Low / flat'
+                    : technical_quality.contrast.value > 80 ? 'Harsh'
+                    : 'Good'
+                  }</span>
+                  <span className="metric-caption">std {technical_quality.contrast.value?.toFixed(0)}</span>
                 </div>
               </div>
             )}
@@ -210,7 +220,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
             <div className="quality-main">
               <span className="quality-label">Overall Quality</span>
               <span className="quality-score-large">{lighting_analysis.overall_score}/10</span>
-              <span className={`quality-badge ${lighting_analysis.quality?.toLowerCase().replace(' ', '-')}`}>
+              <span className={`quality-badge ${lighting_analysis.quality?.toLowerCase().replace(/\s+/g, '-')}`}>
                 {lighting_analysis.quality}
               </span>
             </div>
@@ -254,7 +264,8 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                 <div className="metric-icon">🌑</div>
                 <h4>Shadows</h4>
                 <span className="percentage">{lighting_analysis.shadows.percentage}%</span>
-                <span className="score-small">Score: {lighting_analysis.shadows.score}/10</span>
+                <span className="score-small">Quality: {lighting_analysis.shadows.score}/10</span>
+                <span className="metric-caption">Less clipped shadow = higher</span>
                 <div className="progress-bar">
                   <div 
                     className="progress-fill shadow" 
@@ -270,7 +281,8 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                 <div className="metric-icon">✨</div>
                 <h4>Highlights</h4>
                 <span className="percentage">{lighting_analysis.highlights.percentage}%</span>
-                <span className="score-small">Score: {lighting_analysis.highlights.score}/10</span>
+                <span className="score-small">Quality: {lighting_analysis.highlights.score}/10</span>
+                <span className="metric-caption">Some detail is ideal, not blown</span>
                 <div className="progress-bar">
                   <div 
                     className="progress-fill highlight" 
@@ -289,8 +301,8 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                 <div className="brightness-indicator">
                   <div className="brightness-scale">
                     <div 
-                      className="brightness-marker" 
-                      style={{left: `${(lighting_analysis.mean_brightness / 255) * 100}%`}}
+                      className="brightness-marker"
+                      style={{left: `${Math.min(100, Math.max(0, (lighting_analysis.mean_brightness / 255) * 100))}%`}}
                     />
                   </div>
                   <div className="brightness-labels">
@@ -330,7 +342,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
             <div className="detected-composition">
               <div className="composition-header">
                 <h3>Detected Composition Style</h3>
-                <span className={`composition-badge ${composition_analysis.quality?.toLowerCase().replace(' ', '-')}`}>
+                <span className={`composition-badge ${composition_analysis.quality?.toLowerCase().replace(/\s+/g, '-')}`}>
                   {composition_analysis.quality}
                 </span>
               </div>
@@ -351,54 +363,83 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
             </div>
           )}
           
-          {/* Traditional composition metrics for backward compatibility */}
-          <div className="composition-metrics">
-            {composition_analysis.analysis_details && (
-              <>
+          {/* Composition strength across all styles (real geometric scores) */}
+          {composition_analysis.all_scores ? (
+            <div className="other-styles">
+              <h4 className="other-styles-heading">Other styles considered</h4>
+              <div className="composition-metrics">
+                {Object.entries(composition_analysis.all_scores)
+                  .filter(([key]) => key !== composition_analysis.type_key)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([key, score]) => {
+                    const LABELS = {
+                      rule_of_thirds: 'Rule of Thirds',
+                      centered: 'Centered',
+                      leading_lines: 'Leading Lines',
+                      diagonal: 'Diagonal',
+                      symmetrical: 'Symmetry',
+                      golden_ratio: 'Golden Ratio',
+                      fill_the_frame: 'Fill the Frame',
+                      frame_within_frame: 'Frame within Frame',
+                    };
+                    return (
+                      <div className="metric" key={key}>
+                        <h4>{LABELS[key] || key.replace(/_/g, ' ')}</h4>
+                        <span className="score">{typeof score === 'number' ? score.toFixed(1) : score}/10</span>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          ) : (
+            /* Legacy formats (no all_scores in payload) */
+            <div className="composition-metrics">
+              {composition_analysis.analysis_details && (
+                <>
+                  <div className="metric">
+                    <h4>Rule of Thirds</h4>
+                    <span className="score">{composition_analysis.analysis_details.rule_of_thirds}/10</span>
+                  </div>
+                  <div className="metric">
+                    <h4>Symmetry</h4>
+                    <span className="score">{composition_analysis.analysis_details.symmetry}/10</span>
+                  </div>
+                  <div className="metric">
+                    <h4>Leading Lines</h4>
+                    <span className="score">{composition_analysis.analysis_details.leading_lines}/10</span>
+                  </div>
+                  <div className="metric">
+                    <h4>Golden Ratio</h4>
+                    <span className="score">{composition_analysis.analysis_details.golden_ratio}/10</span>
+                  </div>
+                </>
+              )}
+
+              {!composition_analysis.analysis_details && composition_analysis.rule_of_thirds && (
                 <div className="metric">
                   <h4>Rule of Thirds</h4>
-                  <span className="score">{composition_analysis.analysis_details.rule_of_thirds}/10</span>
+                  <span className="score">{composition_analysis.rule_of_thirds.score}/10</span>
+                  <span className="level">{composition_analysis.rule_of_thirds.compliance}</span>
                 </div>
+              )}
+
+              {!composition_analysis.analysis_details && composition_analysis.balance && (
+                <div className="metric">
+                  <h4>Visual Balance</h4>
+                  <span className="score">{composition_analysis.balance.score}/10</span>
+                  <span className="level">{composition_analysis.balance.type}</span>
+                </div>
+              )}
+
+              {!composition_analysis.analysis_details && composition_analysis.symmetry && (
                 <div className="metric">
                   <h4>Symmetry</h4>
-                  <span className="score">{composition_analysis.analysis_details.symmetry}/10</span>
+                  <span className="score">{composition_analysis.symmetry.score}/10</span>
+                  <span className="level">{composition_analysis.symmetry.type}</span>
                 </div>
-                <div className="metric">
-                  <h4>Leading Lines</h4>
-                  <span className="score">{composition_analysis.analysis_details.leading_lines}/10</span>
-                </div>
-                <div className="metric">
-                  <h4>Golden Ratio</h4>
-                  <span className="score">{composition_analysis.analysis_details.golden_ratio}/10</span>
-                </div>
-              </>
-            )}
-            
-            {/* Fallback for old format */}
-            {!composition_analysis.analysis_details && composition_analysis.rule_of_thirds && (
-              <div className="metric">
-                <h4>Rule of Thirds</h4>
-                <span className="score">{composition_analysis.rule_of_thirds.score}/10</span>
-                <span className="level">{composition_analysis.rule_of_thirds.compliance}</span>
-              </div>
-            )}
-            
-            {!composition_analysis.analysis_details && composition_analysis.balance && (
-              <div className="metric">
-                <h4>Visual Balance</h4>
-                <span className="score">{composition_analysis.balance.score}/10</span>
-                <span className="level">{composition_analysis.balance.type}</span>
-              </div>
-            )}
-            
-            {!composition_analysis.analysis_details && composition_analysis.symmetry && (
-              <div className="metric">
-                <h4>Symmetry</h4>
-                <span className="score">{composition_analysis.symmetry.score}/10</span>
-                <span className="level">{composition_analysis.symmetry.type}</span>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -462,7 +503,7 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
                       style={{backgroundColor: color.hex}}
                     ></div>
                     <div className="color-info">
-                      <span className="color-name">{color.name}</span>
+                      <span className="color-name">{color.name || color.hex?.toUpperCase()}</span>
                       <span className="color-percentage">{color.percentage}%</span>
                     </div>
                   </div>
@@ -529,11 +570,11 @@ const DetailedAnalysisResults = ({ analysis, isLoading }) => {
             <div className="factors-breakdown">
               {Object.entries(aesthetic_score.factors).map(([factor, score]) => (
                 <div key={factor} className="factor-item">
-                  <span className="factor-name">{factor.replace('_', ' ')}</span>
+                  <span className="factor-name">{factor.replace(/_/g, ' ')}</span>
                   <div className="progress-bar">
-                    <div className="progress" style={{width: `${score * 10}%`}}></div>
+                    <div className="progress" style={{width: `${(typeof score === 'number' ? score : 0) * 10}%`}}></div>
                   </div>
-                  <span className="factor-score">{score.toFixed(1)}</span>
+                  <span className="factor-score">{typeof score === 'number' ? score.toFixed(1) : score}</span>
                 </div>
               ))}
             </div>

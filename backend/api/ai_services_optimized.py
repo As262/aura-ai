@@ -171,9 +171,12 @@ class OptimizedImageAnalysisService:
             'pose_analysis': pose_result,
         }
         
-        # Calculate overall rating
+        # Dedicated aesthetic score — new NIMA-style deep aesthetic model
+        results['aesthetic_score'] = self._assess_aesthetic(image_rgb, results)
+
+        # Calculate overall rating (uses aesthetic_score)
         results['overall_rating'] = self._calculate_overall_rating(results)
-        
+
         # Generate dynamic tips based on actual analysis
         results['tips'] = self._generate_dynamic_tips(results, composition_analysis)
         
@@ -249,38 +252,66 @@ class OptimizedImageAnalysisService:
                     composition_scores
                 )
                 
-                # Use ML result if reliable
+                # Use ML result if reliable AND corroborated by geometry
                 if hybrid_result['reliable'] and hybrid_result['method'] in ['ml', 'hybrid']:
                     primary_type = hybrid_result['detected_type']
-                    primary_score = hybrid_result['confidence'] * 10  # Convert to 0-10 scale
-                    
-                    # Update all scores from ML model
-                    if 'all_scores' in hybrid_result:
-                        composition_scores = {k: v * 10 for k, v in hybrid_result['all_scores'].items()}
-                    
-                    print(f"[AI] {hybrid_result['method'].upper()} Detection: {primary_type} ({hybrid_result['confidence']:.2%})")
-                    
-                    # Skip rule-based priority logic, use ML result
-                    return {
-                        'detected_type': self.COMPOSITION_TYPES[primary_type]['name'],
-                        'type_key': primary_type,
-                        'description': self.COMPOSITION_TYPES[primary_type]['description'],
-                        'ideal_for': self.COMPOSITION_TYPES[primary_type]['ideal_for'],
-                        'score': round(min(primary_score, 10.0), 1),
-                        'quality': self._get_quality_rating(primary_score),
-                        'secondary_type': None,
-                        'all_scores': {k: round(min(v, 10.0), 1) for k, v in composition_scores.items()},
-                        'analysis_details': {
-                            'rule_of_thirds': round(composition_scores.get('rule_of_thirds', 0), 1),
-                            'centered': round(composition_scores.get('centered', 0), 1),
-                            'leading_lines': round(composition_scores.get('leading_lines', 0), 1),
-                            'diagonal': round(composition_scores.get('diagonal', 0), 1),
-                            'symmetry': round(composition_scores.get('symmetrical', 0), 1),
-                            'golden_ratio': round(composition_scores.get('golden_ratio', 0), 1)
-                        },
-                        'method': hybrid_result['method'],
-                        'ml_confidence': round(hybrid_result['confidence'] * 100, 1)
-                    }
+                    ml_conf = hybrid_result['confidence']
+
+                    # Real rule-based geometric strengths (0-10). These stay intact
+                    # and are what we display — NEVER the softmax class probabilities,
+                    # which collapse every non-winning class to ~0 and made the UI
+                    # show 0/10 across the board.
+                    geom_scores = dict(composition_scores)
+                    geom_for_type = geom_scores.get(primary_type, 0.0)
+                    geom_winner = max(geom_scores, key=geom_scores.get)
+                    geom_max = geom_scores[geom_winner]
+
+                    # Corroboration guard: trust the CNN only if the geometry doesn't
+                    # strongly contradict it. A confident-but-wrong CNN that asserts a
+                    # type the geometry has no evidence for is overruled and we fall
+                    # through to the rule-based winner instead.
+                    accept_ml = (geom_for_type >= 4.0) or (ml_conf >= 0.85)
+                    strong_disagreement = (geom_for_type < 3.0 and geom_max > 7.0)
+
+                    if accept_ml and not strong_disagreement:
+                        # Blend the headline score: mostly CNN confidence, partly the
+                        # measured geometric strength of the detected type.
+                        fused = (ml_conf * 10.0 * 0.6) + (geom_for_type * 0.4)
+                        primary_score = min(fused, 10.0)
+
+                        # Keep the softmax distribution separately (for % display only).
+                        ml_probabilities = {k: round(v, 4)
+                                            for k, v in hybrid_result.get('all_scores', {}).items()}
+
+                        print(f"[AI] {hybrid_result['method'].upper()} Detection: {primary_type} "
+                              f"(ml {ml_conf:.0%}, geom {geom_for_type:.1f}/10 -> {primary_score:.1f})")
+
+                        return {
+                            'detected_type': self.COMPOSITION_TYPES[primary_type]['name'],
+                            'type_key': primary_type,
+                            'description': self.COMPOSITION_TYPES[primary_type]['description'],
+                            'ideal_for': self.COMPOSITION_TYPES[primary_type]['ideal_for'],
+                            'score': round(primary_score, 1),
+                            'quality': self._get_quality_rating(primary_score),
+                            'secondary_type': None,
+                            # Genuine geometric 0-10 strengths for every style
+                            'all_scores': {k: round(min(v, 10.0), 1) for k, v in geom_scores.items()},
+                            'analysis_details': {
+                                'rule_of_thirds': round(geom_scores.get('rule_of_thirds', 0), 1),
+                                'centered': round(geom_scores.get('centered', 0), 1),
+                                'leading_lines': round(geom_scores.get('leading_lines', 0), 1),
+                                'diagonal': round(geom_scores.get('diagonal', 0), 1),
+                                'symmetry': round(geom_scores.get('symmetrical', 0), 1),
+                                'golden_ratio': round(geom_scores.get('golden_ratio', 0), 1)
+                            },
+                            'ml_probabilities': ml_probabilities,
+                            'method': hybrid_result['method'],
+                            'ml_confidence': round(ml_conf * 100, 1)
+                        }
+                    else:
+                        # CNN not supported by geometry -> use the rule-based winner.
+                        print(f"[AI] CNN '{primary_type}' (conf {ml_conf:.0%}) overruled by "
+                              f"geometry: winner '{geom_winner}' {geom_max:.1f}/10")
             except Exception as e:
                 print(f"[WARN] Hybrid detection failed, using rule-based: {e}")
         
@@ -563,20 +594,43 @@ class OptimizedImageAnalysisService:
         return min(10, fill_ratio * 12)
     
     def _check_frame_in_frame(self, gray):
-        """Detect frame within frame composition"""
+        """Detect frame-within-frame composition.
+
+        A real framing element is a large, convex, 4-sided contour that ENCLOSES
+        the image centre (an archway, window, doorway), not just any 4-vertex blob.
+        The previous version counted every quad — including the image border and
+        tiny noise contours — so cluttered images trivially "won" frame-in-frame.
+        """
+        h, w = gray.shape
+        total_area = float(h * w)
+        cx, cy = w / 2.0, h / 2.0
+
         edges = cv2.Canny(gray, 100, 200)
-        
-        # Look for rectangular structures (potential frames)
         contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        
-        rectangles = 0
+
+        qualifying = 0
         for contour in contours:
             approx = cv2.approxPolyDP(contour, 0.02 * cv2.arcLength(contour, True), True)
-            if len(approx) == 4:  # Rectangle
-                rectangles += 1
-        
-        # More rectangles suggest frame-in-frame
-        return min(10, rectangles / 3)
+            if len(approx) != 4 or not cv2.isContourConvex(approx):
+                continue
+
+            area = cv2.contourArea(approx)
+            # Must be a substantial region, but not the full-frame border itself.
+            if area < 0.08 * total_area or area > 0.95 * total_area:
+                continue
+
+            x, y, bw, bh = cv2.boundingRect(approx)
+            # Reject the outer image border (spans almost the whole frame).
+            if bw > 0.95 * w and bh > 0.95 * h:
+                continue
+            # The frame must actually enclose the image centre.
+            if not (x < cx < x + bw and y < cy < y + bh):
+                continue
+
+            qualifying += 1
+
+        # Each genuine enclosing frame is strong evidence.
+        return min(10, qualifying * 5)
     
     def _generate_dynamic_tips(self, results, composition_analysis):
         """
@@ -831,8 +885,11 @@ class OptimizedImageAnalysisService:
         # Scoring
         sharpness_score = min(10, max(0, (sharpness / 100) * 10))
         noise_score = max(0, 10 - (noise_level / 3))
-        brightness_score = 10 - abs(brightness - 127) / 12.7
-        contrast_score = min(10, max(0, (contrast / 10)))
+        # Full credit across a well-exposed band [90,170] (centre 130, +/-40),
+        # then taper; clamped so extremes don't go negative.
+        brightness_score = float(min(10.0, max(0.0, 10.0 - max(0.0, abs(brightness - 130) - 40) / 9.0)))
+        # Full credit for std in [25,75]; std=100 is harsh, not "perfect".
+        contrast_score = float(min(10.0, max(0.0, 10.0 - max(0.0, abs(contrast - 50.0) - 25.0) / 4.0)))
         range_score = (dynamic_range / 255) * 10
         
         overall = (sharpness_score * 0.30 + noise_score * 0.25 + 
@@ -842,8 +899,8 @@ class OptimizedImageAnalysisService:
             'overall_score': round(overall, 1),
             'sharpness': {'score': round(sharpness_score, 1), 'value': round(sharpness, 0), 'rating': self._get_rating(sharpness_score)},
             'noise': {'score': round(noise_score, 1), 'level': round(noise_level, 2), 'rating': self._get_rating(noise_score)},
-            'brightness': {'score': round(brightness_score, 1), 'value': round(brightness, 1), 'optimal': 100 <= brightness <= 180},
-            'contrast': {'score': round(contrast_score, 1), 'value': round(contrast, 1), 'optimal': 40 <= contrast <= 100},
+            'brightness': {'score': round(brightness_score, 1), 'value': round(brightness, 1), 'optimal': 90 <= brightness <= 170},
+            'contrast': {'score': round(contrast_score, 1), 'value': round(contrast, 1), 'optimal': 30 <= contrast <= 80},
             'dynamic_range': {'score': round(range_score, 1), 'range': int(dynamic_range), 'utilization': round((dynamic_range/255)*100, 1)}
         }
     
@@ -868,9 +925,18 @@ class OptimizedImageAnalysisService:
         highlights = np.sum(l_channel > 200) / l_channel.size
         
         evenness = max(0, 10 - (std_light / 10))
-        exposure_score = 10 - abs(mean_light - 127) / 12.7
-        shadow_score = max(0, 10 - (shadows * 30))
-        highlight_score = max(0, 10 - (highlights * 30))
+        exposure_score = float(min(10.0, max(0.0, 10.0 - abs(mean_light - 127) / 12.7)))
+        # Shadows: up to ~40% dark coverage is free (low-key photos are valid),
+        # then a gentle penalty — instead of the old slope that zeroed at 33%.
+        shadow_excess = max(0.0, float(shadows) - 0.40)
+        shadow_score = float(min(max(10.0 - shadow_excess * 12.0, 0.0), 10.0))
+        # Highlights: a little bright detail (~1-8%) is ideal; zero is neutral,
+        # not perfect; lots of blown highlights is bad.
+        if highlights <= 0.08:
+            highlight_score = 7.0 + (float(highlights) / 0.08) * 3.0
+        else:
+            highlight_score = 10.0 - (float(highlights) - 0.08) * 30.0
+        highlight_score = float(min(max(highlight_score, 0.0), 10.0))
         
         overall = evenness * 0.35 + exposure_score * 0.30 + shadow_score * 0.20 + highlight_score * 0.15
         
@@ -887,6 +953,45 @@ class OptimizedImageAnalysisService:
             'consistency': round(max(0, 10 - std_light / 10), 1)
         }
     
+    def _get_color_name(self, rgb):
+        """Map an (r, g, b) triple to a human-readable colour name."""
+        r, g, b = [int(v) for v in rgb[:3]]
+        mx, mn = max(r, g, b), min(r, g, b)
+        # Greyscale family (low saturation)
+        if mx - mn < 25:
+            if mx < 60:
+                return 'Black'
+            if mx > 200:
+                return 'White'
+            return 'Gray'
+        # Hue from HSV
+        import colorsys
+        h, s, v = colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
+        deg = h * 360
+        if s < 0.18:
+            return 'Gray'
+        if deg < 15 or deg >= 345:
+            name = 'Red'
+        elif deg < 45:
+            name = 'Orange'
+        elif deg < 70:
+            name = 'Yellow'
+        elif deg < 160:
+            name = 'Green'
+        elif deg < 200:
+            name = 'Cyan'
+        elif deg < 255:
+            name = 'Blue'
+        elif deg < 290:
+            name = 'Purple'
+        else:
+            name = 'Pink'
+        if v < 0.4:
+            return f'Dark {name}'
+        if v > 0.85 and s < 0.5:
+            return f'Light {name}'
+        return name
+
     def _analyze_colors(self, pil_image, image_rgb):
         """Fast color analysis"""
         from sklearn.cluster import KMeans
@@ -907,23 +1012,82 @@ class OptimizedImageAnalysisService:
             dominant_colors.append({
                 'rgb': color.tolist(),
                 'hex': f'#{color[0]:02x}{color[1]:02x}{color[2]:02x}',
-                'percentage': round(pct, 1)
+                'percentage': round(pct, 1),
+                'name': self._get_color_name(color.tolist())
             })
-        
+
         hsv = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2HSV)
         saturation = np.mean(hsv[:, :, 1])
-        
-        saturation_score = min(10, (saturation / 255) * 15)
-        diversity_score = min(10, len(set(tuple(c['rgb']) for c in dominant_colors)) * 2)
-        overall = saturation_score * 0.6 + diversity_score * 0.4
-        
+
+        # Gentler factor so moderate saturation doesn't instantly max out.
+        saturation_score = min(10, (saturation / 255) * 11)
+        # Diversity = how spread apart the dominant colours are (continuous 0-10),
+        # not a coarse count of distinct centroids (which could only reach 6).
+        cc = colors.astype(float)
+        if len(cc) < 2:
+            diversity_score = 0.0
+        else:
+            dists = [np.linalg.norm(cc[i] - cc[j])
+                     for i in range(len(cc)) for j in range(i + 1, len(cc))]
+            diversity_score = min(10.0, (float(np.mean(dists)) / 150.0) * 10.0)
+
+        # ---- Colour harmony from dominant-hue relationships ----
+        harmony = self._analyze_color_harmony(colors, percentages)
+
+        # Blend harmony into the overall colour quality
+        overall = saturation_score * 0.35 + diversity_score * 0.2 + harmony['score'] * 0.45
+
         return {
             'overall_score': round(overall, 1),
             'dominant_colors': dominant_colors[:3],
             'saturation': {'score': round(saturation_score, 1), 'level': round(saturation, 1), 'rating': self._get_rating(saturation_score)},
+            'harmony': harmony,
             'diversity': round(diversity_score, 1),
             'rating': self._get_rating(overall)
         }
+
+    def _analyze_color_harmony(self, colors, percentages):
+        """
+        Classify the colour scheme from dominant-hue spacing and score how
+        harmonious it is (monochromatic / analogous / complementary / triadic).
+        """
+        # Convert dominant RGB centroids to hue degrees (0-360)
+        hues = []
+        for c in colors:
+            r, g, b = [v / 255.0 for v in c[:3]]
+            mx, mn = max(r, g, b), min(r, g, b)
+            diff = mx - mn
+            if diff == 0:
+                h = 0.0
+            elif mx == r:
+                h = (60 * ((g - b) / diff) + 360) % 360
+            elif mx == g:
+                h = (60 * ((b - r) / diff) + 120) % 360
+            else:
+                h = (60 * ((r - g) / diff) + 240) % 360
+            hues.append(h)
+
+        if len(hues) < 2:
+            return {'score': 6.5, 'type': 'Monochromatic', 'rating': 'Good'}
+
+        # Largest circular gap between sorted hues characterises the scheme
+        sorted_h = sorted(hues)
+        spreads = [abs(a - b) for a, b in zip(sorted_h, sorted_h[1:])]
+        spreads.append(360 - (sorted_h[-1] - sorted_h[0]))
+        max_spread = max(spreads)
+
+        if max_spread <= 40:
+            scheme, score = 'Monochromatic', 8.0
+        elif max_spread <= 90:
+            scheme, score = 'Analogous', 9.0
+        elif 150 <= max_spread <= 210:
+            scheme, score = 'Complementary', 8.5
+        elif 100 <= max_spread <= 140:
+            scheme, score = 'Triadic', 7.5
+        else:
+            scheme, score = 'Eclectic', 6.0
+
+        return {'score': round(score, 1), 'type': scheme, 'rating': self._get_rating(score)}
     
     def _analyze_pose(self, image_rgb):
         """Fast pose detection"""
@@ -950,34 +1114,118 @@ class OptimizedImageAnalysisService:
             return {'detected': False}
     
     def _calculate_overall_rating(self, results):
-        """Calculate overall rating"""
+        """Calculate overall rating, trusting the trained CNN more when confident."""
         tech = results['technical_quality']['overall_score']
         lighting = results['lighting_analysis']['overall_score']
         comp = results['composition_analysis']['score']
         colors = results['color_analysis']['overall_score']
-        
-        # Calculate aesthetic score (combination of composition and colors) - CAPPED AT 10
-        aesthetic = min((comp * 0.6 + colors * 0.4), 10.0)
-        
-        overall = tech * 0.30 + lighting * 0.25 + comp * 0.25 + colors * 0.20
-        
+
+        # When the trained composition CNN is confident, give composition more weight
+        comp_obj = results['composition_analysis']
+        ml_conf = comp_obj.get('ml_confidence', 0) / 100.0 if comp_obj.get('method') in ('ml', 'hybrid') else 0.0
+        comp_weight = 0.25 + 0.10 * ml_conf          # 0.25 → 0.35 as confidence rises
+        colors_weight = 0.20
+        tech_weight = 0.30 - 0.05 * ml_conf
+        lighting_weight = 1.0 - (comp_weight + colors_weight + tech_weight)
+
+        overall = (tech * tech_weight + lighting * lighting_weight +
+                   comp * comp_weight + colors * colors_weight)
+
         if results['pose_analysis'].get('detected'):
             pose_score = results['pose_analysis'].get('quality_score', 0)
             overall = overall * 0.95 + pose_score * 0.05
-        
-        category = 'Outstanding' if overall >= 9.0 else 'Excellent' if overall >= 8.0 else 'Very Good' if overall >= 7.0 else 'Good' if overall >= 6.0 else 'Fair' if overall >= 5.0 else 'Needs Improvement'
-        
+
+        overall = min(max(overall, 0.0), 10.0)
+
+        category = ('Outstanding' if overall >= 9.0 else 'Excellent' if overall >= 8.0
+                    else 'Very Good' if overall >= 7.0 else 'Good' if overall >= 6.0
+                    else 'Fair' if overall >= 5.0 else 'Needs Improvement')
+
+        aesthetic = results.get('aesthetic_score', {}).get('score',
+                                 min((comp * 0.6 + colors * 0.4), 10.0))
+
         return {
             'score': round(overall, 1),
             'category': category,
             'grade': self._score_to_grade(overall),
             'breakdown': {
-                'technical': tech, 
-                'lighting': lighting, 
-                'composition': comp, 
+                'technical': tech,
+                'lighting': lighting,
+                'composition': comp,
                 'colors': colors,
                 'aesthetic': round(aesthetic, 1)
             }
+        }
+
+    def _assess_aesthetic(self, image_rgb, results):
+        """
+        Primary aesthetic scorer: the new NIMA-style deep aesthetic model
+        (MobileNetV2 backbone). Falls back to the rule-based aesthetic score
+        if the model is unavailable. Blends in the trained composition CNN.
+        """
+        try:
+            from ml_models.aesthetic_model import get_assessor
+            assessment = get_assessor().assess(image_rgb)
+
+            # Blend the deep aesthetic score with the trained composition CNN
+            comp_obj = results['composition_analysis']
+            ml_conf = comp_obj.get('ml_confidence', 0) / 100.0 if comp_obj.get('method') in ('ml', 'hybrid') else 0.0
+            comp_score = comp_obj.get('score', assessment['score'])
+            blended = assessment['score'] * (1 - 0.25 * ml_conf) + comp_score * (0.25 * ml_conf)
+            assessment['score'] = round(float(min(max(blended, 1.0), 10.0)), 1)
+
+            # Surface composition as an extra factor for the UI
+            assessment.setdefault('factors', {})['composition'] = round(float(comp_score), 1)
+            return assessment
+        except Exception as e:
+            print(f"[WARN] Deep aesthetic model unavailable, using rule-based: {e}")
+            return self._calculate_aesthetic_score(results)
+
+    def _calculate_aesthetic_score(self, results):
+        """
+        Fallback aesthetic score driven by the trained composition model,
+        colour harmony and lighting balance, with a per-factor breakdown.
+        """
+        comp_obj = results['composition_analysis']
+        color_obj = results['color_analysis']
+        light_obj = results['lighting_analysis']
+
+        composition = comp_obj.get('score', 0)
+        harmony = color_obj.get('harmony', {}).get('score', color_obj.get('overall_score', 0))
+        saturation = color_obj.get('saturation', {}).get('score', 0)
+        lighting = light_obj.get('overall_score', 0)
+
+        # Confidence of the trained CNN raises trust in the composition factor
+        ml_conf = comp_obj.get('ml_confidence', 0) / 100.0 if comp_obj.get('method') in ('ml', 'hybrid') else 0.0
+
+        factors = {
+            'composition': round(float(composition), 1),
+            'color_harmony': round(float(harmony), 1),
+            'color_vibrancy': round(float(saturation), 1),
+            'lighting': round(float(lighting), 1),
+        }
+
+        score = (composition * (0.40 + 0.10 * ml_conf) +
+                 harmony * 0.25 +
+                 lighting * 0.20 +
+                 saturation * (0.15 - 0.10 * ml_conf))
+        score = float(min(max(score, 0.0), 10.0))
+
+        if score >= 8.5:
+            interp = f"Striking aesthetic - a {comp_obj.get('detected_type', 'strong')} composition with {color_obj.get('harmony', {}).get('type', 'cohesive')} colour."
+        elif score >= 7.0:
+            interp = f"Strong aesthetic. The {color_obj.get('harmony', {}).get('type', 'colour')} palette and composition work well together."
+        elif score >= 5.5:
+            interp = "Solid aesthetic foundation. Tightening composition or colour balance would lift it further."
+        else:
+            interp = "Aesthetic needs work - focus on composition and a more deliberate colour palette."
+
+        return {
+            'score': round(score, 1),
+            'interpretation': interp,
+            'factors': factors,
+            'model': 'trained-cnn' if ml_conf > 0 else 'rule-based',
+            'confidence': round(float(ml_conf) * 100, 1),
         }
     
     def _get_rating(self, score):
@@ -1014,3 +1262,22 @@ class OptimizedImageAnalysisService:
         """Cleanup"""
         if hasattr(self, 'executor'):
             self.executor.shutdown(wait=False)
+
+
+# ---------------------------------------------------------------------------
+# Process-wide singleton so the heavy models (composition CNN + aesthetic
+# MobileNetV2) load ONCE, not on every request. Keeps analysis fast.
+# ---------------------------------------------------------------------------
+import threading as _threading
+
+_SERVICE_INSTANCE = None
+_SERVICE_LOCK = _threading.Lock()
+
+
+def get_image_service():
+    global _SERVICE_INSTANCE
+    if _SERVICE_INSTANCE is None:
+        with _SERVICE_LOCK:
+            if _SERVICE_INSTANCE is None:
+                _SERVICE_INSTANCE = OptimizedImageAnalysisService()
+    return _SERVICE_INSTANCE

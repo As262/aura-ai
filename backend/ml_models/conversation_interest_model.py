@@ -13,6 +13,14 @@ from collections import Counter
 import json
 import os
 
+# Real-time local sentiment engine (pure-python, instant, no downloads)
+try:
+    from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+    VADER_AVAILABLE = True
+except ImportError:
+    VADER_AVAILABLE = False
+    print("[WARN] vaderSentiment not available. Install with: pip install vaderSentiment")
+
 
 class ConversationInterestAnalyzer(nn.Module):
     """
@@ -70,7 +78,10 @@ class ConversationAnalysisService:
     def __init__(self, model_path: str = None):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = ConversationInterestAnalyzer().to(self.device)
-        
+
+        # Real-time sentiment engine (local, instant)
+        self.sentiment = SentimentIntensityAnalyzer() if VADER_AVAILABLE else None
+
         if model_path and os.path.exists(model_path):
             self.model.load_state_dict(torch.load(model_path, map_location=self.device))
             self.model.eval()
@@ -432,16 +443,28 @@ class ConversationAnalysisService:
         # Calculate overall statistics with PERCENTAGE BREAKDOWN
         avg_interest = np.mean(interest_scores)
         interest_distribution = Counter(interest_scores)
-        
-        # Calculate percentage score (0-100%)
-        interest_percentage = (avg_interest / 4) * 100
-        
+
+        # Trained-model percentage score (0-100%)
+        model_percentage = (avg_interest / 4) * 100
+
+        # ---- Real-time sentiment layer (VADER, local) ----
+        sentiment_analysis = self._analyze_sentiment(their_messages, pairs)
+        sentiment_pct = sentiment_analysis['engagement_percentage']
+
+        # Blend the trained model with live sentiment for the final interest read.
+        # Model captures structural engagement; sentiment captures live tone.
+        if sentiment_analysis.get('available'):
+            interest_percentage = round(model_percentage * 0.55 + sentiment_pct * 0.45, 1)
+        else:
+            interest_percentage = round(model_percentage, 1)
+
         # Detailed percentage breakdown
         percentage_breakdown = {
             'overall_interest': round(interest_percentage, 1),
-            'their_engagement_score': round(interest_percentage, 1),
-            'conversation_quality': round(min(interest_percentage * 1.1, 100), 1),  # Slightly boosted
-            'compatibility_score': round(interest_percentage * 0.95, 1),  # Slightly conservative
+            'their_engagement_score': round(sentiment_pct, 1),
+            'model_interest_score': round(model_percentage, 1),
+            'conversation_quality': round(min(interest_percentage * 1.05, 100), 1),
+            'compatibility_score': round(interest_percentage * 0.95, 1),
         }
         
         # Confidence metrics
@@ -452,8 +475,8 @@ class ConversationAnalysisService:
         
         avg_confidence = np.mean(confidence_scores) if confidence_scores else 0
         
-        # Generate improvement suggestions
-        suggestions = self._generate_suggestions(pairs, interest_scores, your_messages, their_messages)
+        # Generate improvement suggestions (now sentiment-aware)
+        suggestions = self._generate_suggestions(pairs, interest_scores, your_messages, their_messages, sentiment_analysis)
         
         # Calculate engagement metrics
         engagement_metrics = self._calculate_engagement_metrics(
@@ -507,6 +530,7 @@ class ConversationAnalysisService:
             
             # Advanced Analysis
             'engagement_metrics': engagement_metrics,
+            'sentiment_analysis': sentiment_analysis,
             'text_style_analysis': text_style_summary,
             'emoji_analysis': emoji_summary,
             
@@ -688,17 +712,62 @@ class ConversationAnalysisService:
             'engagement_balance': round(min(response_ratio, 1/response_ratio), 2)  # Closer to 1 is better
         }
     
-    def _generate_suggestions(self, pairs: List[Tuple[str, str]], 
+    def _generate_suggestions(self, pairs: List[Tuple[str, str]],
                             interest_scores: List[int],
                             your_messages: List[Dict],
-                            their_messages: List[Dict]) -> List[Dict[str, str]]:
+                            their_messages: List[Dict],
+                            sentiment_analysis: Dict[str, Any] = None) -> List[Dict[str, str]]:
         """
         Generate DYNAMIC, AI-powered improvement suggestions based on actual conversation analysis
         Analyzes real message content, patterns, and context to provide personalized tips
         """
-        
+
         all_suggestions = []
-        
+
+        # === REAL-TIME SENTIMENT-DRIVEN ADVICE (VADER) ===
+        if sentiment_analysis and sentiment_analysis.get('available'):
+            trajectory = sentiment_analysis.get('trajectory')
+            positivity = sentiment_analysis.get('positivity', 0)
+            negativity = sentiment_analysis.get('negativity', 0)
+
+            # Surface the message that landed best to double down on what works
+            best_pair, best_compound = None, -2.0
+            for your_msg, their_msg in pairs:
+                c = self._sentiment_compound(their_msg)
+                if c > best_compound:
+                    best_compound, best_pair = c, (your_msg, their_msg)
+
+            if trajectory == 'cooling off':
+                all_suggestions.append({
+                    'category': 'Sentiment Cooling',
+                    'priority': 'High',
+                    'suggestion': f"Their tone has cooled by {abs(sentiment_analysis.get('trajectory_delta', 0)):.0f} points over the chat. The positive energy from earlier is fading.",
+                    'tip': 'Re-introduce a topic that worked earlier, or switch to something playful and open-ended to rekindle the spark.'
+                })
+            elif trajectory == 'warming up':
+                all_suggestions.append({
+                    'category': 'Sentiment Warming',
+                    'priority': 'Info',
+                    'suggestion': f"Their sentiment is trending up (+{sentiment_analysis.get('trajectory_delta', 0):.0f} points). You're building real momentum.",
+                    'tip': 'Keep leaning into the current thread - it is clearly landing well.'
+                })
+
+            if negativity > 25:
+                all_suggestions.append({
+                    'category': 'Negative Tone Detected',
+                    'priority': 'High',
+                    'suggestion': f"About {negativity:.0f}% of their replies carry a negative tone. Something may be creating friction.",
+                    'tip': 'Acknowledge their feelings, ease the pressure, and avoid loaded or one-word-answer questions.'
+                })
+            elif positivity > 60 and best_pair:
+                preview = best_pair[0][:55] + ('...' if len(best_pair[0]) > 55 else '')
+                all_suggestions.append({
+                    'category': 'What Is Working',
+                    'priority': 'Info',
+                    'suggestion': f"Their most positive reaction came after you said: \"{preview}\". That direction resonates.",
+                    'tip': 'Explore more of that theme - ask follow-up questions around what sparked the positive response.'
+                })
+
         # === DYNAMIC ANALYSIS OF ACTUAL CONVERSATION CONTENT ===
         
         # 1. Analyze low interest pairs with SPECIFIC examples
@@ -940,6 +1009,88 @@ class ConversationAnalysisService:
         # Return 2-3 most important suggestions
         return all_suggestions[:3]
     
+    def _sentiment_compound(self, text: str) -> float:
+        """Real-time VADER compound sentiment for a single message (-1..1)."""
+        if not self.sentiment or not text:
+            return 0.0
+        try:
+            return self.sentiment.polarity_scores(text)['compound']
+        except Exception:
+            return 0.0
+
+    def _analyze_sentiment(self, their_messages: List[Dict], pairs: List[Tuple[str, str]]) -> Dict[str, Any]:
+        """
+        Live sentiment read of the other person's messages and their reaction
+        to yours. Produces an engagement percentage and a trajectory (warming
+        up / cooling off) computed straight from the language.
+        """
+        compounds = [self._sentiment_compound(m['message']) for m in their_messages]
+        compounds = [c for c in compounds if c is not None]
+
+        if not compounds:
+            return {
+                'available': VADER_AVAILABLE,
+                'their_sentiment_score': 50.0,
+                'positivity': 50.0,
+                'negativity': 0.0,
+                'trajectory': 'steady',
+                'trajectory_delta': 0.0,
+                'engagement_percentage': 50.0,
+            }
+
+        avg_compound = float(np.mean(compounds))
+        # Map -1..1 to 0..100
+        sentiment_pct = round((avg_compound + 1) / 2 * 100, 1)
+
+        positive = sum(1 for c in compounds if c >= 0.2)
+        negative = sum(1 for c in compounds if c <= -0.2)
+        positivity = round(positive / len(compounds) * 100, 1)
+        negativity = round(negative / len(compounds) * 100, 1)
+
+        # Trajectory: compare first vs second half sentiment
+        half = max(1, len(compounds) // 2)
+        first_half = float(np.mean(compounds[:half]))
+        second_half = float(np.mean(compounds[half:]))
+        delta = round((second_half - first_half) * 100, 1)
+        if delta > 12:
+            trajectory = 'warming up'
+        elif delta < -12:
+            trajectory = 'cooling off'
+        else:
+            trajectory = 'steady'
+
+        # Sentiment toward YOUR messages specifically (their reply to you)
+        reply_compounds = [self._sentiment_compound(their) for _, their in pairs]
+        reply_compounds = [c for c in reply_compounds if c is not None]
+        reply_pct = round((float(np.mean(reply_compounds)) + 1) / 2 * 100, 1) if reply_compounds else sentiment_pct
+
+        return {
+            'available': VADER_AVAILABLE,
+            'their_sentiment_score': sentiment_pct,
+            'reply_sentiment_score': reply_pct,
+            'positivity': positivity,
+            'negativity': negativity,
+            'trajectory': trajectory,
+            'trajectory_delta': delta,
+            'engagement_percentage': round((sentiment_pct * 0.6 + reply_pct * 0.4), 1),
+            'interpretation': self._interpret_sentiment(sentiment_pct, positivity, trajectory),
+        }
+
+    def _interpret_sentiment(self, sentiment_pct: float, positivity: float, trajectory: str) -> str:
+        if sentiment_pct >= 70:
+            base = "Their language is warm and positive"
+        elif sentiment_pct >= 55:
+            base = "Their tone leans positive"
+        elif sentiment_pct >= 45:
+            base = "Their tone is fairly neutral"
+        else:
+            base = "Their tone reads flat or guarded"
+        if trajectory == 'warming up':
+            return f"{base}, and it's warming up as the chat goes on."
+        if trajectory == 'cooling off':
+            return f"{base}, but it's cooling off over time."
+        return f"{base}."
+
     def format_analysis_as_text(self, analysis_result: Dict[str, Any]) -> str:
         """
         Convert analysis result JSON to beautiful human-readable text format
@@ -993,6 +1144,19 @@ class ConversationAnalysisService:
             lines.append(f"   Compatibility Score:    {breakdown.get('compatibility_score', 0):.1f}%")
             lines.append("")
         
+        # Sentiment Analysis (real-time VADER)
+        if 'sentiment_analysis' in analysis_result and analysis_result['sentiment_analysis'].get('available'):
+            sent = analysis_result['sentiment_analysis']
+            lines.append("🧠 LIVE SENTIMENT ANALYSIS")
+            lines.append("-" * 80)
+            lines.append(f"   Their Sentiment:        {sent.get('their_sentiment_score', 0):.1f}%")
+            lines.append(f"   Reaction To You:        {sent.get('reply_sentiment_score', 0):.1f}%")
+            lines.append(f"   Positive Messages:      {sent.get('positivity', 0):.1f}%")
+            lines.append(f"   Negative Messages:      {sent.get('negativity', 0):.1f}%")
+            lines.append(f"   Trajectory:             {sent.get('trajectory', 'steady').title()} ({sent.get('trajectory_delta', 0):+.0f})")
+            lines.append(f"   📝 {sent.get('interpretation', 'N/A')}")
+            lines.append("")
+
         # Text Style Analysis
         if 'text_style_analysis' in analysis_result:
             text_style = analysis_result['text_style_analysis']

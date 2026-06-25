@@ -75,7 +75,15 @@ const ConvoDecoder = () => {
           throw new Error(response.error || 'Analysis failed');
         }
       } catch (err) {
-        const errorMessage = 'Failed to analyze your conversation. Please try again.';
+        // Surface the REAL error (usage limit, unsupported format, empty file…)
+        // instead of a generic message, and route usage-limit hits to the modal.
+        const raw = err.message || '';
+        if (/usage limit/i.test(raw)) {
+          setShowOutOfUsesModal(true);
+          showError('⚠️ Usage limit reached. Reset your uses to continue.', { duration: 4000 });
+          return { success: false, error: raw };
+        }
+        const errorMessage = raw || 'Failed to analyze your conversation. Please try again.';
         setError(errorMessage);
         showError(errorMessage);
         console.error('Analysis error:', err);

@@ -1,290 +1,264 @@
-/* Global CSS Variables System - Aura AI Theme */
+/* ============================================================
+   AURA AI — BUGATTI DESIGN SYSTEM
+   Austere luxury-automotive interface.
+   Pure-black canvas (dark) / inverted white canvas (light),
+   white/ink uppercase letterspaced display type,
+   serif body, monospace labels. No accent color except ice-blue links.
+   No shadows. No gradients. No rounded corners (except pill buttons).
+   ============================================================ */
+
 :root {
-  /* Primary AI Blue - Electric intelligence */
-  --primary-50: #eff6ff;
-  --primary-100: #dbeafe;
-  --primary-200: #bfdbfe;
-  --primary-300: #93c5fd;
-  --primary-400: #60a5fa;
-  --primary-500: #3b82f6;
-  --primary-600: #2563eb;
-  --primary-700: #1d4ed8;
-  --primary-800: #1e3a8a;
-  --primary-900: #1e1b4b;
+  /* ---- Bugatti core palette (DARK = the true Bugatti, default) ---- */
+  --bug-canvas: #000000;
+  --bug-surface-soft: #0d0d0d;
+  --bug-surface-card: #141414;
+  --bug-surface-elevated: #1f1f1f;
+  --bug-hairline: #262626;
+  --bug-hairline-strong: #3a3a3a;
 
-  /* Neural Purple - AI consciousness */
-  --secondary-50: #faf5ff;
-  --secondary-100: #f3e8ff;
-  --secondary-200: #e9d5ff;
-  --secondary-300: #d8b4fe;
-  --secondary-400: #c084fc;
-  --secondary-500: #a855f7;
-  --secondary-600: #9333ea;
-  --secondary-700: #7c3aed;
-  --secondary-800: #6b21a8;
-  --secondary-900: #581c87;
+  --bug-ink: #ffffff;
+  --bug-body: #cccccc;
+  --bug-body-strong: #e6e6e6;
+  --bug-muted: #999999;
+  --bug-muted-soft: #666666;
 
-  /* Electric Cyan - Digital energy */
-  --accent-50: #ecfeff;
-  --accent-100: #cffafe;
-  --accent-200: #a5f3fc;
-  --accent-300: #67e8f9;
-  --accent-400: #22d3ee;
-  --accent-500: #06b6d4;
-  --accent-600: #0891b2;
-  --accent-700: #0e7490;
-  --accent-800: #155e75;
-  --accent-900: #164e63;
+  --bug-link: #c3d9f3;       /* the only non-monochrome colour */
+  --bug-warning: #d4a017;
+  --bug-success: #5fa657;
+  --bug-error: #d46a6a;
+  --bug-on-primary: #000000; /* text on a white fill */
 
-  /* AI-Specific Colors */
-  /* Neural Green - Machine learning */
-  --neural-50: #f0fdf4;
-  --neural-100: #dcfce7;
-  --neural-200: #bbf7d0;
-  --neural-300: #86efac;
-  --neural-400: #4ade80;
-  --neural-500: #22c55e;
-  --neural-600: #16a34a;
-  --neural-700: #15803d;
-  --neural-800: #166534;
-  --neural-900: #14532d;
+  /* ---- Typography (Bugatti trinity → open-source substitutes) ---- */
+  --font-display: 'Saira Condensed', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', monospace;
+  --font-family-sans: var(--font-display);
+  --font-family-mono: var(--font-mono);
 
-  /* Matrix Orange - Data processing */
-  --matrix-50: #fff7ed;
-  --matrix-100: #ffedd5;
-  --matrix-200: #fed7aa;
-  --matrix-300: #fdba74;
-  --matrix-400: #fb923c;
-  --matrix-500: #f97316;
-  --matrix-600: #ea580c;
-  --matrix-700: #c2410c;
-  --matrix-800: #9a3412;
-  --matrix-900: #7c2d12;
+  --tracking-display: 0.16em;   /* wide tracking on display headlines */
+  --tracking-wordmark: 0.42em;  /* widest tracking in the system */
+  --tracking-label: 0.18em;     /* mono labels / buttons / nav */
 
-  /* Quantum Pink - Innovation */
-  --quantum-50: #fdf2f8;
-  --quantum-100: #fce7f3;
-  --quantum-200: #fbcfe8;
-  --quantum-300: #f9a8d4;
-  --quantum-400: #f472b6;
-  --quantum-500: #ec4899;
-  --quantum-600: #db2777;
-  --quantum-700: #be185d;
-  --quantum-800: #9d174d;
-  --quantum-900: #831843;
-
-  /* Semantic Colors */
-  --accent-color: var(--accent-500);
-  --accent-color-hover: var(--accent-600);
-  --accent-color-rgb: 6, 182, 212;
-
-  --secondary-color: var(--secondary-500);
-  --secondary-color-hover: var(--secondary-600);
-
-  --primary-color: var(--primary-500);
-  --primary-color-hover: var(--primary-600);
-
-  /* Error Colors */
-  --error-50: #fef2f2;
-  --error-100: #fee2e2;
-  --error-500: #ef4444;
-  --error-600: #dc2626;
-
-  /* Warning Colors */
-  --warning-50: #fffbeb;
-  --warning-100: #fef3c7;
-  --warning-500: #f59e0b;
-  --warning-600: #d97706;
-
-  /* Success Colors */
-  --success-50: #f0fdf4;
-  --success-100: #dcfce7;
-  --success-500: #22c55e;
-  --success-600: #16a34a;
-
-  /* Gray Scale - Enhanced for AI theme */
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
-
-  /* Deep Space Colors for Dark Mode */
-  --space-50: #f8fafc;
-  --space-100: #f1f5f9;
-  --space-200: #e2e8f0;
-  --space-300: #cbd5e1;
-  --space-400: #94a3b8;
-  --space-500: #64748b;
-  --space-600: #475569;
-  --space-700: #334155;
-  --space-800: #1a202c;
-  --space-900: #171923;
-  --space-950: #0d1117;
-
-  /* Theme Colors - Light Mode */
-  --bg-color: var(--gray-50);
-  --surface-color: #ffffff;
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --text-color: var(--gray-900);
-  --text-secondary: var(--gray-600);
-  --text-muted: var(--gray-500);
-  --border-color: var(--gray-200);
-  --input-bg: #ffffff;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-
-  /* Typography */
-  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-
-  --font-size-xs: 0.75rem;
+  --font-size-xs: 0.6875rem;  /* 11px */
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
-  --font-size-3xl: 1.875rem;
-  --font-size-4xl: 2.25rem;
-  --font-size-5xl: 3rem;
+  --font-size-3xl: 2rem;
+  --font-size-4xl: 3rem;
+  --font-size-5xl: 4rem;
 
   --font-weight-light: 300;
   --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-  --font-weight-extrabold: 800;
+  --font-weight-medium: 400;     /* Bugatti never goes bold — emphasis via size/tracking */
+  --font-weight-semibold: 400;
+  --font-weight-bold: 500;
+  --font-weight-extrabold: 500;
 
-  --line-height-tight: 1.25;
+  --line-height-tight: 1.1;
   --line-height-normal: 1.5;
-  --line-height-relaxed: 1.625;
+  --line-height-relaxed: 1.6;
 
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
+  /* ---- Spacing (4px base, generous section rhythm) ---- */
+  --space-1: 0.25rem;   /* 4 */
+  --space-2: 0.5rem;    /* 8 */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.25rem;   /* 20 */
+  --space-6: 1.5rem;    /* 24 */
+  --space-8: 2.5rem;    /* 40 */
+  --space-10: 3rem;
+  --space-12: 4rem;     /* 64 */
+  --space-16: 5rem;
+  --space-20: 7.5rem;   /* 120 — section rhythm */
+  --space-24: 7.5rem;
+  --space-section: 7.5rem;
 
-  /* Border Radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
-  --radius-3xl: 1.5rem;
+  /* ---- Radius — binary: rectangular for everything except buttons ---- */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
   --radius-full: 9999px;
+  --radius-pill: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  /* ---- Bugatti has no shadows / glows ---- */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-2xl: none;
+  --glow-primary: none;
+  --glow-secondary: none;
+  --glow-accent: none;
+  --glow-neural: none;
 
-  /* Transitions */
-  --transition-fast: 150ms ease-in-out;
-  --transition-normal: 250ms ease-in-out;
-  --transition-slow: 350ms ease-in-out;
+  /* ---- Transitions ---- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
 
-  /* AI-Themed Gradients */
-  --gradient-neural: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 100%);
-  --gradient-cyber: linear-gradient(135deg, var(--accent-500) 0%, var(--primary-600) 100%);
-  --gradient-matrix: linear-gradient(135deg, var(--neural-500) 0%, var(--accent-500) 100%);
-  --gradient-quantum: linear-gradient(135deg, var(--secondary-500) 0%, var(--quantum-500) 100%);
-  --gradient-aurora: linear-gradient(135deg, var(--primary-400) 0%, var(--secondary-400) 25%, var(--accent-400) 50%, var(--neural-400) 75%, var(--quantum-400) 100%);
-  
-  /* Subtle Background Gradients */
-  --gradient-bg-light: linear-gradient(135deg, var(--gray-50) 0%, var(--primary-50) 100%);
-  --gradient-bg-dark: linear-gradient(135deg, var(--space-950) 0%, var(--space-900) 100%);
-  
-  /* Glow Effects for AI Elements */
-  --glow-primary: 0 0 20px rgba(59, 130, 246, 0.3);
-  --glow-secondary: 0 0 20px rgba(168, 85, 247, 0.3);
-  --glow-accent: 0 0 20px rgba(6, 182, 212, 0.3);
-  --glow-neural: 0 0 20px rgba(34, 197, 94, 0.3);
-  
-  /* Interactive States */
-  --hover-overlay: rgba(255, 255, 255, 0.1);
-  --active-overlay: rgba(255, 255, 255, 0.2);
-  --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  /* ============================================================
+     LEGACY TOKEN REMAP — existing component CSS keeps working,
+     but every name now resolves to the monochrome Bugatti palette.
+     ============================================================ */
 
-  /* Z-Index Scale */
-  --z-dropdown: 1000;
-  --z-sticky: 1020;
-  --z-fixed: 1030;
-  --z-modal-backdrop: 1040;
-  --z-modal: 1050;
-  --z-popover: 1060;
-  --z-tooltip: 1070;
+  /* primary/secondary/accent scales collapse to mono + ice-blue */
+  --primary-50:  #f5f5f5;  --primary-100: #e6e6e6;  --primary-200: #cccccc;
+  --primary-300: #999999;  --primary-400: #666666;  --primary-500: #ffffff;
+  --primary-600: #e6e6e6;  --primary-700: #cccccc;  --primary-800: #3a3a3a;
+  --primary-900: #1f1f1f;
 
-  /* Breakpoints (for JS usage) */
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
-}
+  --secondary-50:  #f5f5f5; --secondary-100: #e6e6e6; --secondary-200: #cccccc;
+  --secondary-300: #999999; --secondary-400: #666666; --secondary-500: #ffffff;
+  --secondary-600: #e6e6e6; --secondary-700: #cccccc; --secondary-800: #3a3a3a;
+  --secondary-900: #1f1f1f;
 
-/* Dark Mode Variables - Enhanced AI Theme */
-[data-theme="dark"] {
-  --bg-color: var(--space-950);
-  --surface-color: var(--space-900);
-  --card-bg: rgba(26, 32, 44, 0.8);
-  --text-color: var(--gray-50);
-  --text-secondary: var(--gray-300);
-  --text-muted: var(--gray-400);
-  --border-color: var(--space-700);
-  --input-bg: var(--space-800);
+  --accent-50:  #eef4fb; --accent-100: #dce8f6; --accent-200: #c3d9f3;
+  --accent-300: #c3d9f3; --accent-400: #c3d9f3; --accent-500: #c3d9f3;
+  --accent-600: #a9c4e6; --accent-700: #8fb0d9; --accent-800: #5a7ba3;
+  --accent-900: #2c4763;
+
+  --neural-50:#f5f5f5;--neural-100:#e6e6e6;--neural-200:#cccccc;--neural-300:#999999;
+  --neural-400:#cccccc;--neural-500:#ffffff;--neural-600:#e6e6e6;--neural-700:#cccccc;
+  --neural-800:#3a3a3a;--neural-900:#1f1f1f;
+  --matrix-400:#cccccc;--matrix-500:#999999;--matrix-600:#666666;
+  --quantum-400:#cccccc;--quantum-500:#999999;--quantum-600:#666666;
+
+  --accent-neon: var(--bug-ink);
+  --accent-cyan: var(--bug-ink);
+  --accent-purple: var(--bug-muted);
+  --accent-pink: var(--bug-muted);
+  --accent-orange: var(--bug-muted);
+  --neural-blue: var(--bug-ink);
+  --neural-indigo: var(--bug-muted);
+  --neural-violet: var(--bug-muted);
+  --neural-fuchsia: var(--bug-muted);
+
+  --accent-color: var(--bug-ink);
+  --accent-color-hover: var(--bug-body-strong);
+  --accent-color-rgb: 255, 255, 255;
+  --secondary-color: var(--bug-ink);
+  --secondary-color-hover: var(--bug-body-strong);
+  --primary-color: var(--bug-ink);
+  --primary-color-hover: var(--bug-body-strong);
+
+  --error-50:#1a0e0e;--error-100:#2a1414;--error-500:var(--bug-error);--error-600:#b85252;
+  --warning-50:#1a160a;--warning-100:#2a2410;--warning-500:var(--bug-warning);--warning-600:#b8860b;
+  --success-50:#0e1a0e;--success-100:#142a14;--success-500:var(--bug-success);--success-600:#4a8a42;
+  --success: var(--bug-success);
+  --warning: var(--bug-warning);
+  --error: var(--bug-error);
+  --info: var(--bug-link);
+
+  --gray-50:#f8f8f8;--gray-100:#e6e6e6;--gray-200:#cccccc;--gray-300:#999999;
+  --gray-400:#777777;--gray-500:#666666;--gray-600:#3a3a3a;--gray-700:#262626;
+  --gray-800:#1f1f1f;--gray-900:#0d0d0d;
+  --space-50:#f8f8f8;--space-100:#e6e6e6;--space-200:#cccccc;--space-300:#999999;
+  --space-400:#777777;--space-500:#666666;--space-600:#3a3a3a;--space-700:#262626;
+  --space-800:#141414;--space-900:#0d0d0d;--space-950:#000000;
+
+  /* themeable surface/text tokens (DARK defaults) */
+  --bg-color: var(--bug-canvas);
+  --surface-color: var(--bug-surface-soft);
+  --surface-dark: var(--bug-canvas);
+  --surface-darker: #000000;
+  --surface-light: var(--bug-surface-card);
+  --surface-lighter: var(--bug-surface-elevated);
+  --surface-glass: var(--bug-surface-card);
+  --card-bg: var(--bug-surface-card);
+  --text-color: var(--bug-ink);
+  --text-primary: var(--bug-ink);
+  --text-secondary: var(--bug-body);
+  --text-tertiary: var(--bug-muted);
+  --text-muted: var(--bug-muted);
+  --border-color: var(--bug-hairline);
+  --input-bg: transparent;
   --shadow-color: rgba(0, 0, 0, 0.6);
-  
-  /* Enhanced accent colors for dark mode */
-  --primary-glow: rgba(59, 130, 246, 0.2);
-  --secondary-glow: rgba(168, 85, 247, 0.2);
-  --accent-glow: rgba(6, 182, 212, 0.2);
-  --neural-glow: rgba(34, 197, 94, 0.2);
+  --header-bg: rgba(0, 0, 0, 0.85);
+  --footer-bg: var(--bug-canvas);
+
+  /* gradients → flat (Bugatti has none). Solid ink keeps "gradient text" visible. */
+  --gradient-neural: var(--bug-ink);
+  --gradient-cyber: var(--bug-ink);
+  --gradient-matrix: var(--bug-ink);
+  --gradient-quantum: var(--bug-ink);
+  --gradient-aurora: var(--bug-ink);
+  --gradient-bg-light: var(--bug-canvas);
+  --gradient-bg-dark: var(--bug-canvas);
+
+  --hover-overlay: rgba(255, 255, 255, 0.06);
+  --active-overlay: rgba(255, 255, 255, 0.12);
+  --focus-ring: 0 0 0 2px var(--bug-link);
+
+  --z-dropdown: 1000; --z-sticky: 1020; --z-fixed: 1030;
+  --z-modal-backdrop: 1040; --z-modal: 1050; --z-popover: 1060; --z-tooltip: 1070;
+  --breakpoint-sm: 640px; --breakpoint-md: 768px; --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px; --breakpoint-2xl: 1536px;
 }
 
-/* High Contrast Mode */
+/* ============================================================
+   LIGHT MODE — inverted canvas, same typographic discipline.
+   White floor, ink type, darker ice-blue links for contrast.
+   ============================================================ */
+[data-theme="light"] {
+  --bug-canvas: #ffffff;
+  --bug-surface-soft: #f5f5f5;
+  --bug-surface-card: #f0f0f0;
+  --bug-surface-elevated: #e8e8e8;
+  --bug-hairline: #e0e0e0;
+  --bug-hairline-strong: #c8c8c8;
+
+  --bug-ink: #000000;
+  --bug-body: #333333;
+  --bug-body-strong: #1a1a1a;
+  --bug-muted: #666666;
+  --bug-muted-soft: #999999;
+
+  --bug-link: #2c5fa3;
+  --bug-on-primary: #ffffff;
+
+  --accent-color-rgb: 0, 0, 0;
+
+  --bg-color: var(--bug-canvas);
+  --surface-color: var(--bug-surface-soft);
+  --surface-dark: var(--bug-canvas);
+  --surface-darker: #ffffff;
+  --surface-light: var(--bug-surface-card);
+  --surface-lighter: var(--bug-surface-elevated);
+  --surface-glass: var(--bug-surface-card);
+  --card-bg: var(--bug-surface-card);
+  --text-color: var(--bug-ink);
+  --text-primary: var(--bug-ink);
+  --text-secondary: var(--bug-body);
+  --text-tertiary: var(--bug-muted);
+  --text-muted: var(--bug-muted);
+  --border-color: var(--bug-hairline);
+  --shadow-color: rgba(0, 0, 0, 0.12);
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --footer-bg: var(--bug-canvas);
+
+  --primary-500:#000000;--primary-600:#1a1a1a;--primary-700:#333333;
+  --neural-500:#000000;--secondary-500:#000000;
+  --accent-neon:#000000;--accent-cyan:#000000;
+}
+
+/* High contrast */
 @media (prefers-contrast: high) {
-  :root {
-    --border-color: var(--gray-900);
-    --text-secondary: var(--gray-800);
-  }
-  
-  [data-theme="dark"] {
-    --border-color: var(--gray-100);
-    --text-secondary: var(--gray-200);
-  }
+  :root { --border-color: var(--bug-muted); }
 }
 
-/* Reduced Motion */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --transition-fast: 0ms;
-    --transition-normal: 0ms;
-    --transition-slow: 0ms;
+    --transition-fast: 0ms; --transition-normal: 0ms; --transition-slow: 0ms;
   }
-  
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
-
-/* Font Loading Optimization */
-/* 
-Note: Import Google Fonts in index.html or use @import at the top of the file
-For Inter font family, search for Inter on Google Fonts
-*/

@@ -73,7 +73,15 @@ const AestheticAnalyzer = () => {
           response = await ApiService.analyzeImageDetailed(pendingFile.file);
           
           if (response.success) {
-            setDetailedAnalysis(response.data.analysis);
+            // Merge the client-side interpretations / priority actions /
+            // skill recommendations into the analysis object the results
+            // component reads, so those sections actually populate.
+            setDetailedAnalysis({
+              ...response.data.analysis,
+              interpretations: response.data.interpretations,
+              priority_actions: response.data.priority_actions,
+              skill_recommendations: response.data.skill_recommendations,
+            });
             const overallScore = response.data.analysis?.overall_rating?.score || 0;
             showSuccess(`🎯 AI Analysis Complete! Overall rating: ${overallScore}/10`);
             return { success: true };
