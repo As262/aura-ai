@@ -2,20 +2,47 @@
    UPLOAD FORM — Bugatti. Hairline drop zone, no chrome.
    ============================================================ */
 .upload-form {
-  max-width: 760px;
+  max-width: none;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
+}
+
+.upload-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
 .upload-title {
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 400;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.08em;
   color: var(--bug-ink);
   text-align: left;
-  margin-bottom: var(--space-6);
+  margin: 0;
+}
+
+.upload-reset-button {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--bug-hairline-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--bug-body);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+.upload-reset-button:hover,
+.upload-reset-button:focus-visible {
+  border-color: var(--bug-ink);
+  color: var(--bug-ink);
 }
 
 .upload-container {
@@ -54,7 +81,11 @@
   padding: var(--space-16) var(--space-8);
   cursor: pointer;
   text-align: center;
-  min-height: 280px;
+  min-height: 320px;
+}
+.upload-label:focus-visible {
+  outline: 2px solid var(--bug-link);
+  outline-offset: -6px;
 }
 
 /* Replace emoji with a simple framed glyph */
@@ -79,7 +110,7 @@
   font-family: var(--font-display);
   font-size: 1.125rem;
   font-weight: 400;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.06em;
   color: var(--bug-ink);
   margin-bottom: var(--space-3);
@@ -87,15 +118,31 @@
 
 .upload-text p {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
   margin: var(--space-1) 0;
   word-break: break-word;
 }
 
 .platform-info { color: var(--bug-muted-soft) !important; }
+
+.upload-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: var(--space-2);
+  border: 1px solid var(--bug-ink);
+  border-radius: var(--radius-pill);
+  background: var(--bug-ink);
+  color: var(--bug-canvas);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
 
 /* Preview */
 .preview-container { position: relative; width: 100%; }
@@ -116,11 +163,19 @@
 .preview-text {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-transform: none;
   color: #ffffff;
 }
-.file-name { font-family: var(--font-mono); font-size: 0.625rem; color: var(--bug-body); }
+.file-name {
+  max-width: min(90%, 48rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--bug-body);
+}
 
 /* Loading overlay + spinner */
 .loading-overlay {
@@ -135,9 +190,9 @@
 }
 .loading-overlay p {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--bug-body);
 }
 .spinner {
@@ -156,11 +211,11 @@
   padding: var(--space-4);
   border: 1px solid var(--bug-hairline);
 }
-.validation-messages h4 {
+.validation-messages h3 {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   margin-bottom: var(--space-2);
 }
 .validation-messages ul { margin: 0; padding-left: var(--space-5); }
@@ -171,17 +226,17 @@
   margin: var(--space-1) 0;
 }
 .error-messages { border-color: var(--bug-error); }
-.error-messages h4 { color: var(--bug-error); }
+.error-messages h3 { color: var(--bug-error); }
 .warning-messages { border-color: var(--bug-warning); }
-.warning-messages h4 { color: var(--bug-warning); }
+.warning-messages h3 { color: var(--bug-warning); }
 
 /* Caption */
 .caption-section { display: flex; flex-direction: column; gap: var(--space-2); }
 .caption-label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
 }
 .caption-input {
@@ -200,5 +255,7 @@
 .caption-input::placeholder { color: var(--bug-muted); }
 
 @media (max-width: 768px) {
-  .upload-label { padding: var(--space-12) var(--space-4); min-height: 220px; }
+  .upload-heading-row { align-items: flex-start; flex-direction: column; }
+  .upload-label { padding: var(--space-12) var(--space-4); min-height: 240px; }
+  .upload-reset-button { width: 100%; }
 }

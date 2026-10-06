@@ -22,7 +22,7 @@ function App() {
       <ThemeProvider>
         <ToastProvider>
           <UsageProvider>
-          <Router>
+          <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
             <div className="App">
               <Header />
               <ScrollToTop />

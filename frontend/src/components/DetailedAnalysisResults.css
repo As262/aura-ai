@@ -29,8 +29,8 @@
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-display);
+  text-transform: none;
+  letter-spacing: 0.08em;
   color: var(--bug-ink);
   margin-bottom: var(--space-8);
 }
@@ -40,24 +40,34 @@
 .analysis-section h3 {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  text-transform: none;
+  letter-spacing: 0.04em;
   color: var(--bug-ink);
 }
 
 .analysis-section h4 {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 400;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
   margin-bottom: var(--space-2);
 }
 
+.analysis-section h3.metric-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--bug-muted);
+  margin: 0;
+}
+
 .analysis-section p {
   font-family: var(--font-body);
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: var(--line-height-relaxed);
   color: var(--bug-body);
 }
@@ -67,7 +77,7 @@
 /* ---------- Score circle ---------- */
 .score-circle {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   gap: 2px;
   width: 120px;
@@ -97,11 +107,12 @@
 }
 .rating-info h3 { margin-bottom: var(--space-3); }
 .rating-info p { margin-bottom: var(--space-3); }
+.rating-info { flex: 1; }
 .skill-level {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
 }
 .skill-level .level { color: var(--bug-ink); }
@@ -109,16 +120,16 @@
 /* ---------- Progress bars (hairline track, ink fill) ---------- */
 .progress-bar {
   flex: 1;
-  height: 1px;
+  height: 8px;
   background: var(--bug-hairline-strong);
-  border-radius: 0;
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 .progress,
 .progress-fill {
   height: 100%;
   background: var(--bug-ink);
-  border-radius: 0;
+  border-radius: inherit;
   transition: width var(--transition-slow);
 }
 .progress-fill.shadow { background: var(--bug-muted); }
@@ -133,17 +144,18 @@
 .breakdown-item,
 .factor-item {
   display: grid;
-  grid-template-columns: 120px 1fr 40px;
+  grid-template-columns: 180px 1fr 40px;
   align-items: center;
   gap: var(--space-4);
 }
 .breakdown-item > span:first-child,
 .factor-name {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
+  white-space: nowrap;
 }
 .breakdown-item > span:last-child,
 .factor-score {
@@ -187,6 +199,7 @@
   gap: var(--space-2);
 }
 .metric-card { align-items: flex-start; }
+.metric-card { min-height: 190px; }
 .metric-icon { display: none; }
 
 .metric .score,
@@ -204,9 +217,9 @@
 .percentage,
 .score-small {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
 }
 .percentage {
@@ -222,9 +235,11 @@
 /* Small muted caption used under metric values / lighting cards */
 .metric-caption {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  min-height: 1.2em;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  line-height: 1.35;
   color: var(--bug-muted-soft);
 }
 
@@ -232,9 +247,9 @@
 .other-styles { margin-top: var(--space-6); }
 .other-styles-heading {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
   margin: 0 0 var(--space-3) 0;
 }
@@ -259,9 +274,9 @@
   justify-content: space-between;
   margin-top: var(--space-2);
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted-soft);
 }
 
@@ -274,9 +289,9 @@
 .quality-main { display: flex; align-items: center; gap: var(--space-6); flex-wrap: wrap; }
 .quality-label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
 }
 .quality-score-large {
@@ -293,9 +308,9 @@
 .category-badge,
 .category {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-body);
   border: 1px solid var(--bug-hairline-strong);
   padding: 5px 12px;
@@ -362,9 +377,9 @@
 .tip-alternative strong,
 .how-to strong {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-ink);
   display: inline-block;
   margin-right: var(--space-2);
@@ -399,15 +414,15 @@
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 400;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04em;
   color: var(--bug-ink);
 }
 .composition-score {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
 }
 .composition-description { margin-bottom: var(--space-3) !important; }
@@ -435,9 +450,9 @@
 .color-info { display: flex; flex-direction: column; gap: 2px; }
 .color-name {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-body);
 }
 .color-percentage {
@@ -459,25 +474,25 @@
   border-bottom: 1px solid var(--bug-hairline);
   padding: var(--space-6);
 }
-.skill-card h4 {
+.skill-card h3 {
   font-family: var(--font-display);
   font-size: 1.125rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04em;
   color: var(--bug-ink);
   margin-bottom: var(--space-3);
 }
 .resources strong {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-muted);
 }
 .resources ul { margin: var(--space-2) 0 0; padding-left: var(--space-5); }
 .resources li {
   font-family: var(--font-body);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--bug-body);
   margin: var(--space-1) 0;
 }
@@ -488,7 +503,11 @@
   gap: var(--space-8);
   margin-bottom: var(--space-8);
 }
-.no-detection { color: var(--bug-muted) !important; }
+.no-detection {
+  color: var(--bug-muted) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 1rem !important;
+}
 
 /* ---------- Loading state ---------- */
 .detailed-analysis-loading {
@@ -505,8 +524,8 @@
 .detailed-analysis-loading p {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-body);
 }
 .loading-spinner {
@@ -525,9 +544,9 @@
 }
 .loading-steps .step {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--bug-muted-soft);
 }
 
@@ -536,5 +555,5 @@
 @media (max-width: 768px) {
   .analysis-section { padding: var(--space-8) var(--space-5); }
   .rating-display, .aesthetic-display { flex-direction: column; align-items: flex-start; gap: var(--space-5); }
-  .breakdown-item, .factor-item { grid-template-columns: 90px 1fr 32px; gap: var(--space-3); }
+  .breakdown-item, .factor-item { grid-template-columns: minmax(120px, 0.4fr) 1fr 32px; gap: var(--space-3); }
 }

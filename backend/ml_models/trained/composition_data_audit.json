@@ -1,0 +1,3877 @@
+{
+  "seed": 42,
+  "images_found": 810,
+  "invalid": [],
+  "conflicting_duplicate_groups": [
+    [
+      "backend\\training_data\\rule_of_thirds\\0a96ff5a-4679-4d8a-af1c-27cdb1d3074c.jpg",
+      "backend\\training_data\\leading_lines\\76aa808f-9809-4a13-a529-d895407a65da.jpg",
+      "backend\\training_data\\symmetrical\\3d96b910-1c51-4e57-8c09-6567afc6e5aa.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\6192f540-b95a-4084-a650-803c74f30b29.jpg",
+      "backend\\training_data\\leading_lines\\d9d1b682-4dfd-48ab-b621-7e2b4a45445c.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\63abd537-23a4-4c72-85f0-bbba31d15035.jpg",
+      "backend\\training_data\\symmetrical\\a42a8a27-d1fe-4385-b2dd-82e45cb3f21b.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\6c62322b-e915-44f1-a397-05861d551a42.jpg",
+      "backend\\training_data\\leading_lines\\What are leading lines in photography_.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\73f91c2f-f835-4386-b00b-8aaa06750801.jpg",
+      "backend\\training_data\\leading_lines\\268b6e88-2e22-4517-ad20-a9c19824b9b1.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\Acireale - The man on the bridge.jpg",
+      "backend\\training_data\\leading_lines\\202e6d53-4e9b-4f32-b176-8bc8972a79f6.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\IMG_20250705_034408.jpg",
+      "backend\\training_data\\symmetrical\\IMG_20250705_034408.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\Oops!.jpg",
+      "backend\\training_data\\golden_ratio\\Oops!.jpg"
+    ],
+    [
+      "backend\\training_data\\rule_of_thirds\\The Rule of Thirds, Part 4--Breaking It.jpg",
+      "backend\\training_data\\symmetrical\\The Rule of Thirds, Part 4--Breaking It.jpg"
+    ],
+    [
+      "backend\\training_data\\centered\\IMG_20250711_231834.jpg",
+      "backend\\training_data\\symmetrical\\IMG_20250711_231834.jpg"
+    ],
+    [
+      "backend\\training_data\\centered\\IMG_20250714_221930.jpg",
+      "backend\\training_data\\leading_lines\\IMG_20250714_221930.jpg"
+    ],
+    [
+      "backend\\training_data\\centered\\IMG_20250823_012620.jpg",
+      "backend\\training_data\\leading_lines\\IMG_20250823_012620.jpg",
+      "backend\\training_data\\symmetrical\\IMG_20250823_012620.jpg",
+      "backend\\training_data\\frame_within_frame\\IMG_20250823_012620.jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\a276f004-05b9-4718-8774-87864a04ae59.jpg",
+      "backend\\training_data\\symmetrical\\d6be4ebe-7cbf-4ab2-a580-707f979835de.jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\b5c16c6c-c9dc-4131-873c-e77237d571f5.jpg",
+      "backend\\training_data\\symmetrical\\3e333d90-9074-4f7b-860b-8a7b0011862c.jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\dd7f6ebc-bb6c-4ea7-8944-537b30619444.jpg",
+      "backend\\training_data\\symmetrical\\fafbf857-1534-42d2-b767-fb6d0cf27349.jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\f14b0175-1733-4f95-90ec-6d748faf2d71.jpg",
+      "backend\\training_data\\fill_the_frame\\download (4).jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\IMG_20250224_082518 (2).jpg",
+      "backend\\training_data\\leading_lines\\IMG_20250224_082518 - Copy.jpg",
+      "backend\\training_data\\leading_lines\\IMG_20250224_082518.jpg",
+      "backend\\training_data\\symmetrical\\IMG_20250224_082518 - Copy.jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\Related image.jpg",
+      "backend\\training_data\\symmetrical\\Oops!.jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\SNAKE RANCH - Claro Oliveira.jpg",
+      "backend\\training_data\\frame_within_frame\\download (12).jpg"
+    ],
+    [
+      "backend\\training_data\\leading_lines\\Street Photography.jpg",
+      "backend\\training_data\\symmetrical\\3ee18d36-a7ab-4ec5-9cd8-30adace7284d.jpg"
+    ],
+    [
+      "backend\\training_data\\symmetrical\\fba91fe0-d3f3-447f-af10-b8c0eab3c721.jpg",
+      "backend\\training_data\\frame_within_frame\\La reflexi\u00f3n y la forma del puente son incre\u00edbles, y el modo que esto enmarca la\u2026.jpg"
+    ],
+    [
+      "backend\\training_data\\symmetrical\\IMG_20250622_180936.jpg",
+      "backend\\training_data\\fill_the_frame\\IMG_20250622_180936.jpg",
+      "backend\\training_data\\frame_within_frame\\IMG_20250622_180936.jpg"
+    ],
+    [
+      "backend\\training_data\\symmetrical\\Oops! (1).jpg",
+      "backend\\training_data\\frame_within_frame\\Repetition Architecture Photography.jpg"
+    ],
+    [
+      "backend\\training_data\\symmetrical\\Simetry.jpg",
+      "backend\\training_data\\fill_the_frame\\download (7).jpg"
+    ]
+  ],
+  "duplicates_removed": 9,
+  "splits": {
+    "train": [
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20251010_153011_588.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "355544a9ef8b03208a37220d0c98d234c3ff66fdfe5f4cecd0d46e24c107562c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0034.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "2714ad1042c9ad3cf8babc33933a0139a67dcedcfc40bb856cb4d7e0346119cf"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\o3JuHcZjSew.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "4acbcbdb59c33961972f29f433d806c99335ad46a5d4de2351c96fe410b83d8c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Nq8q1vdIpD4.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "21b95d8f91509a9c4699c893cce1606eb19b9b2206468f722d38b38477dc4955"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\2JXYlAJaCF0.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "508e910d87c3e3138511e723383b5060f20e9fc12f482015d8e348a03520974c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0005.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "ed72bf2df77e91dbd2573fff71935912dd085c6d22056a0a1bcd8bbb54d3752b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0042.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "cec67fa605d2f45c11ef7f548444f488de3d5a879494c45832f550da211b7822"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\cameras for  photo.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "aa5c1affd267027171f16105274fd3dcd4cffaf11cbfaa1d033e4c361a68464b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0001.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "98ed94867727da3e5287a0a29cb3a0c51b140774cc36c45ba0e50d8690e63e8a"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\rule of thirds in photography.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "d57a4e8bdb2649f22774b019e9e4348b6bba18794590aa655b839320e38cfed0"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0024.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "ade95f9d79afb528093e0dbd17e8223c44337d74f07f122717ba09ff35711a65"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\39b67fda-dfdc-413a-9542-937063bac84e.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "5b881b3a534a27b7ab6b2963caaf80cef28c15a0c78b670857756881dc305eff"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\df077d61-5de2-4dcc-89c1-ee6daf548937.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "4115e9abe9ec2d0f554add97facb80cb58093f284f47e77d36187876a8523e72"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20250326_060314.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "ad74d1c37430be45e6aa38fe33c58b364d1bbf906865b5f439a353eac2bcc109"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0002.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "ffc8e6acf7ec546bf9f47d32fa312149264f2ed900c36328d9e12a99fccf3e32"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0004.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "03ac79d44dcfc35a098857c94cfeeebdacca9e859f8ffc3f64a4b58ee6a7e659"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\7aa15fdc-3159-4ac1-a5e1-94b585a2c439.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "47e3f8175f37dc9d69f792bccbe77056ef93de2b32a21ff5d3e974a40484e5df"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\How to use the Rule of Thirds to Improve Your iPhone Photos.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "4dceee72b3d60d2d87deecb3c365b7ecd53c0c52eab81d890630ff9b0cff4b92"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0055.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "af5a52ce5a74d532929edcca9c72837a3f3c2d976aa49a4688ed7c66276d8cf0"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\The Rule Of Thirds in Photography_ What, Why, and when to break it_ \u2014 Micro Four Nerds.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "1fee7b4401c5b0eac90a5c57cf5511fccb3f854133be695b420eda21ba984cd1"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\The Rule of Thirds _ Artifact Uprising.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "8c104551847f4847f55cbbd2c2abe0d6d26351127478a8824b2304b787d59a69"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Human Element in Architecture.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "a9887b7193c81313dae6c350c62023bb5a0385caf58327363d208fa81d78714d"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Photography Assignment 1 __\ufffc_Rule of\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "aa37d7868b0b0aa008b085875e0f27a2fbafe15e4ef4f13eaff2afe05f82273d"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\images (1).jpeg",
+        "label": "rule_of_thirds",
+        "sha256": "bd7ad963d8662608f7e4ead5b2cd63c6ab4fe0ff8726775d0224985463d5210c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0016.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "9f49619527cc1ac1efbc4a7b9d262925593aa3f7925b50d3ef663d2c9015e4c9"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\17d4ba56-50e7-4a35-8548-2ee9fecafc2c.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "eb407bb34875d4bcc2d514a266ea4a7aed139b65a74f0f8ad9534662fb75b12f"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20250826_190654.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "9aeb9643775c2c37d4057ac9299789764201a85d07f1b17bd8ba3ec7b2240cce"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\'The Chair' by Proj11!.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "6bb81818be4928997eff096653651e6b5f38037bbfdde0a28632c75dd3d31125"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\rule of thirds.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "c517ffcdc1dae9fa4911978f794b5070237b356562a319004a4b4174151ba53b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\rule of 3rds.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "2ea3de49e127ab62e4a6945b3cd324b5236e899a9e0c5b200459b97f813f3a3b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0075.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "7823e0808ab7ef3e3fa8a0deb55249f73680b88539cf3f37e4b965ac4242c704"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\WhatsApp Image 2025-03-30 at 22.46.20_e8d4e982.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "ab65a15a7eb393ab1eb658597feac3ccc7a26e5856614dbc888fc9687d4afd2f"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\this is and example of leading lines because the\u2026.jpg",
+        "label": "leading_lines",
+        "sha256": "c0c4c660f6ec0b1342b46798eb58e97a6e493a2897512f078cb16a121a0d1887"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0022.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "c802dea978b68793d7ec250983fad05a7bb9de691e3bf57844e66cfd8c1ecf82"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Kids036a-1024x683.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "b88372b58cfa50a1b0a2861f7ec91501bcd20c057cada08290e4badf46ea02e8"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\fgKBiIvBoCc.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "d3e650aad3b437c579ab2ae8ab00f6955e37fcd2f27e6bd5feac15c464766043"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0045.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "6e825bfbef5bca5153f9ab99f69ed00f96f72187dcaee883b0df38c5d9b36e5e"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0040.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "6857cf5de79fc77872f60f30a2e9484e8e7189c650a770d88b262f6f268fcaeb"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0007.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "2edc51d33c1ba9932505efe8745a2fba88b1f1f1c5e7779130016d08f3961d39"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\c5n9zowP6yM.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "e53449f072610e1988b48907be94aed0422056cd0e9a6315abcb8f6bf653cd06"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\This picture follows the rule of third because the\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "f3f014cdf5bd37ca18eb844514cd406b4cf902abc9f637e4428689b80dc380a9"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20251010_153010_231.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "2d73e483c545ee04f75fb65ef73311b45ca4314202687a766a921a7c8e9e1b0f"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\6ffc2852-1ee4-4998-856e-5782a138e55d.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "7dbc5519d73484e6326ea21d9a7bed7585040c17c5c6b910e482753235e8bdcd"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0028.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "def17014afa4b0a04e48fe3f5f86cf5584b89460705fce8bd25c669cf24f5287"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0043.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "82ff1152ba4af2c844df673175e96b996d5700678865fda162a911f9cb760dd5"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\34ea4cb5-c52c-4a9c-87eb-0fe1ee0cbe09.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "3c1d1efd32d50655a89db268beaea169324f83aea3f687917f873c108d38672c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0046.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "0971d89c7c131e0a11c4700cb1e576f09f6fdda05e00aa48155d8b3e64913d1c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\fEDmEnGnDjI.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "37b576a06d514f8264290acc9ce9bb2e03312d1cfa6a0d7ba5b15b95aead8b91"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Inspirational of rule of thirds.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "1f4308823943fa2c0af2892058e1530c4f5c72c0a2ff11cd4566573686a41bbf"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\7903b229-47c3-4e7b-9dcd-943b52e3bf28.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "023ef1b74e49bff305b9d708820c5b00175545f575d7410ad337bf826bacf70a"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0023.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "25f81f03b86ed0431bb4606e4a75e12c04913501f2da6105c955428ca91f78b9"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Repetition of Patterns & Rule of Thirds.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "19d81e63f15e2d3697ecffbdd9a70f37a6e33e8177a9b69c8e33fdb5fdffedb4"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0062.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "f6f836a3f2844b006f46c459db0980d857d4723d64547428cbd41a45ae55a4aa"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Framing.jpg",
+        "label": "frame_within_frame",
+        "sha256": "a9fb0bac6039dfa3374a740edc5ea6c5bc58332f6d359ace98d17d0ae6c288f6"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Donnez-moi un titre pour cette image_.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "ca99abf1f71ce514f24e905abe90fb25045957aeb833a129d786e327c3e29d00"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0041.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "95ec342f847a198dc97903f85964239ccdfa6715006a0fa3861a788446c438ab"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0008.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "c144a0130533fd419547c718a19cee8e13e28357188e174526838f7f412b195b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Rule of Thirds \ud83c\udfa8\ud83d\udcf8.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "39f0dab53f032fea62ccb691e46b3cb7f101df4eb03d7711b828f22aa6e484ff"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\xWyqr3nG1no.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "fed4b31438327b13e89a69bd4f1a2f9b5f572a4021eafd1e76338696ace44564"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0037.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "a9df9d0be903bd18280c6f466f561a83f8a00c9a360e179f62bf6e60cb1ba140"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0029.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "3ec8e255025530a150029403a95acf08758a8e18d714087c70549c15b3341107"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\2331e801-cbd5-434a-a4e7-02d2294fe296.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "63662e3477259f6f4c61ef7bf520555a102fdfebff14147065fca6f0c360a92e"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Rule_of_Thirds_3_e18dee85-0aaa-4eb4-a9ae-05f7b9d91a90_1024x1024.webp",
+        "label": "rule_of_thirds",
+        "sha256": "eddfd96f59e3a00f46ed448f5ff0fb6e60350869d819b58854f945f7e2a0477e"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\4e496b4f-f01c-41c3-a381-c0e5acefe08b.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "0a30a22671c24906d17afef0a80148b597f4197843aad942e6a1c4f0d004c6f7"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Rule of third.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "a6ae3f1b2cc19d30f80c4ee52934a23681d6dbd34908ffadbf898f4d83548f2f"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\I say this is rule of thirds because the frog is\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "974296bc191e69df87cd7bc7bf5ca869bd910262656beeceaf9b423e63e74975"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\A65GqVtnpRU.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "32f3247940676840fb1dd09991b1a710c3658d06e41a7fd693c361ace0ee8456"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\8ffb7da7-bd9c-4715-8703-83875811612a.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "449cc1cc214df7d57a1db38c916b69c451af1ed26d44c20f170583f5bb2181a6"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Greenland-Husky-Rule-of-Thirds.webp",
+        "label": "rule_of_thirds",
+        "sha256": "ca3a7f252737262cbc4607a50d7c0e9e88731ad1939ae387756583b5c561488d"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0056.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "15667df1110aeb56564e25fca2b5186123eb0092d367410c61dd086a884e7945"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0027.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "454fefd5305034cb94a918b4cca2ffbb3d9a4c6a241209cc610062b93a5e641f"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\5af97413-400a-45d2-b5cc-a44528b116d6.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "3ecce4592598a34bc3f37d140880acfdd4d35a3f390d4412eef45688bb86828b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0036.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "693b65ed05ccd3391baf4fe3863b27d6960bd39c17e2051c440978dd032374d5"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\6c619278-00a4-4621-a059-b5278fc15633.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "eaebe31a8c5d9ab77afb240e2d5bcceaa86a4a833cfe08ac87eb09b9dc02a984"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\5e32b41a-4660-495a-ba1a-515e49b6d137.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "a001f3d2ca7a16f3bfaed81178d6297e1b51b2e5a713b2faa9c41d59a780ea65"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0061.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "2ce855adbb963052f6ba665d973b09ac6be459a72d0fe83a7de1fed4be337e53"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Here is the Andy Goldworthy Style nature set-up\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "60e11a441dcf324d2d20ecc54569bb90ac34bfdf91a8098d6931129240862d94"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\rule of 3rds (1).jpg",
+        "label": "rule_of_thirds",
+        "sha256": "815a5195bd911882db4dee1b9d0d0a1a13097473c8040db16e972c0ab76f40b9"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0057.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "bd4544f5cbb3b6cd842dcdc598c5657139e34bc2a0563a75c46c905ec849d8f3"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20240927_133734.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "f68b2e1d18eb0a5b6cdff04f4293e7ab3ae0254f17a8868365b80ad43b6a81be"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\31b941fa-8eb0-4200-8b12-4ca3f4a32023.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "05cd4ccfb38e15d72bda9c26b094fdddc6c8992dcba3d24938d51d656a6d8dc8"
+      },
+      {
+        "path": "training_data\\centered\\pexels-eva-bronzini-7135281.jpg",
+        "label": "centered",
+        "sha256": "3ac680ef0450feb9a991f430e11372e88979ef157bc42b5375f69d732cd33ea9"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shvets-production-9742886.jpg",
+        "label": "centered",
+        "sha256": "be9e0d59000f4c865db8700ae8ade6c740d8bab4dd4a5dac1b09c6b9a7dde89e"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-8436677.jpg",
+        "label": "centered",
+        "sha256": "43c861f51287a500f6f618fa1c6b52a4b696329e1826645b971240933035b4c3"
+      },
+      {
+        "path": "training_data\\centered\\pexels-mart-production-8032915.jpg",
+        "label": "centered",
+        "sha256": "bc3c6475062e14e83ad0230383e0978068ff3de82de0bc21eec6a372ae911edf"
+      },
+      {
+        "path": "training_data\\centered\\pexels-maksgelatin-4663151.jpg",
+        "label": "centered",
+        "sha256": "429c8e9775da81b1fd964ade9c1b35f37a09bc393c5f8789f93af245d2288c8c"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251009-WA0064.jpg",
+        "label": "centered",
+        "sha256": "07d1ab1573291d01f5bf02e8b9d7a753317ecbf5b6d1a1d2e31bd869df98381f"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pixabay-34693.jpg",
+        "label": "centered",
+        "sha256": "8a82bd47328ea0633063c8f8777fc04190ea3e8b714ee1ca24aac648e323ea93"
+      },
+      {
+        "path": "training_data\\centered\\20250927_001720.jpg",
+        "label": "centered",
+        "sha256": "50d61708d15bdf19921ccac9a99575f90851468c4fb70f69615a9a64d5f05e50"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pic-matti-450440252-34200726.jpg",
+        "label": "centered",
+        "sha256": "24f3b0a25790b45fadc4c93fb57e2e82d9c60bdaffe3dbf8fe96ef57ccdcb811"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ekaterina-bolovtsova-6766661.jpg",
+        "label": "centered",
+        "sha256": "7510dc9bc21a7d31d2476a831ec9a731e07c50a232825e649b4c5bc4faa6e052"
+      },
+      {
+        "path": "training_data\\centered\\pexels-elly-fairytale-3865669.jpg",
+        "label": "centered",
+        "sha256": "b5078988847f46e0cda43f6dcb926b9980b2f7d7e427dc5d3deef0b2ccd65ee2"
+      },
+      {
+        "path": "training_data\\centered\\pexels-keira-burton-6624375.jpg",
+        "label": "centered",
+        "sha256": "b1d555613479735c425ab8b584b917e13f21013b3399361265604922a3958912"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152958_481.jpg",
+        "label": "centered",
+        "sha256": "65226ebed12b2ccc22d4beaf079d008440ae9bc2c9ca71a9976b6745eb57ee74"
+      },
+      {
+        "path": "training_data\\centered\\pexels-karolina-grabowska-6028645.jpg",
+        "label": "centered",
+        "sha256": "6671ed524ebe82f0118e5ae139f18ae290bbfb73d56a503374db3f24447532a3"
+      },
+      {
+        "path": "training_data\\centered\\pexels-nandhukumar-312839.jpg",
+        "label": "centered",
+        "sha256": "e10d925d1342823d3ac168a20ec5272358ae69b133a3889e24bc776493226915"
+      },
+      {
+        "path": "training_data\\centered\\pexels-timmossholder-3027046.jpg",
+        "label": "centered",
+        "sha256": "dd4f6814fb987d25779257e378a0edf12cbb3c16008f2065c0b3f90c6a274891"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-8436487.jpg",
+        "label": "centered",
+        "sha256": "5dde7c57c4bc24808de0978e824f22cbf2fcaa8dc5893571828c2fc409f5b457"
+      },
+      {
+        "path": "training_data\\centered\\pexels-polina-tankilevitch-4723091.jpg",
+        "label": "centered",
+        "sha256": "dbcda9310262193743c62a4ff16dc09b4ab3951349b030c9b0d172f2b38c9171"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20250922_020220.jpg",
+        "label": "centered",
+        "sha256": "6e2ce63584e0880def17b1be326751e4892f5012fdce6cb24667de1a9d109993"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152942_700.jpg",
+        "label": "centered",
+        "sha256": "3480cee5c2f372930cab11eec62ac3d4b6cce19d9653df9056d1b59079fcc60c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-belliragon-6425781.jpg",
+        "label": "centered",
+        "sha256": "c245aa257e5bca268e993fcc02faf83ffe02296b85df543dfad4b68dc1ff9748"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-8436475.jpg",
+        "label": "centered",
+        "sha256": "ab08f7a285f7d57af841c7f84841e49a81cb956c76b95d4b60b2c16e3482fac1"
+      },
+      {
+        "path": "training_data\\centered\\pexels-anastasia-shuraeva-6014737.jpg",
+        "label": "centered",
+        "sha256": "759ca11551a85d8b20705a6c0b4eb1ca65ae72d684dda8141b3f8cedb40b2754"
+      },
+      {
+        "path": "training_data\\centered\\pexels-vazhnik-7562140.jpg",
+        "label": "centered",
+        "sha256": "381fffffa204e5d8555f511e2082f2af2dbad65f9ff626b0c1f823a7bac04e83"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-8436445.jpg",
+        "label": "centered",
+        "sha256": "bd091f37e100f1d6d623d667583eca586e272e620aa4cd8783c30b5e5744319e"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152904_056.jpg",
+        "label": "centered",
+        "sha256": "1b53e6ba2943848c2fbab7ef2b7d8a7b1ec4409bad6b1c0d036d5b3312da9e6b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-akoonie-12446782.jpg",
+        "label": "centered",
+        "sha256": "da71ac16bd6e61148a8d149d990318331cbb53c914d612e39027fd972ba7bf2d"
+      },
+      {
+        "path": "training_data\\centered\\pexels-padrinan-2882505.jpg",
+        "label": "centered",
+        "sha256": "187298946c3717df37d3a19c1c9612b950b0fa7790224d1bca9368ff7778e88f"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ameer-umar-325092707-20888517.jpg",
+        "label": "centered",
+        "sha256": "b99139b5faa773ccaae49a192835c60e35aa23c2f7ba4181b261419aad4a15ab"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251009-WA0068.jpg",
+        "label": "centered",
+        "sha256": "7b07dd6ee80ec7c17a0d4fd8535b78a2d6b955045ec3f01c7b05f1d28a97bed5"
+      },
+      {
+        "path": "training_data\\centered\\pexels-dream-3425441.jpg",
+        "label": "centered",
+        "sha256": "e3d70fe26eabb10242dbbbd480f728ba398592e5a6920594388bcc1a92ea8de8"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152843_874.jpg",
+        "label": "centered",
+        "sha256": "5b38e9ed00e69cf5ec0b0360a5c2af7416a9817cd2099d6dffd7ebea6c9144f5"
+      },
+      {
+        "path": "training_data\\centered\\jI2g6FU7mZw.jpg",
+        "label": "centered",
+        "sha256": "a2eda800768db9c7df8af9e6c3351ada0ed9af73e2b06c2a98ec8b3637fc0631"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shvetsa-6664899.jpg",
+        "label": "centered",
+        "sha256": "cd825acf521b5a79814cdc2ea2ba6f68d53f24107157381bdfb9a88abb1ce297"
+      },
+      {
+        "path": "training_data\\centered\\otfcazSj3g4.jpg",
+        "label": "centered",
+        "sha256": "a3961d8cbfc3f5e011b89f633efa93daa5cd68b3398288b009e72132b8f2edb6"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shkrabaanthony-7970278.jpg",
+        "label": "centered",
+        "sha256": "14d52cee96a55527a2a7d7b15dee02794b557a0c7b648a76e2d199382b15769c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-marina-zasorina-7486969.jpg",
+        "label": "centered",
+        "sha256": "b47bf51bd2da71321b0920af6c92da8700016a3f99c73221440252dbafce936e"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shkrabaanthony-7484928.jpg",
+        "label": "centered",
+        "sha256": "94b0fed4e8da78a968448232e0d00cbeb38a227cb1484069b9d7f31a54dc189d"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251009-WA0069.jpg",
+        "label": "centered",
+        "sha256": "01aadb92638608e1e1570ed13bd2df7266ae53300aaf1deb4ace5663926b8357"
+      },
+      {
+        "path": "training_data\\centered\\pexels-vlada-karpovich-4534596.jpg",
+        "label": "centered",
+        "sha256": "36c4b94f066ace0e8b07578074c5a1bb2de5e4abf82348fa606f5f10d17fdaeb"
+      },
+      {
+        "path": "training_data\\centered\\pexels-jeffrey-czum-254391-2268728.jpg",
+        "label": "centered",
+        "sha256": "0e58da46faa1df2683aa17b0c11f0cc4ab96ff539d39f78a290776a12cafa8b3"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152949_659.jpg",
+        "label": "centered",
+        "sha256": "25aa3d5e090133fa3b4920619335651e7b553eed17997fbf3df8ee83d413c1f9"
+      },
+      {
+        "path": "training_data\\centered\\pexels-cottonbro-5781287.jpg",
+        "label": "centered",
+        "sha256": "243000f11a72efd9ee0a083b8ad1239b8581e62c7fc44c61665cfe8239f2926c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-rex-way-1992253-3613217.jpg",
+        "label": "centered",
+        "sha256": "eed1a56dbf048b818ad19918c0398c6bc1da0e06bb5452a0e91690eea9c11725"
+      },
+      {
+        "path": "training_data\\centered\\FT3vShjYBqE.jpg",
+        "label": "centered",
+        "sha256": "f3d04d5b56e8f0abd32142a785c2d909319a0ede1b1b85126f6da447edd3d0bb"
+      },
+      {
+        "path": "training_data\\centered\\pexels-rocsana99-3945266.jpg",
+        "label": "centered",
+        "sha256": "49c03c901956ae3febcab8fddd9b31a42f3292541e8da72674e09e456138587c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ketut-subiyanto-4908999.jpg",
+        "label": "centered",
+        "sha256": "94b082d706f03bd93211b07c0695112d8ae6afdf3da501f360de11f10092e2a7"
+      },
+      {
+        "path": "training_data\\centered\\pexels-rdne-6806454.jpg",
+        "label": "centered",
+        "sha256": "29a375c9a2509e5ff634c2d81209192978bf31e29b9c9b3ea394195adf272c19"
+      },
+      {
+        "path": "training_data\\centered\\sAAoqha4wts.jpg",
+        "label": "centered",
+        "sha256": "25c2475c615899bf3669ccf9543afa5c85e90f5b0780a084bd70b7d2d041ab5e"
+      },
+      {
+        "path": "training_data\\centered\\pexels-kseniachernaya-7318179.jpg",
+        "label": "centered",
+        "sha256": "dc5f314c2ac8e7482635ac1d0bee1503be40bf581d5b0827a846929386998d5d"
+      },
+      {
+        "path": "training_data\\centered\\how-to-successfully-center-compose-a-photograph-by-Adele-Humphries.jpg",
+        "label": "centered",
+        "sha256": "aa2c35bad3802fc23d150064b7583128427cbb3035ee48bf13c21d5fed9bc758"
+      },
+      {
+        "path": "training_data\\centered\\WhatsApp Image 2025-10-09 at 19.06.23_c2dca23e.jpg",
+        "label": "centered",
+        "sha256": "f0e15ffa686be105b521c8efe5c7bdbafd7fb946b2032dc79c4c8e37eb311859"
+      },
+      {
+        "path": "training_data\\centered\\pexels-roman-odintsov-8528928.jpg",
+        "label": "centered",
+        "sha256": "8d2bdc87378c1be3b9a937764f1caa30db718bb530a41983640d45677272ee10"
+      },
+      {
+        "path": "training_data\\centered\\pexels-rdne-8711435.jpg",
+        "label": "centered",
+        "sha256": "2a63ac3311fa5b763601d2d6f641e90981d7197fcc4fa15fc36c4e66af9802c4"
+      },
+      {
+        "path": "training_data\\centered\\pexels-rdne-8119548.jpg",
+        "label": "centered",
+        "sha256": "acec106695a05d0bc6c6c21ad555c47a05272e262a54e2fde39aa6f0707f9b70"
+      },
+      {
+        "path": "training_data\\centered\\jwx6DJvukms.jpg",
+        "label": "centered",
+        "sha256": "f293b21777d9c7eeddf011282ca81fe89b5de21521654907fa42c4bd4ce88755"
+      },
+      {
+        "path": "training_data\\centered\\pexels-kevin-malik-9032638.jpg",
+        "label": "centered",
+        "sha256": "bee7598e0da097632af0070af8a9289f67f1a1c58633988fb0a427325d0372fb"
+      },
+      {
+        "path": "training_data\\centered\\pexels-havvanur-2156235692-34121768.jpg",
+        "label": "centered",
+        "sha256": "7e27cfad72a117c2eb9ce29d8701950315ec3fac6d5ed3f8e3df1f0f10ce4686"
+      },
+      {
+        "path": "training_data\\centered\\pexels-vlada-karpovich-4534867.jpg",
+        "label": "centered",
+        "sha256": "cc56ed468b8a3000235485ab66d5155df62a8d56ba3e67c8d10d489fbbe168e8"
+      },
+      {
+        "path": "training_data\\centered\\B_NSsLvgWD0.jpg",
+        "label": "centered",
+        "sha256": "215f1ee188978d6c70fe8aef34f79cf8f9f1176021886506bf3d8b2a4d3b7bd1"
+      },
+      {
+        "path": "training_data\\centered\\pexels-alan-garzon-180446366-11201476.jpg",
+        "label": "centered",
+        "sha256": "0dcb3a1d4a5e4913d64f354bfa1a729543c396704265c3045d5853649739a3a7"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ketut-subiyanto-5000488.jpg",
+        "label": "centered",
+        "sha256": "065d7054ecd80b674e709f70c16a18821e904dc8cf559cbd9b0e84bdc7fe5674"
+      },
+      {
+        "path": "training_data\\centered\\pexels-tayla-923717.jpg",
+        "label": "centered",
+        "sha256": "5b44b51a32df3ed20206c7bf002f04e5f7e86c8fd6ee6212b2c1af8153652259"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shkrabaanthony-7484861.jpg",
+        "label": "centered",
+        "sha256": "4db86afc907aa24ac5b755eb3b85c9d8f35e19483c7fae82b80a39ca4f01ed9e"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shkrabaanthony-7970263.jpg",
+        "label": "centered",
+        "sha256": "22aff5a96d756b3d9ac490257f0c7369611240c126f4dd3a743440be3998ef17"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ekaterina-bolovtsova-7113603.jpg",
+        "label": "centered",
+        "sha256": "4dd63da2cbeed945d3b9185728fe9d1e84b5300f0000574faed7eb7965e28f64"
+      },
+      {
+        "path": "training_data\\centered\\pexels-fotios-photos-2106064.jpg",
+        "label": "centered",
+        "sha256": "57b7cd38154c4be0f016aabb7e5e2e9f3e03a76ecd7f8bf85e6e838c27e666ff"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-4458014.jpg",
+        "label": "centered",
+        "sha256": "2a2073e5010e3a18450c505ba33572dd3df970d2b338f572d745564b261a730d"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ketut-subiyanto-4658245.jpg",
+        "label": "centered",
+        "sha256": "26a43f7b436bacdb302a027647875cc997f6815effd8bf4a63b82b59364e9015"
+      },
+      {
+        "path": "training_data\\centered\\pexels-eva-bronzini-6475563.jpg",
+        "label": "centered",
+        "sha256": "7c7f43043f905e3369072778623aea878ee1dc2514b49361eeb40c32c0f0167c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-magda-ehlers-pexels-1339874.jpg",
+        "label": "centered",
+        "sha256": "a25e4b3fa85ca5fb2bcb7e9d325f1a7a822a6728c4dea036e5ca3fa1b8fd80ca"
+      },
+      {
+        "path": "training_data\\centered\\pexels-nandhukumar-4068965.jpg",
+        "label": "centered",
+        "sha256": "d5ca65b070f6343baafe0f7b2a07dc5c7038a4270bcba40eb685ef9394033f73"
+      },
+      {
+        "path": "training_data\\centered\\mt3503v.jpg",
+        "label": "centered",
+        "sha256": "533d0dfdb29f37fe2b76c0ebe3ee45baeb0c27cea87ae27e64d4664e9a071544"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251009-WA0076.jpg",
+        "label": "centered",
+        "sha256": "2cea86d4a8fe9350ce1494626ffc4883779cd422a67042c1e33f33e34200fae5"
+      },
+      {
+        "path": "training_data\\centered\\pexels-matthiaszomer-344029.jpg",
+        "label": "centered",
+        "sha256": "fe522478f256c9e1b4b3b3bb1d1bd7daf05787f54d09fd70919a2beedce9bce2"
+      },
+      {
+        "path": "training_data\\centered\\pexels-sharonmanueljoy-12678498.jpg",
+        "label": "centered",
+        "sha256": "8d649dec2bf1aa9077c87ea052adf0ac0b56e6d787f745567a7fbe68ab00f0b3"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251010-WA0027.jpg",
+        "label": "centered",
+        "sha256": "f3a8932bc860750b1b9cb7a10dabe695b187dca09a8b4ad10fa5c7b96292797c"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20250506_052357.jpg",
+        "label": "centered",
+        "sha256": "e758d22e081c330ca874435b490f5a79ec22eab749b958bedd83da5798054c13"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152917_046.jpg",
+        "label": "centered",
+        "sha256": "3cb0246a0fcd12a12faec147fc4e8d7cb5fe765bb0431e7bbb44acdd30dd3120"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pavel-danilyuk-7190869.jpg",
+        "label": "centered",
+        "sha256": "c491c3f89806cec1858c2a55cf8be4e0813d3c73613f4e1709676700e0b4d141"
+      },
+      {
+        "path": "training_data\\centered\\20200903_180823.jpg",
+        "label": "centered",
+        "sha256": "8f48777fc8a30e6b55ec0635f2ea39d822416c6429f09c94382f1d5cd97e2941"
+      },
+      {
+        "path": "training_data\\centered\\pexels-sebastian-411195.jpg",
+        "label": "centered",
+        "sha256": "456af5e64c6a0d4bf45367eff513646c460507a7b74a7b22b7a0b5a34a05ce55"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251009-WA0071.jpg",
+        "label": "centered",
+        "sha256": "69ab63e860bf0c1cfb07c57110032e45560fe3f579538283ada1a83a42bc1966"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pavel-danilyuk-7429597.jpg",
+        "label": "centered",
+        "sha256": "a5ab34ae8706868c6291fb45b81ed080af56aef1bf1e3812a19aa6bd9d6d100d"
+      },
+      {
+        "path": "training_data\\centered\\pexels-kadirakman-15170805.jpg",
+        "label": "centered",
+        "sha256": "12be9947efb104718b24b48c71eb4be87b7e89547f06b7b4e68cfee8d768fb0b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-karolina-grabowska-4711646.jpg",
+        "label": "centered",
+        "sha256": "5c15dfd2d33adce7e3f3d31af167f60364b4214cecfd17cfbd13b4bc10008f81"
+      },
+      {
+        "path": "training_data\\centered\\pexels-izabrella-987648.jpg",
+        "label": "centered",
+        "sha256": "57de6de03f6716062154979ca4c7787a10c8d8c75dee6c07b6cba25be06bd4d7"
+      },
+      {
+        "path": "training_data\\centered\\pexels-mikhail-nilov-7828522.jpg",
+        "label": "centered",
+        "sha256": "5383949568c0f46bde6a8d75e90238d0e4abe5d7c57023628d2921ffc7b58032"
+      },
+      {
+        "path": "training_data\\centered\\rbyucPoUIvM.jpg",
+        "label": "centered",
+        "sha256": "0b6da50da9963ab557f24ec873940046697ebafab6b6b48f008381b23b37eb90"
+      },
+      {
+        "path": "training_data\\centered\\pexels-budgeron-bach-5157731.jpg",
+        "label": "centered",
+        "sha256": "e6da3c112040a3961b383113b19118ef64e8bdf4eb12a1fb63b64d70961c3245"
+      },
+      {
+        "path": "training_data\\centered\\pexels-n-voitkevich-4827950.jpg",
+        "label": "centered",
+        "sha256": "64735d3f6311b94c5b1cb2b991256bba1e9665e59d521a19f740c588c8df9948"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251010-WA0133.jpg",
+        "label": "centered",
+        "sha256": "9540db777ad45cbd8b85d606e0c1e92de0ce46ec1fd3e953d8fb85b0e3dffca7"
+      },
+      {
+        "path": "training_data\\centered\\pexels-cristian-rojas-8784031.jpg",
+        "label": "centered",
+        "sha256": "9695bc40eb6a1df6475eb949e95e18b60a603b9fe86b27b2cabd6f9890d4d275"
+      },
+      {
+        "path": "training_data\\centered\\pexels-olenkabohovyk-11116406.jpg",
+        "label": "centered",
+        "sha256": "d5b010d776e9f1f4c8421ad1d083cd6ddb7f26d564b563a5e5453e351a2815af"
+      },
+      {
+        "path": "training_data\\leading_lines\\1dd21a63-fdf1-479f-b9d8-e44ffcf5066c.jpg",
+        "label": "leading_lines",
+        "sha256": "85108b66a69e9c5101d6a10e652528b7a43e2aef30cd8cba21f74ccaaaeec1e3"
+      },
+      {
+        "path": "training_data\\leading_lines\\Karay hill, this is leading lines because there is\u2026.jpg",
+        "label": "leading_lines",
+        "sha256": "7f44e3ec096dd8aace3fa1f30d118f919f59a6156da2969e07fac820811a69f9"
+      },
+      {
+        "path": "training_data\\leading_lines\\linear photos_.jpg",
+        "label": "leading_lines",
+        "sha256": "bafbe0b2d356f6c393b3c17dbf7298e6c6b5cab905425adff9a64cbc796bef3d"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251009-WA0047.jpg",
+        "label": "leading_lines",
+        "sha256": "6657937d3c3f545a459122666584fc256b30da163957a1778a72635d179b93e8"
+      },
+      {
+        "path": "training_data\\leading_lines\\leading lines or framing.jpg",
+        "label": "leading_lines",
+        "sha256": "f3656f162f592bd21c26094f8de1c422da9b420bc679c5168c3c7cb560254714"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251009-WA0048.jpg",
+        "label": "leading_lines",
+        "sha256": "918d90bc919faf5a44c71540471fff85b804c357ca79ae771e56f31737e37e96"
+      },
+      {
+        "path": "training_data\\leading_lines\\84302084-74b7-42a0-8564-81c95412c39c.jpg",
+        "label": "leading_lines",
+        "sha256": "38881314aadad4439c15a23aa96a0a465efd87fec252608a052421acdc833e97"
+      },
+      {
+        "path": "training_data\\leading_lines\\Capture Perfect Balance in Your Photos!.jpg",
+        "label": "leading_lines",
+        "sha256": "9b537ffd971ff6442bcd5621e6c7478d3c434f7221ca55f15dd0edaa4941dd37"
+      },
+      {
+        "path": "training_data\\leading_lines\\\u201cTo exist, the triangle demands three\u2026.jpg",
+        "label": "leading_lines",
+        "sha256": "59ea688393e510603e25af759ca45067ed59945426d02289f71ae260cdcfbe47"
+      },
+      {
+        "path": "training_data\\leading_lines\\on the next project.jpg",
+        "label": "leading_lines",
+        "sha256": "aec7291ae15e3f217150c66ebe76ae857214ba42580fabeb6fa20249b7ed4173"
+      },
+      {
+        "path": "training_data\\leading_lines\\20250723_193034.jpg",
+        "label": "leading_lines",
+        "sha256": "cfad23d8e2ff806a5968a0a72e7539968bc42ee038b7dd5cef584a811712e9e8"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251010-WA0017.jpg",
+        "label": "leading_lines",
+        "sha256": "cf58233c9e90d4d6a25a3c794391b8fcd70bf338a40042ca3f9ef6e0706fdc6b"
+      },
+      {
+        "path": "training_data\\leading_lines\\44629421-c748-4373-9370-22525031e33c.jpg",
+        "label": "leading_lines",
+        "sha256": "ee3debbf6e67f505d79930b3d16de5f60d7685b68e0d552a20548ba0d1d5fc40"
+      },
+      {
+        "path": "training_data\\leading_lines\\15 Leading Line Inspired Photos Taken With a Smartphone.jpg",
+        "label": "leading_lines",
+        "sha256": "89dd2311d554a9b9cf2b59d4589b832b8d40eca64453999bb6d98edfa981d0fe"
+      },
+      {
+        "path": "training_data\\leading_lines\\66b3af6a-614e-4958-805a-c2952bc1087b.jpg",
+        "label": "leading_lines",
+        "sha256": "8c1b5f64ae46b94f18418a2b98817c1f0ed401084dd755e8cb765b84ae2d5f0f"
+      },
+      {
+        "path": "training_data\\leading_lines\\06bece6d-a141-4daa-b10b-f5ba2c536b27.jpg",
+        "label": "leading_lines",
+        "sha256": "3d7a52f79521c995a6550f48da2284d74930f99d3a12186ca6ab105a88c2866f"
+      },
+      {
+        "path": "training_data\\leading_lines\\8db1f35a-d7e1-4be2-b20d-8c3bae8da76b.jpg",
+        "label": "leading_lines",
+        "sha256": "73ba8b777aa6b793c9a32609a3af1ae2a2e921b88667fa392466740c425e4afc"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251009-WA0049.jpg",
+        "label": "leading_lines",
+        "sha256": "7a0aba7f6d64fd24ca002f72c05f1f08793848772d2f16a4f526b18e12885063"
+      },
+      {
+        "path": "training_data\\leading_lines\\fef09883-8f47-4ece-a9f4-bc04d50ad132.jpg",
+        "label": "leading_lines",
+        "sha256": "70a1d4baee0d4d0ff74418d686ed59d2733794733481659c8a7c3081d058b9d7"
+      },
+      {
+        "path": "training_data\\leading_lines\\0878f4d2-6b0f-49a1-a498-77b2232b10d1.jpg",
+        "label": "leading_lines",
+        "sha256": "97ec67051af83177725370261d51266b48d1fd27e63d04f13802852203edb2b4"
+      },
+      {
+        "path": "training_data\\leading_lines\\a38734d1-d68b-4e67-bd62-a042c5c1ee9c.jpg",
+        "label": "leading_lines",
+        "sha256": "f554df52da39149f8262da4e31af7ef0f7c67d36b5eff69a6e00fb45c1f3f6b9"
+      },
+      {
+        "path": "training_data\\leading_lines\\8d82cf88-3a74-44c3-a60f-1deb0d6d0888.jpg",
+        "label": "leading_lines",
+        "sha256": "cb839b65b5f9bd4ee201456cc2ce4f6d7b38a188ccce022216d44d1cf103b7e8"
+      },
+      {
+        "path": "training_data\\leading_lines\\a9dac844-0cbe-4263-a268-8d9951669ec1.jpg",
+        "label": "leading_lines",
+        "sha256": "5a45b83df1fe1afef74ebd43a859bb157c71e265bc2346d53059f7fad5040789"
+      },
+      {
+        "path": "training_data\\leading_lines\\d91f9a93-c215-4f62-8154-f5e061251a30.jpg",
+        "label": "leading_lines",
+        "sha256": "150bd1a396b07155e975ab237fd34292a3182ca2139932592bcea0be29d6b94c"
+      },
+      {
+        "path": "training_data\\leading_lines\\378db6e5-c20f-42c2-9b86-b639565e78e7.jpg",
+        "label": "leading_lines",
+        "sha256": "ec902ddae8dfebda2fa09e0a8079119f43c0211a5d269d467584039fa73b1730"
+      },
+      {
+        "path": "training_data\\leading_lines\\leading lines (1).jpg",
+        "label": "leading_lines",
+        "sha256": "5541d06f774a82229788c67651b3d79ced66ac603ce3901996fed2801c20e51a"
+      },
+      {
+        "path": "training_data\\leading_lines\\e75d2f14-2a17-4d24-8da5-be266ea79710.jpg",
+        "label": "leading_lines",
+        "sha256": "437c5cbff4d2141f4bf84b446e1fba884fb76772df3ca59a5db520f781a8585c"
+      },
+      {
+        "path": "training_data\\leading_lines\\Element-Line.jpg",
+        "label": "leading_lines",
+        "sha256": "eaaa2a528aa51ae662e2f363f418d36d33627322938aaa9a6a73b3690d2a479a"
+      },
+      {
+        "path": "training_data\\leading_lines\\6c437d7c-dff9-4e8c-bb3e-ca061d980bc7.jpg",
+        "label": "leading_lines",
+        "sha256": "8c3df16d16f78e2ce3e4c1fb0621bebf5fd1ee0fb917e1d7ff9ea374d7d76df7"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250820_174439.jpg",
+        "label": "leading_lines",
+        "sha256": "256627d43e236e879dc01a6b3deceea746d83fe212d4b11ce42dd760fe5679e9"
+      },
+      {
+        "path": "training_data\\leading_lines\\9da8e74a-f7d5-4b3b-9f97-12a6b3878120.jpg",
+        "label": "leading_lines",
+        "sha256": "e42d01a154ffeef790aea2bf43208dfd4afca4ed6239d51cb9eee9897f1eb992"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251010-WA0146.jpg",
+        "label": "leading_lines",
+        "sha256": "03de2b9c16021a28c3abc7ea35093ce2d38175e9ae7f84e083289cdc2f754e9c"
+      },
+      {
+        "path": "training_data\\leading_lines\\Beautiful s-curve.jpg",
+        "label": "leading_lines",
+        "sha256": "91a5bf879cd0a97a98f2ec2b826b9f0e463ce0afb46a7cce37703be34b63d907"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250820_174439-2.jpg",
+        "label": "leading_lines",
+        "sha256": "57eef9fc82a31550d4a1ad2602099a99e7f275967f42c18c2511b3109ad21639"
+      },
+      {
+        "path": "training_data\\leading_lines\\Oops!.jpg",
+        "label": "leading_lines",
+        "sha256": "4905d87c1249d58366c61e144c58c6f27cd289705bd2565ac3bb81a90437b17c"
+      },
+      {
+        "path": "training_data\\leading_lines\\b44244ce-0aca-48a7-b839-6d37b5ff67a1.jpg",
+        "label": "leading_lines",
+        "sha256": "296daa4f90d3a6b664a25a16b98659507f4fd15ec9a7d75e344e081ad8b7f393"
+      },
+      {
+        "path": "training_data\\leading_lines\\favd_forgottenships-February 09 2016 at 10_33PM.jpg",
+        "label": "leading_lines",
+        "sha256": "86753c1ff083270ab4d2a29b2adb53acdd324b185b750280b5c61e9f8c0ab50b"
+      },
+      {
+        "path": "training_data\\leading_lines\\41931fce-34f9-41b3-bfa3-fac8d2f34fb8.jpg",
+        "label": "leading_lines",
+        "sha256": "733a014bed8cdcbaa57ec9704abfb3140ca5e200fa5704415ed3049e87b0e307"
+      },
+      {
+        "path": "training_data\\leading_lines\\d1173697-f303-481a-bb7e-08614321a4ca.jpg",
+        "label": "leading_lines",
+        "sha256": "3e7a0cc79377a9769fe3f583938c6cb5d131858dd5fc43aeea870c77890227ce"
+      },
+      {
+        "path": "training_data\\leading_lines\\60248130-a5ab-44e0-a979-1d0f1cc1d54d.jpg",
+        "label": "leading_lines",
+        "sha256": "6718420ebb1c529ca50975d196931ed58306ce0bfde845696a334167ec815595"
+      },
+      {
+        "path": "training_data\\leading_lines\\Interesting angle.jpg",
+        "label": "leading_lines",
+        "sha256": "26b10fb6256b38dc5e7206ad9341efa4407b1077c434e8ff8742be252c2d876c"
+      },
+      {
+        "path": "training_data\\leading_lines\\a5d158dc-6bee-47a5-ba7b-939e89178c79.jpg",
+        "label": "leading_lines",
+        "sha256": "ae6cf6b9181ac81d9f204c13f1c3e07f0e593a3b82e771c69137405d15c9e558"
+      },
+      {
+        "path": "training_data\\leading_lines\\ca5a8445-5557-40de-afa4-2c3abc9e6d19.jpg",
+        "label": "leading_lines",
+        "sha256": "03cd5ff103b3dd650e9aff933876e9436e8954fbadd1fc3bfc76e971535cd070"
+      },
+      {
+        "path": "training_data\\leading_lines\\8ccb3e2c-6a9d-4705-b595-29ea4a043727.jpg",
+        "label": "leading_lines",
+        "sha256": "7fd0dc81fc554f32f43ab65f9227faec559d67da5a1d30a529a83f36bca9d8fb"
+      },
+      {
+        "path": "training_data\\leading_lines\\Just a bench in the Hague.jpg",
+        "label": "leading_lines",
+        "sha256": "f0f190027e633cbcc4e781dbe3f4b096b7e043e315cb9647d06f7061e830ed19"
+      },
+      {
+        "path": "training_data\\leading_lines\\8ae6b3dc-dcee-4157-b8c1-df8b68e9fb92.jpg",
+        "label": "leading_lines",
+        "sha256": "6a9429ef000b717dc8ce3156cbee5c7c5a97650094fb44be4ae8998268bce882"
+      },
+      {
+        "path": "training_data\\leading_lines\\848f962a-b566-472d-abcf-db30464091ae.jpg",
+        "label": "leading_lines",
+        "sha256": "5bb98a11bb334627ad13a49da0e9f4afa3abef2c624ab0df1f79c99e1cf1c68e"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250820_174228.jpg",
+        "label": "leading_lines",
+        "sha256": "4252e7f214e6de8c68b5a4ab771ee3134c7d47ab947e6dab363c5555453397d7"
+      },
+      {
+        "path": "training_data\\leading_lines\\converging lines.jpg",
+        "label": "leading_lines",
+        "sha256": "b16f4482809ada7c9235ebeb0d2c33a1723e3dff1ebbd744c93991b8ae9f010f"
+      },
+      {
+        "path": "training_data\\leading_lines\\9f9c6023-74d9-47ae-a121-208a02bca7a1.jpg",
+        "label": "leading_lines",
+        "sha256": "2b7313349dbd48b4b2af47a4ad86b0d32bb3354c06fead9954bbfeb9e1b29ac3"
+      },
+      {
+        "path": "training_data\\leading_lines\\23283d54-8b75-41bd-b6c3-6940c9fef9dd.jpg",
+        "label": "leading_lines",
+        "sha256": "411b5c9e6047e76695d7774d874e55c1848bcd231707017c262b02c99d3b1711"
+      },
+      {
+        "path": "training_data\\leading_lines\\leading lines.jpg",
+        "label": "leading_lines",
+        "sha256": "5a6aa34f941de07557dae21cf077b9c949e09b48ecd66788ebe8b36aa28a5366"
+      },
+      {
+        "path": "training_data\\leading_lines\\519609a6-8c9f-4608-9b89-765f0777ff9b.jpg",
+        "label": "leading_lines",
+        "sha256": "b6882149310c2e28306d46eff6328f45adac5ec131a4c65e22ecb749856660c9"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250702_195235.jpg",
+        "label": "leading_lines",
+        "sha256": "dd5cbee556910f2247a2a9c59737465837fc689ed855133311b017025fbb29ab"
+      },
+      {
+        "path": "training_data\\leading_lines\\Instagram_Photography tip_Leading lines are one of\u2026.jpg",
+        "label": "leading_lines",
+        "sha256": "0ee0eee12d6a770512741a54eff76a4ba341f22072b4202179a8f4b6122916ff"
+      },
+      {
+        "path": "training_data\\leading_lines\\Diagonal.jpg",
+        "label": "diagonal",
+        "sha256": "e5deedfef778cb67f6d8902a249c649b0d8d0961a4ab7895ad42610eb7778230"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250502_193338.jpg",
+        "label": "leading_lines",
+        "sha256": "c6896d91085cdc1a46686e0e741c962d20fd7af588824ec6b00c6c6f7ad7e2b1"
+      },
+      {
+        "path": "training_data\\leading_lines\\a0002e77-707b-465a-9f45-90c6aff3a1d0.jpg",
+        "label": "leading_lines",
+        "sha256": "3399bdb171485a81aaafe434bc897d54a22f4904ec0f86995ef93c36e4f28375"
+      },
+      {
+        "path": "training_data\\leading_lines\\36cd5f7f-213b-4af6-b6eb-4884d7c93cdb.jpg",
+        "label": "leading_lines",
+        "sha256": "48d16783dc3314d3cc33fdb4f65fb4945c6d0890e8066b124282b22de8066430"
+      },
+      {
+        "path": "training_data\\leading_lines\\3c85b38a-b30e-458f-b763-f35a598d5b9b.jpg",
+        "label": "leading_lines",
+        "sha256": "b5fc7d17ef87801262a7384e7b153793cb62e557e41214924ae8d6719655a78f"
+      },
+      {
+        "path": "training_data\\leading_lines\\8edcabda-578f-48fe-acbc-8e724c4ecea9.jpg",
+        "label": "leading_lines",
+        "sha256": "4ce32c2022d8acaa16726a36c493eac88107b02e5c5eb20171a5bd3ebb16622d"
+      },
+      {
+        "path": "training_data\\leading_lines\\dd23f75e-3151-4263-b55b-878be522a6cd.jpg",
+        "label": "leading_lines",
+        "sha256": "2aeeffb72525d15ce4290c1d52995faf386eb47e4a9df2c61d1882b91bb5e9c3"
+      },
+      {
+        "path": "training_data\\leading_lines\\cd2562ad-40e7-46ef-a48d-45d9f6988145.jpg",
+        "label": "leading_lines",
+        "sha256": "b71b9e6d1582a3a9e292d19d61671fd26e0301d802c45cb42556a2117c77fa41"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-tizzy-30881648.jpg",
+        "label": "diagonal",
+        "sha256": "c9a9debb414fd859ffabb9e9457f2c5781754e58ebc9475f09f0a913117d234b"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-douglasphotography-2233777.jpg",
+        "label": "diagonal",
+        "sha256": "ee27018334a45849e2ad376ad47e63d90ee31037c3ff5333eb9a18e02b2ac6b2"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0013.jpg",
+        "label": "diagonal",
+        "sha256": "6fc557c72cb5c71a57d92c9f61eefd75e5aae9bc5242c5653ce38b380df4fe8e"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251009-WA0050.jpg",
+        "label": "diagonal",
+        "sha256": "f3876bb41c89ecd215b5fead501dc40db1ae0c0d9affeb5eea825c7edb9ab3b9"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250707_151001.jpg",
+        "label": "diagonal",
+        "sha256": "52544b2f56eccaaef5916414c3d5eab975a2b39a545353fab12e44ca096b7c3a"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-david-underland-3258542.jpg",
+        "label": "diagonal",
+        "sha256": "7dbc0ac2de2a0dadcfc747f6c2fc0dd0e4b83c9b81fbe2baee8f97b7cc5095ad"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-katie-berry-1270567783-26893367.jpg",
+        "label": "diagonal",
+        "sha256": "441961572707e49c3b376309e888b889adde5e9ffc7c8607528bff25aecbb651"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-joaquin-carfagna-3131171-17976227.jpg",
+        "label": "diagonal",
+        "sha256": "a007ff04f2aea9663792a82fa1c36c26fedf2c6f4d195350565527be3d9467be"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0074.jpg",
+        "label": "diagonal",
+        "sha256": "a38a669a1def7600280d1757404ed0c974e4b352221f5585369b24a9b72f1577"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0075.jpg",
+        "label": "diagonal",
+        "sha256": "c8bae5bd5438479b1e6efa2edfdc6f6c583b3115091d1d1e9bdd6db5c4531730"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-adrien-olichon-1257089-3319219.jpg",
+        "label": "diagonal",
+        "sha256": "72a1d835fd76bcbc7ddc49e10a3dfca2b2ebd77691bfb57c3367b85d8ab5a862"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-jan-van-der-wolf-11680885-15508508.jpg",
+        "label": "diagonal",
+        "sha256": "6fc1e0d2e27a2b93a77ec80e190ba797df43bc8196518b2563bc7aed3ea4d05d"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250905_214411.jpg",
+        "label": "diagonal",
+        "sha256": "61bf32ec23a8e31109b67ec0c6711f8185c99b4e7cd4116c7192659b8ca8b04b"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-alleksana-10610785.jpg",
+        "label": "diagonal",
+        "sha256": "f14f46c25aaa9f326a846dff0ca74df0a41bbb0d04ad442aa6c8f767ff4f21cb"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250915_191817.jpg",
+        "label": "diagonal",
+        "sha256": "d25a8bd7103c65fd10b71e6622c6391ef6bc95a8c6214d9e56510dbe11a825c6"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-danil-lysov-175964361-11676115.jpg",
+        "label": "diagonal",
+        "sha256": "ef1a6a9f609fcc92823fe65367edc17c8c9f749bd5b3f81b626a307d1ad32a95"
+      },
+      {
+        "path": "training_data\\diagonal\\images.jpeg",
+        "label": "diagonal",
+        "sha256": "2abfa494a33f685c30243324acc78386e286cc8406cd8b23a7096892afa69ee2"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20251010_152900_005.jpg",
+        "label": "diagonal",
+        "sha256": "060e97b4c1af1aa3cf0b95f50ec14f5bc10bc840d9fb83b35e6772ded3d80c3d"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0028.jpg",
+        "label": "diagonal",
+        "sha256": "728d92cc210ff1ee2c03a8abbab1d6828d5e13802c2c24d1f8b75053fcbfc576"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-readymade-3964677.jpg",
+        "label": "diagonal",
+        "sha256": "3eb9363565379adc9be0d0749d050bbe6f1b17e61bfaf404c748f0a7fc2c6c47"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-mikhail-nilov-7674666.jpg",
+        "label": "diagonal",
+        "sha256": "4e094b1418b2b8199fc7ac83c2578ac47d15d1b7fd3417137c94245bd73b4b98"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250717_052758.jpg",
+        "label": "diagonal",
+        "sha256": "473b6a63699fcae966065a4608f20a7787e88614d915049bd2b831115fbbd4f6"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-rgr-g-365324-1302597.jpg",
+        "label": "diagonal",
+        "sha256": "b5bb28a73ec4e4d55901571d2bf567619297f8b925f00d5fce06e2aa50b09a08"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-hngstrm-1246078.jpg",
+        "label": "diagonal",
+        "sha256": "ccb898e72364d75fbbb4b5257434095ab5b2fc543733e7fe0b0f3c9416a5f76b"
+      },
+      {
+        "path": "training_data\\diagonal\\diagonal-arm-eric-kim-composition-red.jpg",
+        "label": "diagonal",
+        "sha256": "9f4ec1800bb852a47bcf391a4a6bb57cf97198b05ae7176d0c6d55500d0eea09"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-camcasey-1722182.jpg",
+        "label": "diagonal",
+        "sha256": "52ca86f8a33f3875e7e3075507bfb9d41d94607455eda512650f33ba75ca4dd3"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-airamdphoto-20044323.jpg",
+        "label": "diagonal",
+        "sha256": "9a4ffd01759c418e99e1a7711b7aee3063d2f278b2b618eb7c68ea3b68aad98c"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-harry-shum-17627821-12991727.jpg",
+        "label": "diagonal",
+        "sha256": "86d546ccd535700ec581ce0153708c8e5aafb5c3d3aa3074872af483164dee3f"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-charlotte-may-5825589.jpg",
+        "label": "diagonal",
+        "sha256": "26c08ffe3f5f281dadbf441d023d0e91b2f64978f3648380f3a03d0feb232fbd"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-laura-tancredi-7078714.jpg",
+        "label": "diagonal",
+        "sha256": "e2702c44e56fef4985eb3a6a992ad19471e1c07db67bd9e20b55c16611c0a6ce"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-allecgomes-4586697.jpg",
+        "label": "diagonal",
+        "sha256": "3f212baddfa99708aea7ae76239be2fc2710fb8d7324993924cc3ef0909b9e3b"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-jess-vide-6389164.jpg",
+        "label": "diagonal",
+        "sha256": "d00fc06ef8164714635a098ba2a3440739241e95292e440e7973cead841a84dc"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-micah-boerma-327482-1008743.jpg",
+        "label": "diagonal",
+        "sha256": "5ec512f993e2ea31fca7f4f2663d70942c4e4d71e36667472d2ebe622dd22d12"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-jan-van-der-wolf-11680885-29126447.jpg",
+        "label": "diagonal",
+        "sha256": "2d651834875808989a97f16bda5dfaea46b6f346e47f2a36e0a19e1840932247"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-didsss-33312289.jpg",
+        "label": "diagonal",
+        "sha256": "81d1a76b32a5a27a2915b5a35b63c476310261c43ce09fbbeb6bca0e9d73f054"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-filipp-romanovski-297235844-18891789.jpg",
+        "label": "diagonal",
+        "sha256": "ac53f495cd9f0dc097f702727ea02895ded241a6a82f83d8cb13c6fe9d7c8861"
+      },
+      {
+        "path": "training_data\\diagonal\\WhatsApp Image 2025-10-09 at 19.06.22_a9f3d549.jpg",
+        "label": "diagonal",
+        "sha256": "819037432a68f41d4b465f5e3653237bfbf102d0bd5f5a88515fe48a002cda93"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0161.jpg",
+        "label": "diagonal",
+        "sha256": "833a5c321e5a2a4871f73d33308af7946c44a31213292aa811922dcd8cf1c029"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-elaine-baker-2596262-16319413.jpg",
+        "label": "diagonal",
+        "sha256": "3044d57be156236c1fb77be7572d209108f9c69e8cdc0c12982ac31c01d93a79"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-toni-clavel-62572784-8391586.jpg",
+        "label": "diagonal",
+        "sha256": "1f092e1e7c7157bb7951de1245a42e8054e9356a9bc762a0a05c774cc0866667"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-laura-tancredi-7078384.jpg",
+        "label": "diagonal",
+        "sha256": "deb209d8a1bff5597044aeda3870cbfd9e090671c0e70f4a52040d4edb2a66dd"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-laura-tancredi-7078722.jpg",
+        "label": "diagonal",
+        "sha256": "d4d6dd3010c8eebea1ca54c150140613305466cd5a5a3858e03b8e573058e3f4"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0063.jpg",
+        "label": "diagonal",
+        "sha256": "8c24faab958500c161152557259ca228fb0712797850eeed335db5fdded555aa"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-hngstrm-2455166.jpg",
+        "label": "diagonal",
+        "sha256": "d0eec472ec8e70c89ea7a19201e609da03a8ec1203f7f153f3370c726935727b"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20251001_213905.jpg",
+        "label": "diagonal",
+        "sha256": "e5d202ace6f9c8b4fa61d0928dab1af190cbdd5e674dc1a64ccb8b503c222580"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-ti-n-nguy-n-2151004984-31466652.jpg",
+        "label": "diagonal",
+        "sha256": "660224a381146ad00b0127275da7ee8887e166cb0ca6310a62b9a12206df633a"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0031.jpg",
+        "label": "diagonal",
+        "sha256": "d62e4e39e32ef14777f05923379cdfcab443a7a36319c9fc4cceb3d7f3d10b9f"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-kseniachernaya-5691473.jpg",
+        "label": "diagonal",
+        "sha256": "8220dcf43e7010e803cc95879285566f40973a3b1db37ec917a7038d237902a9"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0061.jpg",
+        "label": "diagonal",
+        "sha256": "d1d48eb52841cd4ad188bec4367a3cf5712fefa653883a78e4234193e68c9ce9"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-jan-van-der-wolf-11680885-16159149.jpg",
+        "label": "diagonal",
+        "sha256": "923e3e1a2046d459d24c8eb19325a536692d5a2b7932939740a4dc8c1fd680d6"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-vlado-paunovic-1567547-14351463.jpg",
+        "label": "diagonal",
+        "sha256": "78a6ba1fb8b4e30891cf5b8d92d8beb63e8c1ef4998aec7638cfe099626ecfb6"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250718_032946.jpg",
+        "label": "diagonal",
+        "sha256": "2d5c286fc4bf231fd295f6038aac2024c1ee9620c43e42fd16752e4cd55c2760"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-introspectivedsgn-9138684.jpg",
+        "label": "diagonal",
+        "sha256": "1f7b86032ae89130e8df437f59d49c3fcd77ed553baf766a93c417439d4f484d"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-teddy-2168238.jpg",
+        "label": "diagonal",
+        "sha256": "79792ef9c3814fef4dffd617d1848bb3b7edb92547ab9e1daca5e91328c1ef2d"
+      },
+      {
+        "path": "training_data\\diagonal\\WhatsApp Image 2025-10-09 at 19.06.22_ed071a00.jpg",
+        "label": "diagonal",
+        "sha256": "9ebe2d5662c25556579976a04deb563c1bbd8f7ccffb7856f7f446213bac9735"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-mati-3193889.jpg",
+        "label": "diagonal",
+        "sha256": "adfae53fc3c5c75ac9fc0aae4e007613e8a31f40e3c86577899e0a9436b2dbee"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-sstoppo-5303079.jpg",
+        "label": "diagonal",
+        "sha256": "c0987c21f3ddb0601fcfb609bf3cba266f4c3240e165a2b084b993a19aa5a3d1"
+      },
+      {
+        "path": "training_data\\diagonal\\ptw_Travel_Photography_Blog_California_Sailing_in_Fog_Under_Golden_Gate_Bridge.jpg",
+        "label": "diagonal",
+        "sha256": "5eda603c0cbcbb5dc961a53db398086b43853108e9ca869f79705a48bc14125d"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-eva-bronzini-6944703.jpg",
+        "label": "diagonal",
+        "sha256": "392f1f153dbfd7f3f5d268f01a9caac56d17eeadcedc4b0f762f950a12c15089"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-jess-vide-9259695.jpg",
+        "label": "diagonal",
+        "sha256": "a31cb41d0dfcbd55d03b0d725572e491718bf78952f696731accda39c1a48c95"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250710_193531.jpg",
+        "label": "diagonal",
+        "sha256": "725720eb23fe6481a5ff103fd619b8dd7914b13994aa2fd1a4e86fbb4ddd27cd"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-leeloothefirst-6944872.jpg",
+        "label": "diagonal",
+        "sha256": "870b0fbe28fb66a77e393f20b300aaae36838b0300640da9896e35721337a9a5"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0024.jpg",
+        "label": "diagonal",
+        "sha256": "858fafd8a2d2620fb7dd57067a1b544f597371e37b9ea2c01e6bcee2ad0bfa3d"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-sujira-su-178199191-11441014.jpg",
+        "label": "diagonal",
+        "sha256": "2c96a33d54ae8c8b56b09c5f4bf43ad473da521b9060321b39c4b1490ef5a1f6"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-dilrubasaricimen-7870490.jpg",
+        "label": "diagonal",
+        "sha256": "31c043f45fcc8a1218f2022276efab55c69ec629924f0a3b185d9249df826efd"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-cristian-rojas-8895579.jpg",
+        "label": "diagonal",
+        "sha256": "c360c00d8477a116229addee42e1e1a55a0ca5776024a438d86ba77877eef1e1"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-adria-masi-461420600-17895411.jpg",
+        "label": "diagonal",
+        "sha256": "001db7a5fb0839291f1db2fb56dbf3bd84c160977c7fd92562d3402757cdd95b"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0018.jpg",
+        "label": "diagonal",
+        "sha256": "6cd12e86ee001d5b69a9b2a8670fd035616b0c6d659edda2187832d401571037"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-ivan-cujic-20495-109479.jpg",
+        "label": "diagonal",
+        "sha256": "c7dd1d8b8dad490e71cc2beb31749ee8d7c7731cf4489424ff89507a14d5c837"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0014.jpg",
+        "label": "diagonal",
+        "sha256": "4505f888c4b3fbc21ba978283ed3fffee80e9f36ad3e36d77d634a97c99179d2"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-alexquezada-28888999.jpg",
+        "label": "diagonal",
+        "sha256": "860167012d93d09a84756f17aea2d4ab84b73f26a4dba3ca431321cc0a29651f"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-polina-tankilevitch-4725598.jpg",
+        "label": "diagonal",
+        "sha256": "84e67e53ed5a28b59622c9ef26c31397db80ca60d24a7aef41ee1d9025f25739"
+      },
+      {
+        "path": "training_data\\symmetrical\\fdabe7d6-33bf-4e41-a4d8-6c85f08d9648.jpg",
+        "label": "symmetrical",
+        "sha256": "838b4eb633abfbd29840c96eafa005d57e1355c3f214dbd1a88d20c797f37193"
+      },
+      {
+        "path": "training_data\\symmetrical\\IMG_20251010_152923_705.jpg",
+        "label": "symmetrical",
+        "sha256": "37800441a016d3362ed9b18075e398aa0a2856b52b2a8cbfe37db1e47c60c825"
+      },
+      {
+        "path": "training_data\\symmetrical\\IMG_9480.jpg",
+        "label": "symmetrical",
+        "sha256": "cdb7dc6533df1afd0779762d431e350714293422b92ec309a05b03d2fcc74c19"
+      },
+      {
+        "path": "training_data\\symmetrical\\3Develop (fransblok) - Profile _ Pinterest.jpg",
+        "label": "symmetrical",
+        "sha256": "b46c46aa1ce7e8c0b4fa9e2a7b0fe6a3aa2a39a6ed43c54e12be2da4f253b032"
+      },
+      {
+        "path": "training_data\\symmetrical\\b0d87f38-8790-43ed-a3fe-858d14938a15.jpg",
+        "label": "symmetrical",
+        "sha256": "f25c49348866135cb2426d05d077253f445931419e8dfed18abdc47b5c69cc75"
+      },
+      {
+        "path": "training_data\\symmetrical\\085d3bc3-f7be-4194-8667-fb1b5b8cc41d.jpg",
+        "label": "symmetrical",
+        "sha256": "e279e2ea5741241d024b316364bad5257738ca1c56b23b0d6548811ff7731498"
+      },
+      {
+        "path": "training_data\\symmetrical\\Informal balance (asymmetry).jpg",
+        "label": "symmetrical",
+        "sha256": "3ed07030173a1b165daab99c0eef1883a425c6ad5d75d6cff40aec5328ec9f6b"
+      },
+      {
+        "path": "training_data\\symmetrical\\Balance.jpg",
+        "label": "symmetrical",
+        "sha256": "ba0238b257c22dacc38f52fbcecdcdd27c99652b6cd276b7993a15d1abe5f656"
+      },
+      {
+        "path": "training_data\\symmetrical\\V250922-125806-24fps-1_960-iso100-tmc_rec709_0.jpg",
+        "label": "symmetrical",
+        "sha256": "d3fdd32f3dab1f9e36a0a810778ec4eba51e509a32ced23930cab5747d275496"
+      },
+      {
+        "path": "training_data\\symmetrical\\Oops! (2).jpg",
+        "label": "symmetrical",
+        "sha256": "6d31c75d0ae269cfadc39a5a10bb59e45ec7e1b33352978f20e18f70a3898fff"
+      },
+      {
+        "path": "training_data\\symmetrical\\c678cc16-8a8b-4d40-876d-a64f0a5a59bd.jpg",
+        "label": "symmetrical",
+        "sha256": "3025c762f54e2ddbbf382cdd747b4c8c74da88898973b6f76d839c6226e366b7"
+      },
+      {
+        "path": "training_data\\symmetrical\\Black and white photography Escalators.jpg",
+        "label": "symmetrical",
+        "sha256": "1cb1acb6cfa5a476381bdad4cddc16afbb2982cf1555c9374f4401fc7a6a9bd9"
+      },
+      {
+        "path": "training_data\\symmetrical\\Geometric Artists \ud83c\udf00 on Instagram_ \u201cgeometrical\u2026.jpg",
+        "label": "symmetrical",
+        "sha256": "3e246ba60d02f7d7b2310652bec5581c90f72157fb1d809e02bd666662bbb7b1"
+      },
+      {
+        "path": "training_data\\symmetrical\\Symmetry.jpg",
+        "label": "symmetrical",
+        "sha256": "75a7c8c6c8eaeaa0c6dc810661b00f29a88fd8a017d888d25e7a59554428e2a3"
+      },
+      {
+        "path": "training_data\\symmetrical\\spiral.jpg",
+        "label": "symmetrical",
+        "sha256": "c419f3e8aab035d891dcef18bd4ce41068769482059386ecb59124c3d5b8207a"
+      },
+      {
+        "path": "training_data\\symmetrical\\cac26300-f24d-4d68-88bc-dcbadcc215dd.jpg",
+        "label": "symmetrical",
+        "sha256": "67fe6a15199625eea25c02b535ad1e0f73d2d360222f4d7a857a75d387d845bd"
+      },
+      {
+        "path": "training_data\\symmetrical\\bed15a1d-76d3-4240-89cf-dcaee42b674f.jpg",
+        "label": "symmetrical",
+        "sha256": "8c7855ff8139f56cc1fb3d09da34923c04c5273e14189570e0a61a180fd96ca1"
+      },
+      {
+        "path": "training_data\\symmetrical\\how-to-use-symmetry-in-photography-reflections-martin-damboldt.webp",
+        "label": "symmetrical",
+        "sha256": "36f221d116d6968ba1cd2d57244c0db9c3cb0551ed1af217eeddce5af4e293e8"
+      },
+      {
+        "path": "training_data\\symmetrical\\2dcb5b4e-ec3b-4344-953d-1077e64cb1e1.jpg",
+        "label": "symmetrical",
+        "sha256": "d0d2c1ae7ca36c9b8186b882fa7655e3f265421c427dddb9b342a6cfe56c67a0"
+      },
+      {
+        "path": "training_data\\symmetrical\\8 Ways To Create Perfectly Symmetrical iPhone\u2026.jpg",
+        "label": "symmetrical",
+        "sha256": "1e916d54cb340d818d74e0079511a5aabcf744e5528f2f94845fee4fae2d3de6"
+      },
+      {
+        "path": "training_data\\symmetrical\\be4fc760-85e1-43a8-ba02-163f578e8be9.jpg",
+        "label": "symmetrical",
+        "sha256": "f00400f82acd9a2cbc4ba24653b5a36fd4c09a1f434632cfc9717563af15e14e"
+      },
+      {
+        "path": "training_data\\symmetrical\\Origin of asymmetry.jpg",
+        "label": "symmetrical",
+        "sha256": "b09cdb0273bc22581bb851d26645e0aeb88aead8a1f0f730fdb43247724205ea"
+      },
+      {
+        "path": "training_data\\symmetrical\\514b0052-72e4-4188-91e4-73b4aea490e6.jpg",
+        "label": "symmetrical",
+        "sha256": "065aa0b48a91ae77518104fda697f98a34e3318052743c8670faf7d0a77adefd"
+      },
+      {
+        "path": "training_data\\symmetrical\\c312a570-2b8d-4936-921d-e62d23c3af5b.jpg",
+        "label": "symmetrical",
+        "sha256": "126e2515f2cd7f2b7ec68a37796942f52ec123e023d9f34610fb5e0580ac079e"
+      },
+      {
+        "path": "training_data\\symmetrical\\5c4bc922-7167-4dcd-8926-47b8caffb9aa.jpg",
+        "label": "symmetrical",
+        "sha256": "b0ca4cee2b42ea1b355e34339948b92a011cfc674702b9b84e44fb00c459b931"
+      },
+      {
+        "path": "training_data\\symmetrical\\Luna on Instagram_ \u201cAMS \u2022 \u2022 \u2022 #architecture\u2026.jpg",
+        "label": "symmetrical",
+        "sha256": "8a2c210aaf5db5de93d2aa30b2cd33593d9451953cfeb8d26386d821ad0c8d6b"
+      },
+      {
+        "path": "training_data\\symmetrical\\59425448-8ef5-4c8c-82c3-c1b25bc191a1.jpg",
+        "label": "symmetrical",
+        "sha256": "7cb951fa0973c74d520401b1e05c95d882f77d48be9c51c608a62ace5568cc51"
+      },
+      {
+        "path": "training_data\\symmetrical\\cf4206fa-429b-43f2-8e52-6503f779af4b.jpg",
+        "label": "symmetrical",
+        "sha256": "292a8d3b634b57f1efbac485a9305256de387c9e5230624d627f64d4bc39ea40"
+      },
+      {
+        "path": "training_data\\symmetrical\\Balance symetrical1.jpg",
+        "label": "symmetrical",
+        "sha256": "ffdc6de9efc0317b2668fdca91ab0e0c801b05c4259973ebc7901654c2a188e7"
+      },
+      {
+        "path": "training_data\\symmetrical\\f11091b1-5946-4525-b146-043e32bcca6f.jpg",
+        "label": "symmetrical",
+        "sha256": "7c171466a678709c1fff2794e7ed7d2cdf05fb02f52e43852317a5e5c9330d90"
+      },
+      {
+        "path": "training_data\\symmetrical\\symmetry-smartphone.webp",
+        "label": "symmetrical",
+        "sha256": "60bbcfbb888cee74f6fcb536b41f1c697031461f0470f9921ad05c5d4507a823"
+      },
+      {
+        "path": "training_data\\symmetrical\\Composici\u00f3n fotogr\u00e1fica - Simetr\u00eda en tus fotos.jpg",
+        "label": "symmetrical",
+        "sha256": "e571a76be3570c0e5bec4608b2d772e0759f737cf1720d119cda1dd2924fa204"
+      },
+      {
+        "path": "training_data\\symmetrical\\Photography Inspo #1.jpg",
+        "label": "symmetrical",
+        "sha256": "5b8869faadbb03d93a9100eb7b25ebfa2562b1b24d3b9e5f2f9b0a2f88f2606d"
+      },
+      {
+        "path": "training_data\\symmetrical\\f9f13ec1-b6f5-4da5-b70b-36d4601066c6.jpg",
+        "label": "symmetrical",
+        "sha256": "79fcdce23e6d29ec5aa493f0a39a6e31fa07bd216172c0ad703c9290b6f57f88"
+      },
+      {
+        "path": "training_data\\symmetrical\\372f63fd-a5a7-40d5-88bd-f85b3fd00dd3.jpg",
+        "label": "symmetrical",
+        "sha256": "0634876a421379c972886b45603bd3070acff0a984d0bf1a2ce1378f0d43caa6"
+      },
+      {
+        "path": "training_data\\symmetrical\\yeet.jpg",
+        "label": "symmetrical",
+        "sha256": "ab4540a7f6e1367babc2067685643ec5959dfd27e5690e9fcb9c7a817cddf9b9"
+      },
+      {
+        "path": "training_data\\symmetrical\\f50b0d86-f4c1-4990-864c-113a36a8a10e.jpg",
+        "label": "symmetrical",
+        "sha256": "3b0aca29b4ce326aad7c18d3b10670d0ced5f25188960aa4c8722fac19b931de"
+      },
+      {
+        "path": "training_data\\symmetrical\\Forms.jpg",
+        "label": "symmetrical",
+        "sha256": "a5b9dcaa8fd91e92c484b6b0be22a8bb7a29b33f5c4138d2ae259f79dbd0ba24"
+      },
+      {
+        "path": "training_data\\symmetrical\\balance (1).jpg",
+        "label": "symmetrical",
+        "sha256": "c89b321ae7369dc31f26db8dfc539d816ff29246f92f7785dad44a2225909f26"
+      },
+      {
+        "path": "training_data\\symmetrical\\IMG-20251009-WA0052.jpg",
+        "label": "symmetrical",
+        "sha256": "71c32a6096722c7055edd2d4fd3f35dc9cf0ae230e337ca53c96d213c1a26da0"
+      },
+      {
+        "path": "training_data\\symmetrical\\\ud83e\ude9f.jpg",
+        "label": "symmetrical",
+        "sha256": "6047bd09ab8a5c1443c520f041b9b702a07aefd5c319525cb03c082aa4aad0f4"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Macro, micro, and close-up photography _ PicMonkey.jpg",
+        "label": "golden_ratio",
+        "sha256": "b45eeebd9a490761f8d3de23b50afb570cc73a2aaf46e83d4fe37535e3cd3fc3"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Golden Section _ A beautiful spiral staircase photograph\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "95833a8b671c4f9afc2c02fff3c2a9c89f61c71453b51622a898fb7fe29d693d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\m\u00fckemmellik.jpg",
+        "label": "golden_ratio",
+        "sha256": "94c1c7cfb604c79c9b77492ff976ceca2ccc2fd86bf628146e7d26e4f8c2e2c4"
+      },
+      {
+        "path": "training_data\\golden_ratio\\images.jpeg",
+        "label": "golden_ratio",
+        "sha256": "089e86a9874c274ac18620e0c6046540ba65bc594903291dd1b1d9460aee1337"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The elusive \u2018golden ratio\u2019 is the secret to musical greatness_ Here\u2019s why___.jpg",
+        "label": "golden_ratio",
+        "sha256": "36ade68bbb29502062aa76c1825ae504c6f6454e6739e829225e4037df8dc3e0"
+      },
+      {
+        "path": "training_data\\golden_ratio\\63319de7-8618-4ef0-86df-b2cc2c4a1972.jpg",
+        "label": "golden_ratio",
+        "sha256": "48b523778e218b88ca80c2e96d29d9526f11c8d61180aa9a941fc16413cd25b2"
+      },
+      {
+        "path": "training_data\\golden_ratio\\8d50b255-dae5-4f8e-b186-74d474d2bdd4.jpg",
+        "label": "golden_ratio",
+        "sha256": "9d1f9973303bb8973170d2fdec4e26ecfe3248637c70189c750bda54bee32397"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Fibonacci and Abstract Art- Podcast #52 - Ridge Light Ranch.jpg",
+        "label": "golden_ratio",
+        "sha256": "80ad227c0b17f89474786d4a88656fba61a903002a14175be6358799e4b5ebc5"
+      },
+      {
+        "path": "training_data\\golden_ratio\\This would make a pretty cool ear cuff.jpg",
+        "label": "golden_ratio",
+        "sha256": "96de73cacfcc07316dd6d6f113eb8e681105c414c8455e28d7f8ff47d6447665"
+      },
+      {
+        "path": "training_data\\golden_ratio\\IMG_20241205_175041.jpg",
+        "label": "golden_ratio",
+        "sha256": "4a19d4ed1b05127a601099e73668e4d839cb2ecefbb51eb97d99ee180c5abc57"
+      },
+      {
+        "path": "training_data\\golden_ratio\\31Advanced-Month1-Composition-2Goldenratio.webp",
+        "label": "golden_ratio",
+        "sha256": "2097048baf4f63080d3e0365aa3be0db434b97fdb3ec3e98bc29861450984778"
+      },
+      {
+        "path": "training_data\\golden_ratio\\c5d5c17f-aa59-482d-aee0-30286c343c58.jpg",
+        "label": "golden_ratio",
+        "sha256": "fdf8f45905f062cd4809e311f419b8157922b29bd55149634215c9d44934da16"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden Ratio in Portrait Photography.jpg",
+        "label": "golden_ratio",
+        "sha256": "c4729a83ad5876fe7ef55e3deb7ebcb45fb07f8f10fec36e8a5586d1dc0fe75b"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden Ratio Ballet Dance.jpg",
+        "label": "golden_ratio",
+        "sha256": "cf7d01cfd49c94636a0da24518921d0617d801fb33fb6b5f8b37bc39b2cd9e60"
+      },
+      {
+        "path": "training_data\\golden_ratio\\This picture is an example of the Golden Ratio or\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "c12fd14aae106c302f3b0928223a6b2d9afec8c28b79f087c2807ed317bc05fb"
+      },
+      {
+        "path": "training_data\\golden_ratio\\!.jpg",
+        "label": "golden_ratio",
+        "sha256": "961b0341f55122e1e754115fcd6557f7a943d89bc0b435079db9946b862f7b2a"
+      },
+      {
+        "path": "training_data\\golden_ratio\\IMG_20251010_152921_942.jpg",
+        "label": "golden_ratio",
+        "sha256": "f959a64ff84464635954b1e7dba3f57277801459b11df0dd75cfe75ccfc2cb84"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Miro _ The Innovation Workspace.jpg",
+        "label": "golden_ratio",
+        "sha256": "5a69717de01a9c417d5907466d6e9adcf9afb3e6152a2c6d07dc81d50be1d7f2"
+      },
+      {
+        "path": "training_data\\golden_ratio\\f8abcc14-4ae8-4d4b-b7d7-dfc008caf862.jpg",
+        "label": "golden_ratio",
+        "sha256": "535ef1c29ce3f959da2ca6d45f9b83951322e1beedb9ecd650165c0fb0e4087c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\07c22b13-3b23-41f1-b148-5163b60c2fcf.jpg",
+        "label": "golden_ratio",
+        "sha256": "aa5fcff39df031e9a6a4ae9a216b59ee58a0bf33db53bd9160d014272215b41c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\This image shows how photographers can use the\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "4acddb41215ad9d3d7dd199efac1d3ed3f812f07e159feb984e582e3bde63db3"
+      },
+      {
+        "path": "training_data\\golden_ratio\\44d24e56-61b9-4c5e-a054-a568bc48ded0.jpg",
+        "label": "golden_ratio",
+        "sha256": "842306a48eab44b2203e8a54eba5d4550950a19078517500fe2f1924735558ba"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Golden Ratio_ Deeper and Darker.jpg",
+        "label": "golden_ratio",
+        "sha256": "59a7ebaaa026546fcf66b8e62a650fd720a646c000d2a1da631dccc7698244e0"
+      },
+      {
+        "path": "training_data\\golden_ratio\\golden-ratio-vs-rule-of-thirds-12.jpg",
+        "label": "golden_ratio",
+        "sha256": "62b26e4461efc4dafc88232290c0ac43ffa1eda5362c3a148b53f8ed5f8df859"
+      },
+      {
+        "path": "training_data\\golden_ratio\\05217482-3d94-4178-a7eb-ee3a602f143d.jpg",
+        "label": "golden_ratio",
+        "sha256": "9686bf26d97deeafb6d3c2431fd72bc53e702f7112f9a73eaff5fa357a620b2c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\95815f4e-f819-43d3-b19a-deb41a709179.jpg",
+        "label": "golden_ratio",
+        "sha256": "9ac937c28b351fc8c0e0f90745024ae6011a34c398195952a34c0fb6d2c07aa1"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Armon\u00eda_.jpg",
+        "label": "golden_ratio",
+        "sha256": "ef3da80ab602836a73500fc35d52cc888550154ba903d20eade04ec1cb49e841"
+      },
+      {
+        "path": "training_data\\golden_ratio\\ce80aae7-a9b4-45fa-a111-9a87f943381d.jpg",
+        "label": "golden_ratio",
+        "sha256": "588ac7f3e7ab3d3df452e49d13e0a5771d1510e13035d4af85c831ccbbd40dd5"
+      },
+      {
+        "path": "training_data\\golden_ratio\\de426a8f-5ccd-47a6-ba06-d8862892db9f.jpg",
+        "label": "golden_ratio",
+        "sha256": "1b38c3ec93a8a30c42f82f3ce99c95118192e799045a2ee90dbad9c8e9b2abac"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden-ratio-landscape.jpg",
+        "label": "golden_ratio",
+        "sha256": "3812e9e70a5d8d0d23f6450765a82413485f9e5817fc1266ccd289eb41008830"
+      },
+      {
+        "path": "training_data\\golden_ratio\\\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "665d72682e497d1cf1f609b690feb7ac29b50338225ea8a8d17b12f644e477b3"
+      },
+      {
+        "path": "training_data\\golden_ratio\\cd02507c-53c1-44b0-9a88-ba6c32878cbc.jpg",
+        "label": "golden_ratio",
+        "sha256": "a9888c163bcb4b6d4c06fbfa21f149271fc50f76d1b1207c3d81080b336c20bd"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Mona Lisa by Leonardo da Vinci_.jpg",
+        "label": "golden_ratio",
+        "sha256": "092e76df0ec0e6b810ba4c643c65934187dbd0bcde2943b37764605db7d8cc2e"
+      },
+      {
+        "path": "training_data\\golden_ratio\\f455578a-6969-4acc-bcd2-c9b02ec707d5.jpg",
+        "label": "golden_ratio",
+        "sha256": "22ee65f8f85bc226e4483782e33a7e9aacc589baaa772c7ac919c7ae6325c8a9"
+      },
+      {
+        "path": "training_data\\golden_ratio\\IMG_20251010_152928_293.jpg",
+        "label": "golden_ratio",
+        "sha256": "c349628b68faab28666d6643f7bbdf039dfe5775c5f05614ed661bfe68082986"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Golden Ratio On Ansel Adams\u2019 Photos.jpg",
+        "label": "golden_ratio",
+        "sha256": "7de0ae227eec3ce16a833b8c2af7ff7298d41690d7f179c314745dcbc66b186b"
+      },
+      {
+        "path": "training_data\\golden_ratio\\34735fe7-81bc-43dc-aa0a-6a5730ed78d4.jpg",
+        "label": "golden_ratio",
+        "sha256": "41f48a22a22e7a897503d1255b2728ccf4c0eabc9d0f94a92cebabda9458b76a"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Fibonacci love.jpg",
+        "label": "golden_ratio",
+        "sha256": "841923a1541855715aa22369c7aa01a8eb55b77498edd527b5a4839646231a7f"
+      },
+      {
+        "path": "training_data\\golden_ratio\\60979202-9073-406a-a84c-db3155cd7a6a.jpg",
+        "label": "golden_ratio",
+        "sha256": "3490c5edb1cc56e0a57d0d58c03ebc987216c7210821b86500c0375bb32cb483"
+      },
+      {
+        "path": "training_data\\golden_ratio\\0064561f-c310-4c5b-9e8f-43df2fe12525.jpg",
+        "label": "golden_ratio",
+        "sha256": "0119623462355eb6c44a482e5a1aa6152443e7fdfbb5032aa74f830173b8920c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\e4bc9775-76f2-4916-8210-727d99cddaf1.jpg",
+        "label": "golden_ratio",
+        "sha256": "f8601d35f485fb913d6e74dea8d1f11de666a4c5b08305a0febfa7f54bf2781a"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Fibonacci rose.jpg",
+        "label": "golden_ratio",
+        "sha256": "c8fbd446036f5bee5f8ade2b8551c237e7e7da22c2f474ea33fd83e192f33c0d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Design has used the Golden mean for centuries.jpg",
+        "label": "golden_ratio",
+        "sha256": "6722e1a56f5111e149d2a59e215a8466e4df37d42f974722fb9e42e77200676c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\8123d8ab-0efd-4323-be61-698827f3e7aa.jpg",
+        "label": "golden_ratio",
+        "sha256": "5b254dc5cb746498b9d705a5160fcc08bfe97f3266309d1a7d6ca1354b1622c4"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Sunset Fibonacci.jpg",
+        "label": "golden_ratio",
+        "sha256": "2ee50fff0ca6f8b767b07b2788c7c7b789d3106b2a6323a813b8e1bc84cad44c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\b5d6fbc8-be30-4c62-be57-185dc5b0f835.jpg",
+        "label": "golden_ratio",
+        "sha256": "5c2a7b84a5a530f2b96801578b74de53a43fdd5450475fbff20c5ecb9464c789"
+      },
+      {
+        "path": "training_data\\golden_ratio\\IMG-20251009-WA0030.jpg",
+        "label": "golden_ratio",
+        "sha256": "104bdc4468f8bd4210534610c533eba9a7556bdfebbeb8ac098b10719327549d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The branches start from the left and flow to the\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "9ccd8deca842d5be4053ec1ea70c977294306a0f4d96d226258b354b683e1b59"
+      },
+      {
+        "path": "training_data\\golden_ratio\\e4d7cb07-8dcf-403c-96f1-dfb9e37903df.jpg",
+        "label": "golden_ratio",
+        "sha256": "1d943d7f32c4a034b773336331fe178a607756526bcbfbcc75c114c7a5fedeeb"
+      },
+      {
+        "path": "training_data\\golden_ratio\\4 Web Design Tips that your Web Designer Won't Know About Graphic Design Junction.jpg",
+        "label": "golden_ratio",
+        "sha256": "ae7cfbe141da7f57b3914910be2adcb1ca05a97e623e0e23e08b3ff1af1dd0d9"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Stairs.jpg",
+        "label": "golden_ratio",
+        "sha256": "574cd2b329ebca8b8e4a8c019a1343dbbec16759017a75905225c9b6958ef4cb"
+      },
+      {
+        "path": "training_data\\golden_ratio\\9f83a169-f955-445c-8f70-d60e5b5a11ff.jpg",
+        "label": "golden_ratio",
+        "sha256": "6d3126d2ec7f6e75a0e4fb5c51e9c9e7c830151f9cb2168a55230e204b44ba9d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Proporci\u00f3n Aurea.jpg",
+        "label": "golden_ratio",
+        "sha256": "5821d70a61302d9c669e0311ca806dc8acfee2ddb9360ce71255e388fede2b08"
+      },
+      {
+        "path": "training_data\\golden_ratio\\79b8f3f9-b275-464b-ab36-9b1e4f2a76f6.jpg",
+        "label": "golden_ratio",
+        "sha256": "3b9b4bba980539aadd1e27496c119855c97f27ab31d9379a2d75dcf29b74f0ae"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Fibonacci Spiral.jpg",
+        "label": "golden_ratio",
+        "sha256": "3bb096479938312fc50c06da59c1d944b917d8fee2c78e192f55d563ee34fa7d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Fibonacci Sequence and Golden Ratio in Nature!.jpg",
+        "label": "golden_ratio",
+        "sha256": "7dbf40dfbfe73c432ffa3fac4adf00528b366bf711728c62f88a563ac9238c71"
+      },
+      {
+        "path": "training_data\\golden_ratio\\b23a4481-ad2d-4bf3-8f4a-12f54f9be1c7.jpg",
+        "label": "golden_ratio",
+        "sha256": "5a56ef6d42fdc7006d978d7f60f14bcbc7757310b146c6d173a8d1f4528bb60a"
+      },
+      {
+        "path": "training_data\\golden_ratio\\IMG_20241205_174323.jpg",
+        "label": "golden_ratio",
+        "sha256": "ec31e771b070b7ac78fc99d51f3aac4218de9771cc26e40885537799f8b81ca5"
+      },
+      {
+        "path": "training_data\\golden_ratio\\images (1).jpeg",
+        "label": "golden_ratio",
+        "sha256": "c0ff6ae60fe5957ee592daaee6cf302ae3fc9676331831e514a888a5480aceda"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Holy Fibonacci! This sunflower is 6+ feet_ I held\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "3d9c5905ac7f73707df888ea1690857dd9090aad9dc2fd70d271aafeb34bb57c"
+      },
+      {
+        "path": "training_data\\golden_ratio\\820466d8-dd6a-42f8-9130-73bd12294f79.jpg",
+        "label": "golden_ratio",
+        "sha256": "f45bdd6240de70d0ac08ff796051743d2f368fede444ada3657282ac595b4720"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Food Photography Composition.jpg",
+        "label": "golden_ratio",
+        "sha256": "8a85608284da9e5b5b345a176cc758de0d141a9685f34a135d1cc0e2968b0abc"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\WhatsApp Image 2025-10-09 at 20.51.07_1cd7fea0.jpg",
+        "label": "fill_the_frame",
+        "sha256": "09a2762393743b0ded91364956d0291e69d076af514841b219d3a9ad45e7fbb5"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (13).jpg",
+        "label": "fill_the_frame",
+        "sha256": "46c147528da40f25fe7e31d157fb78915d4f56c61fa37abfea2b2ef19cc5cec6"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (12).jpg",
+        "label": "fill_the_frame",
+        "sha256": "495d58a78eec7f6110f324a560636215ef1ca35e59ac19d6f9f7d54c73cc7354"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\messrro-s5-eSWVo4JI-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "c0fb76b449e36fb38b3b3f4b34d7e374d862f7774c2f98076a90976d9b05140e"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20251010_152936_125.jpg",
+        "label": "fill_the_frame",
+        "sha256": "88d50d7f0ab0250eb7770c34b6e954b00cd7ad70a7a3a8dff598fca27c727b2b"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\georgi-kalaydzhiev-i5w0Yz3s3JQ-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "727d7d3223047d0b56174a67de5a89ba0b4202eb2b3ac7ab1544ec3a1071f006"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\henry-lind-U6_GVeRcEEM-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "cfb9969300080d92032e23c4640261201af8c96858e4360c507a0010a9d89b96"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\dylann-hendricks-WIpORbReaTA-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "db1914fd10e6ce030e501eebaa89a48b95e5992f48e8008427a6f5508a60cfed"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\marcel-strauss-_oeWe2Z8JEA-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "e6c0a62d7f66ab07e7a66b39b3cd33793de7d8e77898f1e808e31fff6fdef7d1"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\marcus-ganahl-wGk_G0lbSJI-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "78cc91727d679ef6dba5ba65319ed7e61a29a77468ec5e899a6c9b5af4c4f5c7"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\nick-fewings-EA6GdDIWyII-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "ae6a706b5addd3502708596cb5597a080f37fce4abc41c6e39e261b22a658f07"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20251010_040443.jpg",
+        "label": "fill_the_frame",
+        "sha256": "48dc98541c173df93aaafa3d5522b12851f7f267738148ac4782da6fc655123c"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\taiki-ishikawa-pe1TQUYsdmI-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "67630ca6a27ababe31405d88aa653f04a45ccf5d6eebc5d3a8af95e038ace84e"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\aleksandr-kadykov-St1XAHupfvc-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "2107e02d53b8834a63307b1dc31cf6fb8c95835b5ad7b5c75165994c51b717ee"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251010-WA0015.jpg",
+        "label": "fill_the_frame",
+        "sha256": "731934703e7d1a18e564937e9c043b5895eb7c4ce70a17d9e4352903989e74fc"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0063.jpg",
+        "label": "fill_the_frame",
+        "sha256": "759c4660d9d95ac82350e674559d6b46919d67966309ee573427d40298bf2ae0"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251010-WA0006.jpg",
+        "label": "fill_the_frame",
+        "sha256": "d764df951de4c1fb32a6d566ce4ac573f78362b9c91f39017f492f1bc3e57465"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20250809_000451.jpg",
+        "label": "fill_the_frame",
+        "sha256": "ee4c3d9e62cbc65bd76511129f82cc9e7ee38f441b984381d202e225b9356ac3"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\7 Tips on Capturing Unique Stock Images of Landmarks and Buildings.jpg",
+        "label": "fill_the_frame",
+        "sha256": "b6bcea5a9798972e2c0f8579d46ea49a967081bc50b5cb730e422ba7ad6fa56f"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20251010_152858_013.jpg",
+        "label": "fill_the_frame",
+        "sha256": "74eb3ae144bb8c8b4ea2dd503b40ad542b2c456bff525d5b23a51f735c64f571"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20241115_172736.jpg",
+        "label": "fill_the_frame",
+        "sha256": "5e00b913f5733218ce9affc80e919d1c71ae25dad2b98acf19d2f268bb7f3613"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\urja-bhatt-Xavq2b4h0-M-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "526844260c13f716db4c564db575bc9d75925dd4c6e300d873e04a0e5ba47025"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\bernd-dittrich-pAxvy_rcxb8-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "a082704ae6abf32f44eee078a56a4b9ea60eaba1e56a9dc02a0039a8dcb9ed4a"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20251010_152855_867.jpg",
+        "label": "fill_the_frame",
+        "sha256": "316df3c79b9ce40137afcefc7ba19835c4ffe44bff8edbd9fc8dad2924fa0c46"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\liuguangxi-8PHLJuHPUp0-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "8eaf65ccbdce0d624d201b268110ce2f45b50c9d51bccaab6b20388edf1a6cb9"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\joshua-hoehne-PuO3yylhPNQ-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "50c6ee91f35c4e70b3ac65e19000ea6c4b21eda59b3403edad34901f33a4f843"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0026.jpg",
+        "label": "fill_the_frame",
+        "sha256": "1ab5a4cc6868e1339e72ce3b30100a9cfe1df09529d4981439e5027d0ade3924"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\ranurte-ZDTVvHZ70xo-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "840b0b7cc90505cec917f7404c5a5798a43cd1b7229e3ac249dfc17e2e2a7bec"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\Borrowed inspiration for my newest obsession, selective color photography_).jpg",
+        "label": "fill_the_frame",
+        "sha256": "23ada18d3770bd7727324af1137c06b77dce23d052a9a2bc89b28408360c0fb7"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (9).jpg",
+        "label": "fill_the_frame",
+        "sha256": "61b0ac8229814b24ff1b3953282131dd94dd80baeb0a57a84bb910b0bb314c13"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\joshua-hoehne-U6xhhimFKZg-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "07935bf6a68cc67b28df85d9090980f329e1731e42959e5fff9fa9cff976c973"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\micheile-henderson-HoOCNuDxD7E-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "484777a7012160f8042f38cb2918f6086833e09ae2736df7185381e0459dbefb"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0044.jpg",
+        "label": "fill_the_frame",
+        "sha256": "cc816625871ad26abc4fe9c959a2aeb3f050dc93957cf3546ef8e25d380b80e8"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\urja-bhatt-QxH8WQyyOyg-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "2eaf1d3d6cfd6b84cc38597b012ccd7e465705b7a99f01d04242acdf823e2b0c"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\Day 6_ From a low angle #2 cuz I like this pic too much xD.jpg",
+        "label": "fill_the_frame",
+        "sha256": "f53181fd4d89090da4b594b3430f4d0bdcf5a4ea433f2be841720f2d3a710f2b"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251010-WA0003.jpg",
+        "label": "fill_the_frame",
+        "sha256": "9216f87b04e82760e78145f39cb3ed00ec4960bf349e615044e469155eaf8d50"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\ranurte-fS0Mb1WhICU-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "2e36a8f5018ddf7ee69f80334513a5d6cc398d08436a7c427e070465abf74a80"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (5).jpg",
+        "label": "fill_the_frame",
+        "sha256": "015394a11a8d9ad6f53a02f011be1168c29bc85a0846fb84f7bc8cdb7e42b5fc"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\alp-duran-YziWg0j2_9g-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "290da661a5e6b06451f5e3c887446951b2ddd6dafbaa6b1362acbc27a3d63583"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\28_20180115102003_4976802_xlarge.jpg",
+        "label": "fill_the_frame",
+        "sha256": "0ac6e63977c16ef7d4e27dd6c19bc7999017edff2c77b46464b23f944cee4e18"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\rachel-yoon-xgR-71jphv0-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "f8a72e87762c5c69ad39bee34c971bcb755be738055441c93f19411839af8f6e"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251010-WA0147.jpg",
+        "label": "fill_the_frame",
+        "sha256": "23ac80b6c74c3335c52dab72452a7a032601b859e99c64d0922e60af18746ba9"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251010-WA0064.jpg",
+        "label": "fill_the_frame",
+        "sha256": "a829b448528880a75994b8cf582d7efb4b98fbf31bd7aba36643a64303541eb5"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251010-WA0012.jpg",
+        "label": "fill_the_frame",
+        "sha256": "b8b59e394346e4c9a459fdfd1aad2fe9e281dc7dfb8d35ee7e71d283cc6dc5fe"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\marcus-ganahl-ZMDbp6t3vNg-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "0d0ff9f3eda8145c28aef53a4cf29fcfa8b71844574e1bf10028ba4d0b16d417"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (14).jpg",
+        "label": "fill_the_frame",
+        "sha256": "d81ca13104b5723f0d2dacda86a33805e9f1b7841d9a4ff9596e47678d27966b"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (2).jpg",
+        "label": "fill_the_frame",
+        "sha256": "25e9cc01ca54caec2610fe08e56896c138be72a0eca628fb471d0dae81da8e35"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\urja-bhatt-q_1b9yP41OI-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "50afa03346370178cd8972b9e238951cf84f197f96de69e18b9bfff64af399cf"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\dylann-hendricks-SjqDB6bAZJk-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "6cb5df2e72cae84ffbb6799c38718eac9c3e89a9c1e338621772c606500b72b4"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\ways-to-fill-photo-frame.jpg",
+        "label": "fill_the_frame",
+        "sha256": "a62f7e4be534a833f41517fb3b42ea5ca82002694be98a4b234312bd9d69894d"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20250227_182818.jpg",
+        "label": "fill_the_frame",
+        "sha256": "4c1ca0fd0bc64f64d296416c5fd3b910573e56bb48fe7ad3fb2cc704c042c40a"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (1).jpg",
+        "label": "fill_the_frame",
+        "sha256": "35136f5c192a1c70c925e307f3831a4862ec165185585f07b9cf2eeaa4073a29"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (3).jpg",
+        "label": "fill_the_frame",
+        "sha256": "da38bc9acbc49173ca1e50a7e83e55545b8955fa0787cbdf9d8064b7291bcee9"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\bernd-dittrich-kvQ-ysfcKt4-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "6ab274b87d1226e0438ffd0e49902786137ee323198e71f67f808c085597a464"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\kamakshi-subramani-LyCn05qnu6Q-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "f092bb1afdd2c032c1920626ec5dc49a684b57bd8c1896d908034f3403b15260"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\100346938_medium.jpg",
+        "label": "fill_the_frame",
+        "sha256": "72d2d5f945a5e4e66a8b24cdc94b5a03d9bdb922344740288e30c332d5d4677b"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download.jpg",
+        "label": "fill_the_frame",
+        "sha256": "8e21f195a7ff274aa4239c5a412cf50f2232c2512fccf45fab64dd7c73169801"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0074.jpg",
+        "label": "fill_the_frame",
+        "sha256": "bc180f4950b3c9fa423506d7faa78029671e667d94f30e9335f7d9f5b07c46af"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\moritz-kindler-JpeNqoeJ-OY-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "becf3cb3373453f80b19a69410825a8eb75a6df541438ffbb8435b281bc2a840"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\joshua-hoehne-WM0_cGdHLKg-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "7a7ce8998fd52c09796aba0bd8b2bd9ca679a6e6714c82c9336caa9e0fd8d8ff"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\frame within a frame, within a frame, within a frame.jpg",
+        "label": "frame_within_frame",
+        "sha256": "7bcb93aa9e59f7cba462151742a3b4d0ba07cc44152f5897604879765c34452a"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\alev-takil-48lEHdLa-nQ-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "08b3daf9e4bc8f56ce92d3a3a4e4f208d8cfdabb0977bf2455532bb6f59d57cb"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\019.jpg",
+        "label": "frame_within_frame",
+        "sha256": "88dc501f9f42bb3b31b45c5f25f3cbec26eff53960decf5f0bf1b476597b1d15"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20250622_180847.jpg",
+        "label": "frame_within_frame",
+        "sha256": "870ee97d896c953d7241ffd60c917e7ea9cc6197f19d352260ef32c7055301d5"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\\ud835\udc79\ud835\udc86\ud835\udc87\ud835\udc8d\ud835\udc86\ud835\udc84\ud835\udc95\ud835\udc8a\ud835\udc90\ud835\udc8f\ud835\udc94 \u00a9 Sebastian Magnani.jpg",
+        "label": "frame_within_frame",
+        "sha256": "6d6190e36419e08155c705957725109a1571c2767ccc04db85b41bb58e7a6602"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Metropolis_ Bauhaus-inspired urban photography \u2013 in pictures.jpg",
+        "label": "frame_within_frame",
+        "sha256": "34b69d43daa4800ec18a74c42df7c04f2f58bb70b797f1ee636aec779fe90bed"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (3).jpg",
+        "label": "frame_within_frame",
+        "sha256": "1387ca01e1138d7829f4775f7882d35177eef6f12c7abb4961fd67a274b25594"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (6).jpg",
+        "label": "frame_within_frame",
+        "sha256": "ae19765a3de06e80ed7133cb2cb1f15d38e6255f0c56a9c7ac4995a37c82e072"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\\u2728.jpg",
+        "label": "frame_within_frame",
+        "sha256": "bd057911ae3335985995aabb3213e4fabdd22bf2f9719545bd2cbd58158bb2d5"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20250403_183204.jpg",
+        "label": "frame_within_frame",
+        "sha256": "32239fd58e1d17a0353cdebc08cd86c12329fe1f380805bbb005893ad03623c9"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (13).jpg",
+        "label": "frame_within_frame",
+        "sha256": "0b784fb1360d8c8b62b2f7f945fa6b8265ca5528fc5c84bd942b7bce4f71fd94"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251010-WA0032.jpg",
+        "label": "frame_within_frame",
+        "sha256": "736073d7803cb8dd66b718e71cb9aa0bc04ee766bc7958457504e214aa9158d3"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\New York by Ray H_ Mercado.jpg",
+        "label": "frame_within_frame",
+        "sha256": "159bb2d27763580ccc0a911c111a96b20d44a7bc3c5e943cbeb08f3384fb64c3"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251010-WA0033.jpg",
+        "label": "frame_within_frame",
+        "sha256": "60b0aea61f1282ec01a562ff684545fd163ccc2f8a22765981e1cb821f263cb2"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Sebastian Magnani.jpg",
+        "label": "frame_within_frame",
+        "sha256": "2db8b5eaf732d926c0105e204ae7c856cf8cbf057726a3015304fdf05ac9750a"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\9afccbd6-399f-4997-87f4-d9e1e826f633.jpg",
+        "label": "frame_within_frame",
+        "sha256": "ac8374485f838be49f7468649678c41c1ed6cc6d6b4fc35623eb69ec7f997db9"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\jay-cassario-depth-framing.jpg",
+        "label": "frame_within_frame",
+        "sha256": "3741e5029ef76f2b7625e7464acc2832c2df0e42a8014c9a81ca12b842d7017b"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\cd1bbe45-e0cc-42dd-a62e-62260903a363.jpg",
+        "label": "frame_within_frame",
+        "sha256": "e6a5996d29a45403a573dcb07dd7aef0e79649f5e93d3e54f0688e70b7fef6a6"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (2).jpg",
+        "label": "frame_within_frame",
+        "sha256": "0937560ac56fd2baed9b49a90ba91cfcc4052f33053e6d0a0b597dd3c56f0dab"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Interesting perspective.jpg",
+        "label": "frame_within_frame",
+        "sha256": "edd100c2f6d3164713014cfe7096b72aa66f83134709676f79ea2938fc1b1e03"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Sunrise.jpg",
+        "label": "frame_within_frame",
+        "sha256": "1af6f50cc28e56663a95200d939b413e76d84a048cc5de144e380124595d3b08"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\1000127122.jpg",
+        "label": "frame_within_frame",
+        "sha256": "44c63ffaa7896178a6f218e88ebb1f9a4dfe5c4f31a54aee0ee137cf182005c0"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20250302_184227.jpg",
+        "label": "frame_within_frame",
+        "sha256": "ae5450b09014d4ae93f149331c4b0d2120d0bdf92be53ca6a5c82628465c9527"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\glenn-guy-stairwell-paris.webp",
+        "label": "frame_within_frame",
+        "sha256": "3637546535f5e42ebe80cca56b253775bb4477f9c31d81bdb95e0e6102793ca2"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20250403_183324.jpg",
+        "label": "frame_within_frame",
+        "sha256": "419df0df1ee5c8067af6221044aba35c97f5043e5a4b369d0202329d3420e59f"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251009-WA0077.jpg",
+        "label": "frame_within_frame",
+        "sha256": "e40534535d5b3da9cb1432203f22468ff08ba12b7e4198d202fb71b566409728"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (4).jpg",
+        "label": "frame_within_frame",
+        "sha256": "533c1a8a1d4bd2a281c3ba7d1b3954e813970943e7b4a70aa135ec80e10ef98c"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Arie Eric De Jong_ A little framing goes a long way.jpg",
+        "label": "frame_within_frame",
+        "sha256": "224e99985f0d2a2591b8678cd9c3ea0cbca9d40af421a8fb31cf027622f5c3e4"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251010-WA0068.jpg",
+        "label": "frame_within_frame",
+        "sha256": "fb8a27416336c3b4b954e4de3d0365914bf4c9b809d2f1288a282062e396119c"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (11).jpg",
+        "label": "frame_within_frame",
+        "sha256": "394c362758785ab5ee8f35593b628b7acdecb4b7dabd98eb039e9d8bb8d5fa75"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\How Framing With Frames Can Give You More Powerful Photographs.jpg",
+        "label": "frame_within_frame",
+        "sha256": "5be65912e9b36967c74dea5a06f82f14cddf8e7070b0b6ccafed1eb1324da3d2"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251010-WA0155.jpg",
+        "label": "frame_within_frame",
+        "sha256": "cea55f7dca90fabd7e1eefd99045e482f6ebefa8df98344d3b9676267d29da4b"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\HIGHLIGHTED LIFE.jpg",
+        "label": "frame_within_frame",
+        "sha256": "a376896381b7a4bcaad21b11d4bab859fd7d51e9d548728a6e5a4b9aa06fa280"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Gilbert Garcin  Flash-back, 2001.jpg",
+        "label": "frame_within_frame",
+        "sha256": "e774569a2868e3667018bd169ca08bc56c5d5526e87b7bd32e7696fb89d1749a"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Beach.jpg",
+        "label": "frame_within_frame",
+        "sha256": "31345604ef92ed3db610388cd8f2339cea2c35382568c5fa6ad03586cf198a00"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\ecf4ed9a-ce8e-4b86-a9bb-21a28216f7a5.jpg",
+        "label": "frame_within_frame",
+        "sha256": "7c0572870b6396fbcafd19d3f757504fc1a3de5d7ac13978380268aaebf4a9d4"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\This Photographers Duo Reveals his Creative Tricks.jpg",
+        "label": "frame_within_frame",
+        "sha256": "756a83fbda89ad88a8085f609eeef3e32e8861823c14dcb1698fc3438ed0d94c"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\#glasses #eyes #skyline #photography #eyecare #ophthalmology.jpg",
+        "label": "frame_within_frame",
+        "sha256": "1f6e7d785ef0aa75ed9a33072ce17369a475eb10e8f562639a6e5579eaf875cf"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\light-and-dark-contrast-framing.jpg",
+        "label": "frame_within_frame",
+        "sha256": "65f72b867df21a0055c50e3038f6f2a9a7621af0ee35299245356882374a864e"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Se\u00f1ales de que te est\u00e1s autosaboteando.jpg",
+        "label": "frame_within_frame",
+        "sha256": "fbe8dc2116c619739b28896d305c39f6ac6426b55a49263950fe87418c06a5cd"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\star spotlight vintage self portrait photography photoshoot ideas film camera star filter funky tie.jpg",
+        "label": "frame_within_frame",
+        "sha256": "afbc750a0105ba4e0df6cf660d90a20c7f8abf0cc657650082876ec7e0801f66"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Aesthetic iPhone wallpaper.jpg",
+        "label": "frame_within_frame",
+        "sha256": "55317d250bf788060783ef2d005cbcbc88ba54642bd00a1c3216a654e3857a28"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\para verte mejor___.jpg",
+        "label": "frame_within_frame",
+        "sha256": "1113fee194cc8a1f646d19c4c7e7b784de5f3f587fd33bc531c3f354b734a874"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Frame+within+a+frame+using+a+phone.webp",
+        "label": "frame_within_frame",
+        "sha256": "5ccf6b438848ba74eb36c6c2b2920174dc4c138ea5bf5e9d75a337a4793b9fda"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\pexels-ankush-dawar.jpeg",
+        "label": "frame_within_frame",
+        "sha256": "15ec574e905cd129ea8c944e2ca70069a1c6887e3bd83f4f46b96f7d9469c8f1"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\64b1b362-de4f-49e4-a022-4e2204fc0c9f.jpg",
+        "label": "frame_within_frame",
+        "sha256": "bad848a14e53cb1506a5919364b7c7fbe619ea862dabc2628282ea8f388fb785"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (10).jpg",
+        "label": "frame_within_frame",
+        "sha256": "66a5a9a776555ce08d1d3545ce97af5558a09b76f84f6c256bdf4c1da62d798d"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\666ef31d-813e-4a52-ad2f-e9fcfb6858cd.jpg",
+        "label": "frame_within_frame",
+        "sha256": "4c9ea5f9b5c12bb6416a112f658cebf8f409cc8f0c0f6ec9838ae931ff46c98c"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\I took a similar pic but this is awesome_.jpg",
+        "label": "frame_within_frame",
+        "sha256": "63a56c0e83b238f73d09eb836337a96712bbc472a045fab76c386a9e8151c61d"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Photography process.jpg",
+        "label": "frame_within_frame",
+        "sha256": "a7245cb4eb6f8ad42751cd05396c69c13c86a2b5038f17643aa8af4ee3e368d8"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (8).jpg",
+        "label": "frame_within_frame",
+        "sha256": "dd7618516ae3705cb26d62346b23119dd89c7d09404384f4faba8f460dc5dc27"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Perfectly timed shot_.jpg",
+        "label": "frame_within_frame",
+        "sha256": "3c8ead6c88bc515e1542f05b209078a973f5457676e7c1e61d117b987fd15546"
+      }
+    ],
+    "validation": [
+      {
+        "path": "training_data\\rule_of_thirds\\This is rule of thirds because it has a puppy on\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "fd2041b61b0c0dcbc06d93a0ebda91296cb67e54859e3ae9bf655ff2de536f82"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20250811_001014.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "7195ba206cd9a48a7f1ec2d7434d4adaedaf6a5bad77c80b94dda7130d01efb4"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\How To Tuesday_ Photography Composition Part I_.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "c426935c0889ebebb5436762740b20744952bd38dee1a852c1f59ed4ec1a2be3"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\856c47e0-feea-4369-b09a-7c65d17c87e8.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "8a3dc5de541869708ca56bec57553e40e811c73d57e80ff5d2d04fb0237f4c68"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Rule of Thirds Madison High School Photography.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "96dee413aaa07a0355645cfe9db2d8d8a6ea01a1fb76d6c64710be6e06f41219"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\c7a59b9a-2d76-4068-8c2a-8832c8dcc55a.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "cfdeb6c7deebbb5c938a04e2dca362e57a268c693e14755987e66712259a714e"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Register - Login.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "baeafd34fa3475e22e5248550271dbe439f8b690df9015e7691da74a596cf0db"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\\ud835\udc45\ud835\udc62\ud835\udc59\ud835\udc52 \ud835\udc5c\ud835\udc53 \ud835\udc61\u210e\ud835\udc56\ud835\udc5f\ud835\udc51\ud835\udc60 \ud835\udc5d\u210e\ud835\udc5c\ud835\udc61\ud835\udc5c\ud835\udc54\ud835\udc5f\ud835\udc4e\ud835\udc5d\u210e\ud835\udc66\uff0e.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "c7d315502a4ae64d1abbb7867eb9bf8b7e6172f35e499a6c5bc714ab53545914"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\This photo using some framing and leading lines\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "c6aff979bc846dcf844d289742a1e062fb6fe38cad6c1401f2e71159094eb6cd"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251010-WA0119.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "b77f81631d5bfdfbb648b648b04c3a70ced2ec6c8452008c249da51bc91c2f90"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\cd375dab-a4ff-4729-b9bc-4fe999fe684c.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "6fb9ff7c2fcce7a8b5042ccc2e619a25242ae402a14cec05266fef90013ceba2"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\08f567ce-e349-4f2e-a618-e389ace2e530.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "73c93ada97988248890c8ecf380a85d37ce4f956e1a97d0ea656449cb925285f"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20250327_063043.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "eafa51fc82249a3b3b80dbe9860b74f96cfd0ac81f31189e6f442dfc2f4c7b02"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Photography.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "3e3b8dd05475ad000cd7c2f7c3fdf733239cebe07066aff950c25925bbeb569b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\9b4cfefd-51a5-4f14-a97a-34eaf6f3ff98.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "f673cd62b8134923e2539e54dd83287b3daf3c21cd2cdf0293397657f74a67d9"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\How do you utilize the rule of thirds in your\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "8f4839ab9fb2d1aa2400ab83a4814b0088f8d3ba60da1cb1775e87aa1870d168"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0025.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "7ee31ee1ff79c402ff74a1b38f4b3312ff075245180372bd395d0ff2b954399d"
+      },
+      {
+        "path": "training_data\\centered\\IMG-20251009-WA0031.jpg",
+        "label": "centered",
+        "sha256": "2b2ac7287e1751e096d6c533a690bed1da47bc060c7eed9d4e8b5a7e35fca741"
+      },
+      {
+        "path": "training_data\\centered\\pexels-vlada-karpovich-4534687.jpg",
+        "label": "centered",
+        "sha256": "3e9572309ffd918af490850ff87dad8d73b55d09ab3a9180cce41281bfb7f3ae"
+      },
+      {
+        "path": "training_data\\centered\\pexels-tima-miroshnichenko-6389508.jpg",
+        "label": "centered",
+        "sha256": "81708926f88de340781d7bf9ea49f528d4614fe2a4961ff9b2d89922a2f5a224"
+      },
+      {
+        "path": "training_data\\centered\\pexels-cottonbro-4325484.jpg",
+        "label": "centered",
+        "sha256": "6c3f601ec613503470f996a23b39fefa32f60d154fcb1fbc56afe61d8b76ff4d"
+      },
+      {
+        "path": "training_data\\centered\\pexels-matt-brown-2154005671-33012595.jpg",
+        "label": "centered",
+        "sha256": "4a351f66c26f7e1071aac92c48b9be1c5f98b230c3b362aac44f14e0f6214b3b"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20250918_175055.jpg",
+        "label": "centered",
+        "sha256": "1b1a68cd1ef323cbf4528834084cef506a5b6408ae81de47d0a00c89958aa923"
+      },
+      {
+        "path": "training_data\\centered\\pexels-elly-fairytale-3822371.jpg",
+        "label": "centered",
+        "sha256": "f1eb3dd8025baf2c91cbf016e8bdfcc97c920849c7711a290f93f80349ae2750"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ekaterina-bolovtsova-6192122.jpg",
+        "label": "centered",
+        "sha256": "c71040601cd8226e612fca451f06b841c552b0e6665c6a8c8c0903b8c576b38b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-mart-production-7718860.jpg",
+        "label": "centered",
+        "sha256": "98d27f8b06b192949529e401cf0a7998bcdae53d93a01b908393eab4c0085861"
+      },
+      {
+        "path": "training_data\\centered\\pexels-creativflyers-971360.jpg",
+        "label": "centered",
+        "sha256": "b86782af11d7bfa22a39c6ef5c6d7d6b6d8f93f29c925a90f42cffc5bd1a8052"
+      },
+      {
+        "path": "training_data\\centered\\pexels-karolina-grabowska-8093259.jpg",
+        "label": "centered",
+        "sha256": "028ca1f5085818340927625bb286937d70f9074f316cb7859439be328f3426b6"
+      },
+      {
+        "path": "training_data\\centered\\WhatsApp Image 2025-10-10 at 00.34.03_5bc80a4e.jpg",
+        "label": "centered",
+        "sha256": "178162397a1d6476f2232abf6e7c9a42f3eb2cf7264e9523310fcf50ff2cfacb"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pixabay-278823.jpg",
+        "label": "centered",
+        "sha256": "e00eb9a39bee8952d10da1b82318db2d910d74cbe92be3b6fbbe21833a9b80a4"
+      },
+      {
+        "path": "training_data\\centered\\WhatsApp Image 2025-10-09 at 20.53.13_7dcaacd7.jpg",
+        "label": "centered",
+        "sha256": "60862c294cb76e1de9beb4838c51faa2a34af135e35ed4ee728477f08c825598"
+      },
+      {
+        "path": "training_data\\centered\\pexels-anna-nekrashevich-7214842.jpg",
+        "label": "centered",
+        "sha256": "99606cd18644a9f2902ad9e84f3e7cd484368e876e3a9eb716356ac69243d988"
+      },
+      {
+        "path": "training_data\\centered\\pexels-shvets-production-8933592.jpg",
+        "label": "centered",
+        "sha256": "0ee81995790b176fa37ee52ecc8026cf72a32665d528be05c82bdf76eb357b16"
+      },
+      {
+        "path": "training_data\\centered\\pexels-agneselunecka-15721195.jpg",
+        "label": "centered",
+        "sha256": "f379c184d0d8b4e1ed7921aa42365b7cc45ba25ae84db207743a92b6d1d8d310"
+      },
+      {
+        "path": "training_data\\centered\\pexels-polina-kovaleva-6019797.jpg",
+        "label": "centered",
+        "sha256": "20ae536e4a96212383a7b2875b6052fea52a507a5085d2998d02e06f5b1ae56b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-cottonbro-7019308.jpg",
+        "label": "centered",
+        "sha256": "79bebdd6a299a6e355a5e59d78ae6ca9f41fec998a494f3522c25165aff68dd6"
+      },
+      {
+        "path": "training_data\\centered\\pexels-marina-zasorina-7629861.jpg",
+        "label": "centered",
+        "sha256": "f29e0f177f87a8fccde403721a1bec14f1519f40a47c4ddbcc9b329c3d90a4e3"
+      },
+      {
+        "path": "training_data\\leading_lines\\Leading Lines \ud83d\udee4\ufe0f\ud83d\udcf8 (1).jpg",
+        "label": "leading_lines",
+        "sha256": "b9d7e7a60d03c2d00ad9d31c6f444519e6fbf7048dbb9661e0f82fbcc4e95b71"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250821_132043.jpg",
+        "label": "leading_lines",
+        "sha256": "7783f7db2a5b8c8c6e6f9ad08b700f31f0e17e432a50558bf4c958d33a07d9b2"
+      },
+      {
+        "path": "training_data\\leading_lines\\d1e77a20-e6de-4f03-b09e-57e8db585c85.jpg",
+        "label": "leading_lines",
+        "sha256": "0d18694f582f57fb7d341821b0ecd73f19f408fb1263d3290cf5169f2248a55a"
+      },
+      {
+        "path": "training_data\\leading_lines\\d4e7d4a9-ff53-48ee-aed2-adda2bfcf7ba.jpg",
+        "label": "leading_lines",
+        "sha256": "447096bf872a3935ab3521edf7c9035b2d7930540f4b881617d75d49dcc50ca5"
+      },
+      {
+        "path": "training_data\\leading_lines\\e73668f5-90ac-49db-a57f-8b2ba487dc36.jpg",
+        "label": "leading_lines",
+        "sha256": "24353117371277c59b920b7931ec7458627f8095db5f2f7cb826bc73ed8fbd99"
+      },
+      {
+        "path": "training_data\\leading_lines\\d04ed182-cfb9-43b7-9fb7-1e75d15ced88.jpg",
+        "label": "leading_lines",
+        "sha256": "3fec7e74d1bfd997e01cdf6b0b7a05f4d9cae35be0d5ce2a613bbf34ca5d0815"
+      },
+      {
+        "path": "training_data\\leading_lines\\c4bcd8a7-f1aa-469b-a7e8-5ec06526384f.jpg",
+        "label": "leading_lines",
+        "sha256": "bc8fe1b8f7a5661d11c8898ae2d55344c15df2a2107598f4898007cc19f906f0"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250820_174430.jpg",
+        "label": "leading_lines",
+        "sha256": "eaf097a15fa27a1de635d41d0347595e25d713305b3344bbf9656851aaedc3d4"
+      },
+      {
+        "path": "training_data\\leading_lines\\6c30e94f-5abe-4744-999e-4037160406b9.jpg",
+        "label": "leading_lines",
+        "sha256": "f7f84984414f54f5a52078e37684ed8055e337394ccc1b143cc9aec35f7f1167"
+      },
+      {
+        "path": "training_data\\leading_lines\\caa1f2ac-3078-440b-9c7d-7b8128cba4dc.jpg",
+        "label": "leading_lines",
+        "sha256": "b206ee36befe79c4ea0db6dcc645b92041de5ec743ea5484fa234507a228931d"
+      },
+      {
+        "path": "training_data\\leading_lines\\91445d11-dcae-482d-9994-706f8c92b12e.jpg",
+        "label": "leading_lines",
+        "sha256": "be7e2d3a46f2c7e303a0f127b6026aff204e6c46af7535945a1d89f0832599a8"
+      },
+      {
+        "path": "training_data\\leading_lines\\Leading Lines \ud83d\udee4\ufe0f\ud83d\udcf8.jpg",
+        "label": "leading_lines",
+        "sha256": "82d5c45359960e33c38ea896a3c41490183729421f2c67b6b0610bdfa80bffdf"
+      },
+      {
+        "path": "training_data\\leading_lines\\5ef27acc-86fb-4c8c-b1a4-7b6e68233bd7.jpg",
+        "label": "leading_lines",
+        "sha256": "6e84091f31ef918308ed817a6eb38f2c865ceb7f708670a1294102a80c43103d"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-roman-odintsov-11025386.jpg",
+        "label": "diagonal",
+        "sha256": "4cd6b6f3209e969ddf8cb4229532bd25706dfea01edc8f61592ffecafcdc2c9e"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-cottonbro-4695786.jpg",
+        "label": "diagonal",
+        "sha256": "571161dd61ca6dd62e6b5aa950bec7d342a19988de0575b9b2dd5660f6a232aa"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0021.jpg",
+        "label": "diagonal",
+        "sha256": "814dc896efe06b9dca7966e751e41b4a72b2c8f2484f0d81e320acc4efc64346"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-h-lz-3385829.jpg",
+        "label": "diagonal",
+        "sha256": "4bd9d8f9f0b08e89259a342f1490e195503ef3a12b2514e8279ac72838313bae"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-cottonbro-7885614.jpg",
+        "label": "diagonal",
+        "sha256": "f979b846883afa51c9a19cd66bdaa8f034f437ebd5ea8c04bff1ebbea078da32"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250928_134459-Edit.png",
+        "label": "diagonal",
+        "sha256": "8411f4c8a5f2352c0ef54276c891048e334b9459df473278f47941f2e6330f80"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-diego-marcel-927914237-25682344.jpg",
+        "label": "diagonal",
+        "sha256": "0882331d08fd4b59b0b781ae252979140ee26e84936736e0aaadf0fd8cc13251"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20251002_173940.jpg",
+        "label": "diagonal",
+        "sha256": "5fa25a50da9cd5f63530345be265d6ef9050f77b4c046a6a02d1a3d86f18b0c6"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-mikhail-nilov-8356180.jpg",
+        "label": "diagonal",
+        "sha256": "25f9d51d702d3cd4bc7e1927da68305cfeb0e08ad39fcf93e1c01ba736034f5e"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250221_024757.jpg",
+        "label": "diagonal",
+        "sha256": "002d19b865614a8a9163daf0339da1c9b7396f2d802f61c2cbf4fd36ca3e3227"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-damright-19783674.jpg",
+        "label": "diagonal",
+        "sha256": "c04c2e1a4b2e4c934f00ccbc69b4eb7530a46df9196207d32d5a6f0d627bfb9f"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-ahmad-tawfik-859117000-19598991.jpg",
+        "label": "diagonal",
+        "sha256": "93dfe4876ebfda093ad1cae393147f93358832d0bccea5c2136d831d37e7d307"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20251010_152930_570.jpg",
+        "label": "diagonal",
+        "sha256": "2094ddecb86935c93a5f74a97c08d4af1bac176fc6aae8d78e8a83d856da288a"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-koolshooters-8533484.jpg",
+        "label": "diagonal",
+        "sha256": "42f0aa982cbc20445fab34e98831b4b1e250a27d5e3d5f26746ac3578df1b151"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20251005_190847.jpg",
+        "label": "diagonal",
+        "sha256": "aedd6e14c88e4ccad4f5ec3cf9535391baa1b0a2ce272889feec40e34e879629"
+      },
+      {
+        "path": "training_data\\symmetrical\\abe8ffbf-aa69-436c-9547-22c064a170ff.jpg",
+        "label": "symmetrical",
+        "sha256": "1e4e4f6c52cb99a920d0298f39d937c1cdca55f508f6d50cd7a3a4ee5bda2b0c"
+      },
+      {
+        "path": "training_data\\symmetrical\\84883402-c87b-4194-b052-4b499fd72ef2.jpg",
+        "label": "symmetrical",
+        "sha256": "6610e891b57abaa090d66b0f5e565547229e0f15a555fe3afd75b2dfa88e6455"
+      },
+      {
+        "path": "training_data\\symmetrical\\Symmetrische compositie.jpg",
+        "label": "symmetrical",
+        "sha256": "52ddf592235864d2ec86c7c66c5f0d1b8cd9ce66befc93ecf8be22f88bc62e78"
+      },
+      {
+        "path": "training_data\\symmetrical\\8d566f58-502b-4191-a6e5-f4f274bcbb33.jpg",
+        "label": "symmetrical",
+        "sha256": "b7de381a081efc7c26b08eea2a7e50e4e9bdf0e8858d34adf778f1727dff04fb"
+      },
+      {
+        "path": "training_data\\symmetrical\\afc70b10-3569-4542-b6ed-3f11d0dcbf18.jpg",
+        "label": "symmetrical",
+        "sha256": "88b012472ee85de0437c4dd66a09fba7844cb89fd768dfb1e1a783ea6cdee284"
+      },
+      {
+        "path": "training_data\\symmetrical\\Buildings-Symmetry.jpg",
+        "label": "symmetrical",
+        "sha256": "d4ef10dabee704a94bf115facb438ee9f990b45b543d9f4235f293b38d875f53"
+      },
+      {
+        "path": "training_data\\symmetrical\\V250922-125030-24fps-1_960-iso100-tmc_rec709_0.jpg",
+        "label": "symmetrical",
+        "sha256": "c4085820949bec78761d8344414386cc4be15ca08f5b8d0ce1f7c4336ca7b9bc"
+      },
+      {
+        "path": "training_data\\symmetrical\\Pyramids in the Sky 2.jpg",
+        "label": "symmetrical",
+        "sha256": "d94dc8c713cbccb7ed5169a293cbd6711a8731fad9d690cd19697f41360bbacb"
+      },
+      {
+        "path": "training_data\\symmetrical\\ea4ad8f9-436e-4e59-b9df-e01f344f0305.jpg",
+        "label": "symmetrical",
+        "sha256": "2fbcc7fc78fd98f1db7f1b127aff57cf2b1efa8ab60a039961c06452416743d1"
+      },
+      {
+        "path": "training_data\\golden_ratio\\d85767ad-c21d-4491-aaa7-6887c3530378.jpg",
+        "label": "golden_ratio",
+        "sha256": "f12c8cae7afd1d08b6439fb502bc9381505716e7f5168bff0d107ac1e1e9b141"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Spiral clock window.jpg",
+        "label": "golden_ratio",
+        "sha256": "e68c6e68e8ba707fb767b5d3c4a738080f8fbcf7e00147f8951117f3f17691e8"
+      },
+      {
+        "path": "training_data\\golden_ratio\\https___vk_com_photo-51016572_457462086.jpg",
+        "label": "golden_ratio",
+        "sha256": "9c2071f3e0c79f71d393de481d3c43625e19dd0a208745167843a712d7ccbc78"
+      },
+      {
+        "path": "training_data\\golden_ratio\\IMG-20251010-WA0110.jpg",
+        "label": "golden_ratio",
+        "sha256": "43a493ce66b4b596044a22d60d15e5b84384438daa4388d3f0bfd6c203e31818"
+      },
+      {
+        "path": "training_data\\golden_ratio\\51640e47-ed5e-4067-8e54-7231996c5161.jpg",
+        "label": "golden_ratio",
+        "sha256": "e6a3813bbac0cd2fd00aa7fe9dd5b451881c559e3aeba0c8319b8905c925e307"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden Ratio Photography.jpg",
+        "label": "golden_ratio",
+        "sha256": "2d472bddfea587bef0f88718d82a32d77ba5b59cf6bf017ae07fb542ed195e9e"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden phlox with spiral.jpg",
+        "label": "golden_ratio",
+        "sha256": "baa089684e86aa619c2510d1aa649b83bca585dfccf2c9d5bce28dbd968dcb2f"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Golden Ratio and The Golden Ratio and why it\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "f092cfa527481540e185566dd0674cec35aec55fa95f5c6614dd437634640a90"
+      },
+      {
+        "path": "training_data\\golden_ratio\\b7fcf154-7fe8-4df2-bfac-62e9a147cd86.jpg",
+        "label": "golden_ratio",
+        "sha256": "9137438d0fe53a18144e455b35c098b370082c86facceb00fc600a7651ef79a8"
+      },
+      {
+        "path": "training_data\\golden_ratio\\#Fibonacci #GoldenRatio.jpg",
+        "label": "golden_ratio",
+        "sha256": "7f786aed30bd0434361b14182fd856743b42d018571035002d9f0d9bbbd5026d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\a49c500b-cc79-416a-bfb7-91045b641153.jpg",
+        "label": "golden_ratio",
+        "sha256": "42122175c1f68ce3618d84cbd28b0b0df64615e1e2c1fcc8d50eb91d1cfebc81"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Pearl earring with Fibonacci spiral.jpg",
+        "label": "golden_ratio",
+        "sha256": "af50fbfaf81a14788a346fb4c934c9a9b4abb5efd74424301b94e58c9fac86f0"
+      },
+      {
+        "path": "training_data\\golden_ratio\\1610705132478.jpeg",
+        "label": "golden_ratio",
+        "sha256": "91256cef7272424da7d90a8e302bce0c056263de1d5c6ec77acf8f2c7963142f"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0032.jpg",
+        "label": "fill_the_frame",
+        "sha256": "c0f6def8f5c4c787674201800961d8b73e590fcb539567c7d49303c1ef62fcc7"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\bernd-dittrich-MwHtpdeB3p4-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "29c1fec7332bc4f1329e41e818576ec987a7fcb3ba0d22d4c28835306f671683"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (6).jpg",
+        "label": "fill_the_frame",
+        "sha256": "cb6f43857f8ef9fad3652e4f1a4c4e2501ba4cfbefbf4607b3609b914aeb5078"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0053.jpg",
+        "label": "fill_the_frame",
+        "sha256": "0a3436d1e5bec3873d5ac28459e31f9aa0d74abff3e13274bbc581b5fb35e4a1"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\ranurte-AtDDNzOnU4M-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "71ad00b5fa5e9f510d0e1cbd3318d15635e61da89b861769a57b2a2655b8e211"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (10).jpg",
+        "label": "fill_the_frame",
+        "sha256": "0d24d947a8c9bf5a15ca05c632f3d66b8e9f8d6b9e1f15b5f4cc91f0b3ba4f3c"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\rachel-yoon-0Qs_QJbQaGo-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "ac2e83c60248a8cd2546b4f19a9ad9fe11512a9bd736b38857f35602da2af848"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\marcus-ganahl-KlCeP0qBD-g-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "c0ac20f5acf6af07f37c24e75b4d6840217c6d7fffcee595a70854f08cfba271"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\ranurte-q2XeQHXh6ls-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "aad6b08c7d852d494a90a497feecf0bfa06d5885e2b8fa3cce5e813372700bee"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\dylann-hendricks-GhNxO_8JZQQ-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "34584994fa351f6c2f7069cb0c99572a363f5b25651748b7cf087151a89c208e"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\jason-leung-shLyiYIDAiw-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "cd9f6abdad7bbc5ff4154697339ee39d44f579a275e0b7f184dd9464850d6a36"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\joshua-lawrence-dgfg2uQozpg-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "d4e386b5630b00bb01ac058f0138ab2cebcd71179a92c58976ad7faee8c149ec"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG-20251009-WA0065.jpg",
+        "label": "fill_the_frame",
+        "sha256": "54038c13a662428583a176eb55f54e84d56ccaa1864a8ca771e3cdc478ce3b95"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Framing.jpg",
+        "label": "frame_within_frame",
+        "sha256": "7a0c9e0a75b3bced72a161078a3974fad4384667605f0ded4d5599f60fad09d7"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (14).jpg",
+        "label": "frame_within_frame",
+        "sha256": "97388af03295d0ae89482dc3030167aa28a8a60b76e9f4102eb2cab50aace5cf"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (9).jpg",
+        "label": "frame_within_frame",
+        "sha256": "38822c9850d7c3983b89b6dbc13bbc7edeb6fb2197a60c4722f9180462dd4b97"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20251003_140131.jpg",
+        "label": "frame_within_frame",
+        "sha256": "6bd9cd90b8dcd8dc0c514526475e67cc2002dcbee59b667f64b5d2b026815362"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\jig_s_photographer.jpg",
+        "label": "frame_within_frame",
+        "sha256": "5fb60c7e2db25b860c28f552a7db60741d09fc53b982d7d7154e00fa2f6666d7"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\frame-within-a-frame-6.webp",
+        "label": "frame_within_frame",
+        "sha256": "6be21728dbae54065640fe28eaf4f9dcaabea76f9ab7e76369111e9c0d770adf"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\similar to the light bulb - something nice about using glasses to frame houses and buildings and make them look underwater to foreshadow flood.jpg",
+        "label": "frame_within_frame",
+        "sha256": "0c1d82681621d123899e5f4d6a3202249ed5db259a8162e9844f897b5d93542b"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251010-WA0156.jpg",
+        "label": "frame_within_frame",
+        "sha256": "d2062b7df4182d4d47afcb2431465577a8d2d252072c2413758b6c536b9cd6ad"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Street Photography_ The 16 Shots You Need to Capture \u2014 M_.jpg",
+        "label": "frame_within_frame",
+        "sha256": "c00bd449b272fc5c631f2ccec0ff0b024fbf0cd7bea1656c4ed512b26529f209"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Elements.jpg",
+        "label": "frame_within_frame",
+        "sha256": "145631d0e997714f2da15fc1fc1defeb5710afd2736e7d03b6bd1cb54ce784d7"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20251010_152919_687.jpg",
+        "label": "frame_within_frame",
+        "sha256": "6c867952ccc167543ef5dc73e1ae94e8e063a3542ddd1199371aae8b173e1341"
+      }
+    ],
+    "test": [
+      {
+        "path": "training_data\\rule_of_thirds\\080e34f9-4e11-452d-a9f5-dc08eb5823a0.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "1bd3328c395cc00025e76e18b3428a5456dde377abe73b8c82272d501c635766"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Composing a Better Photo_ Rule of Thirds.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "d6544f9a8cb03302bf6d58c2479770c3c2e4bcb1c3b1f00b847445253b05a8d5"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Flat.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "5c5e8789586e3068a6b0be55cf35713f8de3b76750bf4b6ca8e093ca74cb3096"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\!!!.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "d0e8ade3afcfa654e79445d34288b8118e97560a5e0dcb9301a3eaa75c0c6f38"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0035.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "f25878307f3df3de7f3d1e6a9c25b628060f84e5cf138a3208e4fb33d4a573d3"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\L2M1AP3 - Rule of odds; utilised the negative\u2026.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "68b80cec2833add86335dcdcc7081b6ae5a82e505d1be95aaf9c148c7ee00921"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0038.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "efca500ff0ab9bb5922c2b6b8a79027de107d0a1ef41b2470c277db9e6896816"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Write my name in the sand.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "39857e8b5e40dad79cd9a8a59c617f6d828d20d42087db0732623ce41f61730b"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Leading lines.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "1f8f95544fd66b473901e46b95d3967f7566d1266eedbe500b9bbe20b6021a67"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\Krj-XNMaSqY.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "a79d4ff324f2a42e746fee25c2c96eea8b1c638a286d3451728f329e59dbc28a"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0033.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "786fe2d4afe813687a8b8655dc7ca9d0d1e2f75a4de66737617c7bfda9c5c364"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\c6e5ea63-db52-496f-ab2a-cf886ae241b3.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "2873ea1cd392742ad05247da39cd10ec5397050175098afbaadd491d65fc7deb"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0039.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "611a67892d825d536286a6ce90c50098102b88231810fee0521d23d9639358b2"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\8vDVsTtlFPw.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "b5002c421cb305cefe5fcb1bf16aaba6c3b2ffc328becffc2c06b8723a52d2b3"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20250828_024817.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "32af49ee8bb9aadac4fed85070e081b66783b6fdac6d6fb99fa13821a4129f5c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\028489ec-7340-4e15-a58e-19d7301bd0d3.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "667864c61b8200a4a6fe7c9b8763f7cd772857aea89ce3858781d013b939616c"
+      },
+      {
+        "path": "training_data\\rule_of_thirds\\IMG_20251010_152934_579.jpg",
+        "label": "rule_of_thirds",
+        "sha256": "f76d0f49d56c87ef19957bd65b1a2496baab232aebe634c79b32c22198f865c3"
+      },
+      {
+        "path": "training_data\\centered\\pexels-evie-shaffer-1259279-2512389.jpg",
+        "label": "centered",
+        "sha256": "1ec517c7102c6e966a05bc61f60fff18e1972f07ffc543eab7ee2787f624505c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pavel-danilyuk-7055662.jpg",
+        "label": "centered",
+        "sha256": "d30f3dabf260c93c3bb0810a6ef941f791f1887ef50600052633b434a3011a0f"
+      },
+      {
+        "path": "training_data\\centered\\pexels-kseniachernaya-6951367.jpg",
+        "label": "centered",
+        "sha256": "0c6b2f0ca62abc043e79a058f5766b4fb7be990857a67047dc8ee81bc7bd088b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-8436472.jpg",
+        "label": "centered",
+        "sha256": "c880d19859871253898ad6a81c792de83e53695f33080ac697683d1ca46b70f2"
+      },
+      {
+        "path": "training_data\\centered\\pexels-brett-sayles-1080746.jpg",
+        "label": "centered",
+        "sha256": "e95379838b2a621b129bafa3a28810f4cf5408353b4d1ea47f536075fab5583c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-pavel-danilyuk-7596989.jpg",
+        "label": "centered",
+        "sha256": "9d128781c284b8f626b582b1f30f97d4b887c502329e35d30879a2f792b5e240"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-7155393.jpg",
+        "label": "centered",
+        "sha256": "2442ce02002c41814414f76069abc93e88f6d378ab3e2f20a95c1c37639e355f"
+      },
+      {
+        "path": "training_data\\centered\\boy-sitting-on-the-stairs-photo-by-Kara-Orwig-of-June-Bear-Photography-840x560.jpg",
+        "label": "centered",
+        "sha256": "04f443cabead9877c6febbe8fcd2783a10e5fa82ee3e2a41b81311ada84470ea"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20250823_164233.jpg",
+        "label": "centered",
+        "sha256": "8d396715660785fcfea07b6d7b08f0ab442c93927e2bb8b636b40bc0cf04aeb1"
+      },
+      {
+        "path": "training_data\\centered\\pexels-jhawley-57905.jpg",
+        "label": "centered",
+        "sha256": "3299da2a5b1b63f8e51dfaf85db2f6d4cf956ff0424188d4293b88f8904e523b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-n-voitkevich-6863248.jpg",
+        "label": "centered",
+        "sha256": "da716a4a64af4419a5f66906e3b27bb786b9c477f8bd413c241f271faabf32cc"
+      },
+      {
+        "path": "training_data\\centered\\IMG_20251010_152847_367.jpg",
+        "label": "centered",
+        "sha256": "5866af3a23fbac5f93aa68f0452a852a3396f9b9d6c238e78a692d71027694c8"
+      },
+      {
+        "path": "training_data\\centered\\pexels-kindelmedia-7054762.jpg",
+        "label": "centered",
+        "sha256": "c36b59401fa1e3d1a8641c4533e333870e35c7f638fb566d6b9760b8f704b50b"
+      },
+      {
+        "path": "training_data\\centered\\pexels-rdne-9064357.jpg",
+        "label": "centered",
+        "sha256": "d5e13bce4f280f858581bf4a72612875fc52491f8dca6315376d09732d7b1e6b"
+      },
+      {
+        "path": "training_data\\centered\\jss8Ve1YR7I.jpg",
+        "label": "centered",
+        "sha256": "1c5af89d0fbb82019ab10d55b2f27c51601ea0c0c580ec9dd47ae493c15b7233"
+      },
+      {
+        "path": "training_data\\centered\\pexels-lara-jameson-8828608.jpg",
+        "label": "centered",
+        "sha256": "02c0356ba438f9ef30687700614190dbea8ec62b2934b5f3e1b12975c253e239"
+      },
+      {
+        "path": "training_data\\centered\\pexels-elly-fairytale-3822646.jpg",
+        "label": "centered",
+        "sha256": "9e19dea84f40038a92764cfb784d73ae814e10e6bc45689fb1b2c93aeab9749d"
+      },
+      {
+        "path": "training_data\\centered\\pexels-ivan-samkov-7900292.jpg",
+        "label": "centered",
+        "sha256": "e94d74340608647bd30937a0884b25e0e27748e035ddf872a94a1b86dd3e0c4c"
+      },
+      {
+        "path": "training_data\\centered\\pexels-yankrukov-8436612.jpg",
+        "label": "centered",
+        "sha256": "0dc28839881f050fe88e5c8365d352d643268d7553394d1eeaf9ef94c86e4fa9"
+      },
+      {
+        "path": "training_data\\centered\\pexels-arina-krasnikova-6998254.jpg",
+        "label": "centered",
+        "sha256": "58f0242b20cb95cee4666f7095849a662ae9b98df56271381d3b29c4d72e330e"
+      },
+      {
+        "path": "training_data\\leading_lines\\What Is a Leading Line and How to Use It_.jpg",
+        "label": "leading_lines",
+        "sha256": "a0a32f893c74c60f193d4223fc180bbf5d38d7fbdf6dbdcf156203bd78ef1389"
+      },
+      {
+        "path": "training_data\\leading_lines\\e5359dea-f1bc-4980-a34b-703835afc2d9.jpg",
+        "label": "leading_lines",
+        "sha256": "fdd067557354fc79499c159b9b5096849b8d3a756df6441c109ab05039899d88"
+      },
+      {
+        "path": "training_data\\leading_lines\\#photography.jpg",
+        "label": "leading_lines",
+        "sha256": "87a347df26aa4b884eacfc7ad05c807c14d9e21516136ad7f98412beae35dc9c"
+      },
+      {
+        "path": "training_data\\leading_lines\\S line curves.jpg",
+        "label": "leading_lines",
+        "sha256": "e1659dff6de426bc34d507d8b5c2f14088ef7e2cd82ba7367cfc61add23aacc3"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251010-WA0019.jpg",
+        "label": "leading_lines",
+        "sha256": "73154c087c71754a4dbd5a4a929a87ccd588de91b9677e0fc271b0eef35de0f0"
+      },
+      {
+        "path": "training_data\\leading_lines\\aa6857e9-c780-485b-bd68-2a0220eef703.jpg",
+        "label": "leading_lines",
+        "sha256": "48b1aa1cb3be3d85f5b72578c4f169f711032433445a2bc6616ad8cc73e0f291"
+      },
+      {
+        "path": "training_data\\leading_lines\\5c924154-afe2-4df9-9a5e-1a43acdbbb71.jpg",
+        "label": "leading_lines",
+        "sha256": "47f948d31f7875b1944ac2f76ff7104ca2276f31bed31576e540033f7d870c11"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250402_180932.jpg",
+        "label": "leading_lines",
+        "sha256": "529424fc7a741a3d6225b56deda607f11427649978bc7e70a123c48e860e0dab"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG_20250312_075936.jpg",
+        "label": "leading_lines",
+        "sha256": "cecfc4d0cf15390a94dfb8584b07f8417d1eec702d5735538546e57176e2adf3"
+      },
+      {
+        "path": "training_data\\leading_lines\\IMG-20251010-WA0034.jpg",
+        "label": "leading_lines",
+        "sha256": "d001cdb0b338859296c330a925a959b4bcd5a4f29c92fbb062e5b0a900f8b839"
+      },
+      {
+        "path": "training_data\\leading_lines\\9e7cf730-d717-4b11-b19b-f4861904584d.jpg",
+        "label": "leading_lines",
+        "sha256": "4f2f2bcc29fae6527a0e5683d044a0407dacb4fd705b420c60a2b90fced9c9b6"
+      },
+      {
+        "path": "training_data\\leading_lines\\Oops! (1).jpg",
+        "label": "leading_lines",
+        "sha256": "56550b9409c4fc148ffbe71848ace0fd304129f7f28f1c1952332a09758675e6"
+      },
+      {
+        "path": "training_data\\leading_lines\\download.jpg",
+        "label": "leading_lines",
+        "sha256": "4e68adebe604feeea3dedaf3222d510d68f799a8ac31b748061a00d2aed3907f"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250704_141023.jpg",
+        "label": "diagonal",
+        "sha256": "995cb37ff735a4a2748a039ccd497cf36756a29a550973081f5c73a283812b99"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-cottonbro-7566201.jpg",
+        "label": "diagonal",
+        "sha256": "951528619da27c3b48ab538418ca58bfd06edf6a191cee2e271b8736bc8d4aa3"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0025.jpg",
+        "label": "diagonal",
+        "sha256": "9b48023bcc45032d1a96c7d22a74e4e89c4a5097cc4d15a3e3f5775277e7d708"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-fotios-photos-2805126.jpg",
+        "label": "diagonal",
+        "sha256": "9a218de8bd51c7313d622922ac8f43d8bf5a15a67feff14d6f1d904dc3b4c1e8"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-victor-damian-346903346-14336492.jpg",
+        "label": "diagonal",
+        "sha256": "9d4944f33a4658da56d364009a703836a0932d38298f790357c2e75b0e834288"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG-20251010-WA0056.jpg",
+        "label": "diagonal",
+        "sha256": "839ed1f9558d02b121c82b1f92212ef5c744b21328c3ab544a9e88113a5cb391"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-mantasink-1106476.jpg",
+        "label": "diagonal",
+        "sha256": "33a63d9967966f39f671dced78f61f131a565dd5ddacb9c2cac368894ba810a2"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-tuesday-temptation-190692-1687516.jpg",
+        "label": "diagonal",
+        "sha256": "99f03e2031d182ddf4956e254862daa0c1de0572469b0e6d67a51fe48d4c0e58"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-magda-ehlers-pexels-33479208.jpg",
+        "label": "diagonal",
+        "sha256": "60e127f1467c281530e496f95572e234605e616718b6c2632ce3efb4a5cc0d49"
+      },
+      {
+        "path": "training_data\\diagonal\\d945abbfd407ff7c67afc1c50ba89603.jpg",
+        "label": "diagonal",
+        "sha256": "a15821ef6d8e6c5925f944a5231cbb8146b16b0e999c760ff90b407bb6772e8f"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20251010_060558.jpg",
+        "label": "diagonal",
+        "sha256": "7e24ba0e151318a986be028fae6b238986e92292b08ac65500b06272b9fc4a2d"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-eye4dtail-121666.jpg",
+        "label": "diagonal",
+        "sha256": "929168cfeccd4a6c587d69f7cef8e0453fea57076e3e41f96ef26e47837bf7d5"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-laura-tancredi-7078180.jpg",
+        "label": "diagonal",
+        "sha256": "284b35c78081d775875a79ef48a1c33c956c880119baa4ace02b766f9987c960"
+      },
+      {
+        "path": "training_data\\diagonal\\IMG_20250820_010253.jpg",
+        "label": "diagonal",
+        "sha256": "289a3df05df6a42928330f17c5528f88ef06f79e344117a56c94026c53990833"
+      },
+      {
+        "path": "training_data\\diagonal\\pexels-spmckee-11524179.jpg",
+        "label": "diagonal",
+        "sha256": "480e6bd4dec54494312cc51ff059ce638306a5b63b1ac342f9c8f8ac2f780513"
+      },
+      {
+        "path": "training_data\\symmetrical\\Este Instagram lleno de simetr\u00eda satisfar\u00e1 el alma de cada perfeccionista.jpg",
+        "label": "symmetrical",
+        "sha256": "2dbdd70737ffb9111b47e531a2cc64a41dfd603d50a07e197f0402394ef41fcd"
+      },
+      {
+        "path": "training_data\\symmetrical\\IMG_20250819_221748.jpg",
+        "label": "symmetrical",
+        "sha256": "86a3536784645806e66749fe203bd5052f51d24fd09e012cd31671a9a513fdf2"
+      },
+      {
+        "path": "training_data\\symmetrical\\a1a1af66-c59a-4911-bd53-b7c61aad7c66.jpg",
+        "label": "symmetrical",
+        "sha256": "34e33a461b26a70c50470fa1b6c7cb1967d7f352061cbec7790e25cf4eb8d3cc"
+      },
+      {
+        "path": "training_data\\symmetrical\\6f13911d-291f-47c2-b000-d82d65b3a0ef.jpg",
+        "label": "symmetrical",
+        "sha256": "03394ade81d2783b14ae63da3fe8473b2551a504e2bb30051b5d0f9e9f926fc7"
+      },
+      {
+        "path": "training_data\\symmetrical\\Geo.jpg",
+        "label": "symmetrical",
+        "sha256": "8c02d20dc086d7b407b4831efe933071600bd71469f2418a2500c91507ea617f"
+      },
+      {
+        "path": "training_data\\symmetrical\\Symmetry (1).jpg",
+        "label": "symmetrical",
+        "sha256": "38b9e34fa890138d002f30fab08a8ddbd3bce2ed3e6a49d74a485fe764e27dac"
+      },
+      {
+        "path": "training_data\\symmetrical\\82b71a3b-c57b-4251-939a-71738d945b85.jpg",
+        "label": "symmetrical",
+        "sha256": "e645e1f56a7bf6bca7493a4c6cf566fb68a8a9fda8e65a888eda097ce9cbdc3b"
+      },
+      {
+        "path": "training_data\\symmetrical\\9bddb512-9bb2-4c70-b133-db4f091807ab.jpg",
+        "label": "symmetrical",
+        "sha256": "f86924f77ed3b48dec2b859a0c784d32d4b87b7e03bfc936fafe168b779be4d0"
+      },
+      {
+        "path": "training_data\\symmetrical\\twins_bw_photo.jpg",
+        "label": "symmetrical",
+        "sha256": "ad767015cffe3e3aacb1e7a60e69b913994b60fce5e330f2112e5d4dff1b33fb"
+      },
+      {
+        "path": "training_data\\golden_ratio\\e61dd597-0ad0-414b-9cac-806669f2c75a.jpg",
+        "label": "golden_ratio",
+        "sha256": "7938de1d83a0c70963cd667b51fd04bae92734b90eeb2d025c6ff32bd3c1aa26"
+      },
+      {
+        "path": "training_data\\golden_ratio\\a5663f79-9a9a-4074-a7f1-7bfcdd875ede.jpg",
+        "label": "golden_ratio",
+        "sha256": "eec9d45e54ed526e85d810dbac756122e0a7fab30f8592b60b47174fd9976fb1"
+      },
+      {
+        "path": "training_data\\golden_ratio\\89d03f0c-e972-4bd1-a5c8-0f28964337b1.jpg",
+        "label": "golden_ratio",
+        "sha256": "451ab7c3409f4b6d8da56c062df4da16136c91ec0bc3527f4471b226d79c88f7"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The Art of Using the Golden Ratio to Improve Your Photography Work - Picsart Blog.jpg",
+        "label": "golden_ratio",
+        "sha256": "a74c1a44348faf79686a33b195b4b4702b5435729c84984038923b7b1455057d"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Decisive_ this image using a fast shutter speed\u2026.jpg",
+        "label": "golden_ratio",
+        "sha256": "2ab5101977be43e24659ff67682a4a0d669c84a3fec1935f86c84b78292f36c7"
+      },
+      {
+        "path": "training_data\\golden_ratio\\880ab11e-e23d-4935-8701-21e110bfa48f.jpg",
+        "label": "golden_ratio",
+        "sha256": "1a2e4f59c8022c16ace046730c179b01c33c443d2740698909c1437417d8fccd"
+      },
+      {
+        "path": "training_data\\golden_ratio\\0d40a26d-ceef-400b-89b9-7a7c5d2140ee.jpg",
+        "label": "golden_ratio",
+        "sha256": "236f45abfa1c7a076efa80c7316c8bf690dc4e83190d0410cf12b78ed92ab135"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Fibonacci & The Cosmos!.jpg",
+        "label": "golden_ratio",
+        "sha256": "9daaa4c7576d99f6edc98f6fdb4016553f40bd9bf598bb7de97e6924a7225535"
+      },
+      {
+        "path": "training_data\\golden_ratio\\download.jpg",
+        "label": "golden_ratio",
+        "sha256": "3ec443aa412558c721fad6f7ced8e25659ea325f8d9c5550f9b172069b240cf1"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden Ratio.jpg",
+        "label": "golden_ratio",
+        "sha256": "02d9b326ab192800cadb4ff21de4724414c7df435a42fad058e534c43ae309df"
+      },
+      {
+        "path": "training_data\\golden_ratio\\Golden ratio (1).jpg",
+        "label": "golden_ratio",
+        "sha256": "c3571c3047b295479b5198d0c4112a5e00e05901dfcf2f08571fd8f231380898"
+      },
+      {
+        "path": "training_data\\golden_ratio\\4616cc51-f9a7-4801-b8d0-cf2025a83fca.jpg",
+        "label": "golden_ratio",
+        "sha256": "24c77a7132627c24923642e15a43e89207656e60bf99dd1a34471aae4fc42d16"
+      },
+      {
+        "path": "training_data\\golden_ratio\\The GOLDEN SPIRAL in Photography.jpg",
+        "label": "golden_ratio",
+        "sha256": "cc7cad1f6de47db8fe1b0b310220e594d2df563b877e91731bbc2513f7d830c2"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (8).jpg",
+        "label": "fill_the_frame",
+        "sha256": "ed455181f17dba257151cae7a3b746084c8f7c2509bc8dae61876e16596a42a5"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\ranurte-seu4SXK0S1A-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "1110686646cc91d34ba4fbd6cc1fe66125c6e197363b6b713c96ea08a2b1001f"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\rod-long-VXtbt_gDdYs-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "0f0fd2bef729e90bf77017f7f77fc3a145171f37a71333587f67728274c4cc2a"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\bernd-dittrich-31WXf9z1BIY-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "6aac8ecaaf73e9fbbdffbaa6ab3d48e2d82f805dc5ac939532cf662da65c8544"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\dylann-hendricks-f-QNXEhFvxw-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "344bf082e409e846622362e23b83d15d5f88a3e6509ead118bada3391179a249"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\bernd-dittrich-ZizGYhVXbao-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "3722aa5ee2d211a737950f575a67cb59c8755be1e51c179fd9e319f946415354"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\rachel-yoon-sUtA6sPEUkU-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "39adc9da124bd5d6cbccea4e58d30a2c14b6d42e8e47e45e92fb3e187a10295c"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\download (11).jpg",
+        "label": "fill_the_frame",
+        "sha256": "f5f3f04130c493c346d78ea0900ca67559311201529f0742c133e92ab70ec50f"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\dylann-hendricks-2bdR46PZhyU-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "3ffc58519656d554141c8d9d794b7947c8334cacdf575b949bb868295ada110b"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\dylann-hendricks-2tJUc4xYeeE-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "1da9ee83276c7cc755f116957956bfcfb3c4f713515f175285ff56d35198bb18"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\rachel-yoon-rixm1xqO_Bo-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "39c178c3f69c3cc4e2f5086b5ffbf98d1cbfe0bfd4d7116ef138b2e9c1c64417"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\aleksandr-kadykov-t_CS7huCevQ-unsplash.jpg",
+        "label": "fill_the_frame",
+        "sha256": "2662b059d6eb56b2f28e21d32b8e7fc3734ce75623468b6d810b6af03791bd0d"
+      },
+      {
+        "path": "training_data\\fill_the_frame\\IMG_20251010_153014_257.jpg",
+        "label": "fill_the_frame",
+        "sha256": "ee5c211ca461e9b94b36de7cbe383bfde57b512482f31f714f8e11f1db03a989"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\bf719edc-46e7-4820-b782-e9871c518761.jpg",
+        "label": "frame_within_frame",
+        "sha256": "fa79829dcf3c0aca8994b3f4fcee11da03cb2c849b34aa3993d2ecb83515a6d7"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Francesca Woodman.jpg",
+        "label": "frame_within_frame",
+        "sha256": "fbd421c40ae4eb4db91eaf415145e0664e1fac43b94193857f9d0e449a3c7f0c"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (1).jpg",
+        "label": "frame_within_frame",
+        "sha256": "1c7e4994c9b1858d08317daeceba1675c1fe47da14deb7322283dc9ef7fd5f8f"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG-20251010-WA0077.jpg",
+        "label": "frame_within_frame",
+        "sha256": "bbcfdb6bba47fc9f2b89fade8d973ea6bb16e67ddf949d2793328bcc963a4f53"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Sailing.jpg",
+        "label": "frame_within_frame",
+        "sha256": "a9e078015f51d4d83518472238af717337e9142d9fe0217d23ba5522dbc53eca"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (5).jpg",
+        "label": "frame_within_frame",
+        "sha256": "667df83c919158ecadee20b47e8f8162b9598762f161a5fdf5eba90d00ba5b2c"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download.jpg",
+        "label": "frame_within_frame",
+        "sha256": "a0602995d4fc8459ee1e7bd3dcb3cfb0739a7f412c98ecb169187e9cfbceb0ab"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20251010_152945_084.jpg",
+        "label": "frame_within_frame",
+        "sha256": "b33550e192a0ed4dd2b4b3b4ebd9613cc3538004383692e83f48450a831c2b4b"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\download (7).jpg",
+        "label": "frame_within_frame",
+        "sha256": "16c1700fba7f0a0cb500415f9de5faa0effc2aee91b72b65049480e2fcfe8185"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\Fade Out.jpg",
+        "label": "frame_within_frame",
+        "sha256": "4d20178716572493f5588fa91cedc4c728da53406c7cdd8339d6772678632e2b"
+      },
+      {
+        "path": "training_data\\frame_within_frame\\IMG_20251010_152947_284.jpg",
+        "label": "frame_within_frame",
+        "sha256": "b43513ebe8c5850dcb26dace6bd25e36bf3ec324828d62b1db207812773ef81f"
+      }
+    ]
+  },
+  "frozen_split_manifest": "ml_models\\trained\\composition_data_audit.json",
+  "label_corrections": [
+    {
+      "path": "training_data\\rule_of_thirds\\this is and example of leading lines because the\u2026.jpg",
+      "from_label": "rule_of_thirds",
+      "to_label": "leading_lines"
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\Framing.jpg",
+      "from_label": "rule_of_thirds",
+      "to_label": "frame_within_frame"
+    },
+    {
+      "path": "training_data\\leading_lines\\Diagonal.jpg",
+      "from_label": "leading_lines",
+      "to_label": "diagonal"
+    },
+    {
+      "path": "training_data\\fill_the_frame\\frame within a frame, within a frame, within a frame.jpg",
+      "from_label": "fill_the_frame",
+      "to_label": "frame_within_frame"
+    }
+  ],
+  "held_out_labels_changed": false
+}

@@ -124,7 +124,7 @@ class ApiService {
         
         // Add interpretations and recommendations
         result.data.interpretations = {
-          rating_interpretation: this.interpretRating(analysis.overall_rating?.score || 0),
+          rating_interpretation: this.interpretRating(analysis.overall_rating?.score || 0, analysis.overall_rating?.scoring_method),
           technical_summary: this.summarizeTechnical(analysis.technical_quality),
           pose_feedback: this.interpretPose(analysis.pose_analysis),
           lighting_feedback: this.interpretLighting(analysis.lighting_analysis),
@@ -148,6 +148,20 @@ class ApiService {
                 alternative: t.alternative,
               }));
         result.data.priority_actions = this.prioritizeSuggestions(rawSuggestions);
+
+        // Keep the lower-priority section additive. High-priority tips already
+        // appear in Priority Improvements and repeating them doubles the scan
+        // cost without adding guidance.
+        const priorityCopy = new Set(
+          result.data.priority_actions.map((item) => (item.suggestion || '').trim())
+        );
+        result.data.analysis = {
+          ...analysis,
+          tips: (analysis.tips || []).filter((tip) => {
+            const text = (tip.tip || '').trim();
+            return (tip.priority || '').toLowerCase() !== 'high' && !priorityCopy.has(text);
+          }),
+        };
         
         // Add skill level recommendations
         result.data.skill_recommendations = this.getSkillRecommendations(analysis);
@@ -293,7 +307,10 @@ class ApiService {
   }
 
   // AI Analysis Interpretation Methods
-  static interpretRating(score) {
+  static interpretRating(score, scoringMethod) {
+    if (scoringMethod === 'learned-nima') {
+      return { message: `Estimated aesthetic appeal: ${score}/10, based on human-rated photographs.` };
+    }
     if (score >= 9) return { message: "Outstanding! This image has exceptional quality across all aspects.", level: "professional" };
     if (score >= 8) return { message: "Excellent work! Your image shows strong technical and artistic skills.", level: "advanced" };
     if (score >= 7) return { message: "Good quality image with solid fundamentals. A few tweaks could make it great!", level: "intermediate" };
@@ -325,7 +342,11 @@ class ApiService {
   }
 
   static interpretPose(poseAnalysis) {
+    if (poseAnalysis?.available === false) return 'Pose detection is unavailable in this environment.';
     if (!poseAnalysis?.detected) return "No pose detected in the image.";
+    if (poseAnalysis.score_kind === 'landmark-visibility') {
+      return `Detected body landmarks with ${Math.round((poseAnalysis.visibility || 0) * 100)}% average visibility.`;
+    }
     
     const score = poseAnalysis.quality_score || 0;
     if (score >= 8) return "Excellent pose! Natural and engaging positioning.";
@@ -348,8 +369,12 @@ class ApiService {
 
   static interpretComposition(compositionAnalysis) {
     if (!compositionAnalysis) return "Composition analysis not available.";
+    if (compositionAnalysis.method === 'insufficient-evidence') return compositionAnalysis.description;
+    if (compositionAnalysis.method === 'ml') {
+      return `${compositionAnalysis.ml_reliable ? 'Detected' : 'Possible'} style: ${compositionAnalysis.detected_type}. Style confidence: ${compositionAnalysis.ml_confidence}%.`;
+    }
     
-    const overall = compositionAnalysis.overall_score || 0;
+    const overall = compositionAnalysis.overall_score ?? compositionAnalysis.score ?? 0;
     if (overall >= 8) return "Excellent composition following professional guidelines.";
     if (overall >= 7) return "Good composition with strong visual appeal.";
     if (overall >= 6) return "Decent composition, try the rule of thirds for improvement.";
@@ -423,7 +448,7 @@ class ApiService {
       });
     }
     
-    if (analysis.pose_analysis?.detected && analysis.pose_analysis?.quality_score < 7) {
+    if (analysis.pose_analysis?.detected && analysis.pose_analysis?.score_kind !== 'landmark-visibility' && analysis.pose_analysis?.quality_score < 7) {
       recommendations.push({
         skill: "Portrait Posing",
         focus: "Learn natural posing and body language techniques",

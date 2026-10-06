@@ -1,0 +1,1096 @@
+{
+  "evaluation": "fixed held-out original files through serving preprocessing and classifier",
+  "samples": 111,
+  "split_membership_changed": false,
+  "held_out_labels_changed": false,
+  "checkpoint_sha256": "e9ebd66f1e9af4cca0f48f826489ee90e3dc41925c264197c432266ee00c8548",
+  "spatial_pool_size": 2,
+  "temperature": 1.2999999999999998,
+  "confidence_threshold": 1.0,
+  "serving_metrics": {
+    "samples": 111,
+    "accuracy": 0.6306306306306306,
+    "macro_f1": 0.6098207159752151,
+    "confusion_matrix": [
+      [
+        6,
+        1,
+        4,
+        1,
+        0,
+        2,
+        2,
+        1,
+        0
+      ],
+      [
+        1,
+        15,
+        0,
+        0,
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        8,
+        1,
+        2,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        13,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        3,
+        0,
+        4,
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        11,
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        2,
+        0,
+        1,
+        0,
+        2,
+        7,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        2,
+        0,
+        2,
+        0,
+        0,
+        6,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "per_class": [
+      {
+        "label": "rule_of_thirds",
+        "support": 17,
+        "precision": 0.6,
+        "recall": 0.35294117647058826,
+        "f1": 0.4444444444444445
+      },
+      {
+        "label": "centered",
+        "support": 20,
+        "precision": 0.7894736842105263,
+        "recall": 0.75,
+        "f1": 0.7692307692307692
+      },
+      {
+        "label": "leading_lines",
+        "support": 13,
+        "precision": 0.47058823529411764,
+        "recall": 0.6153846153846154,
+        "f1": 0.5333333333333333
+      },
+      {
+        "label": "diagonal",
+        "support": 15,
+        "precision": 0.8125,
+        "recall": 0.8666666666666667,
+        "f1": 0.8387096774193549
+      },
+      {
+        "label": "symmetrical",
+        "support": 9,
+        "precision": 0.4,
+        "recall": 0.4444444444444444,
+        "f1": 0.4210526315789474
+      },
+      {
+        "label": "golden_ratio",
+        "support": 13,
+        "precision": 0.6470588235294118,
+        "recall": 0.8461538461538461,
+        "f1": 0.7333333333333334
+      },
+      {
+        "label": "fill_the_frame",
+        "support": 13,
+        "precision": 0.5384615384615384,
+        "recall": 0.5384615384615384,
+        "f1": 0.5384615384615384
+      },
+      {
+        "label": "frame_within_frame",
+        "support": 11,
+        "precision": 0.6666666666666666,
+        "recall": 0.5454545454545454,
+        "f1": 0.6
+      },
+      {
+        "label": "unclear",
+        "support": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    ]
+  },
+  "methods": {
+    "ml": 111
+  },
+  "predictions": [
+    {
+      "path": "training_data\\rule_of_thirds\\080e34f9-4e11-452d-a9f5-dc08eb5823a0.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 33.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\Composing a Better Photo_ Rule of Thirds.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 26.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\Flat.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 47.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\!!!.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 35.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0035.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 91.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\L2M1AP3 - Rule of odds; utilised the negative\u2026.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 39.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0038.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 37.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\Write my name in the sand.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 79.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\Leading lines.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 72.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\Krj-XNMaSqY.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 73.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0033.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 91.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\c6e5ea63-db52-496f-ab2a-cf886ae241b3.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 52.4,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\IMG-20251009-WA0039.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 90.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\8vDVsTtlFPw.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 50.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\IMG_20250828_024817.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 39.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\028489ec-7340-4e15-a58e-19d7301bd0d3.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 31.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\rule_of_thirds\\IMG_20251010_152934_579.jpg",
+      "truth": "rule_of_thirds",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 28.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-evie-shaffer-1259279-2512389.jpg",
+      "truth": "centered",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 29.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-pavel-danilyuk-7055662.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 66.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-kseniachernaya-6951367.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 66.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-yankrukov-8436472.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 81.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-brett-sayles-1080746.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 28.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-pavel-danilyuk-7596989.jpg",
+      "truth": "centered",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 65.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-yankrukov-7155393.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 87.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\boy-sitting-on-the-stairs-photo-by-Kara-Orwig-of-June-Bear-Photography-840x560.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 72.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\IMG_20250823_164233.jpg",
+      "truth": "centered",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 67.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-jhawley-57905.jpg",
+      "truth": "centered",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 46.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-n-voitkevich-6863248.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 29.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\IMG_20251010_152847_367.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 45.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-kindelmedia-7054762.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 42.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-rdne-9064357.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 78.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\jss8Ve1YR7I.jpg",
+      "truth": "centered",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 59.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-lara-jameson-8828608.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 62.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-elly-fairytale-3822646.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 35.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-ivan-samkov-7900292.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 83.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-yankrukov-8436612.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 90.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\centered\\pexels-arina-krasnikova-6998254.jpg",
+      "truth": "centered",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 91.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\What Is a Leading Line and How to Use It_.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 39.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\e5359dea-f1bc-4980-a34b-703835afc2d9.jpg",
+      "truth": "leading_lines",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 44.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\#photography.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 76.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\S line curves.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 48.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\IMG-20251010-WA0019.jpg",
+      "truth": "leading_lines",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 63.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\aa6857e9-c780-485b-bd68-2a0220eef703.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 45.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\5c924154-afe2-4df9-9a5e-1a43acdbbb71.jpg",
+      "truth": "leading_lines",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 29.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\IMG_20250402_180932.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 82.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\IMG_20250312_075936.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 73.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\IMG-20251010-WA0034.jpg",
+      "truth": "leading_lines",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 29.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\9e7cf730-d717-4b11-b19b-f4861904584d.jpg",
+      "truth": "leading_lines",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 71.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\Oops! (1).jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 29.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\leading_lines\\download.jpg",
+      "truth": "leading_lines",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 94.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\IMG_20250704_141023.jpg",
+      "truth": "diagonal",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 66.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-cottonbro-7566201.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 26.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\IMG-20251010-WA0025.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 31.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-fotios-photos-2805126.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 80.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-victor-damian-346903346-14336492.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 60.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\IMG-20251010-WA0056.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 45.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-mantasink-1106476.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 87.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-tuesday-temptation-190692-1687516.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 56.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-magda-ehlers-pexels-33479208.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 66.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\d945abbfd407ff7c67afc1c50ba89603.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 47.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\IMG_20251010_060558.jpg",
+      "truth": "diagonal",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 25.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-eye4dtail-121666.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 72.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-laura-tancredi-7078180.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 81.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\IMG_20250820_010253.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 36.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\diagonal\\pexels-spmckee-11524179.jpg",
+      "truth": "diagonal",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 81.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\Este Instagram lleno de simetr\u00eda satisfar\u00e1 el alma de cada perfeccionista.jpg",
+      "truth": "symmetrical",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 82.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\IMG_20250819_221748.jpg",
+      "truth": "symmetrical",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 24.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\a1a1af66-c59a-4911-bd53-b7c61aad7c66.jpg",
+      "truth": "symmetrical",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 33.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\6f13911d-291f-47c2-b000-d82d65b3a0ef.jpg",
+      "truth": "symmetrical",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 38.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\Geo.jpg",
+      "truth": "symmetrical",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 81.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\Symmetry (1).jpg",
+      "truth": "symmetrical",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 48.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\82b71a3b-c57b-4251-939a-71738d945b85.jpg",
+      "truth": "symmetrical",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 89.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\9bddb512-9bb2-4c70-b133-db4f091807ab.jpg",
+      "truth": "symmetrical",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 81.4,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\symmetrical\\twins_bw_photo.jpg",
+      "truth": "symmetrical",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 92.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\e61dd597-0ad0-414b-9cac-806669f2c75a.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 71.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\a5663f79-9a9a-4074-a7f1-7bfcdd875ede.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 88.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\89d03f0c-e972-4bd1-a5c8-0f28964337b1.jpg",
+      "truth": "golden_ratio",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 56.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\The Art of Using the Golden Ratio to Improve Your Photography Work - Picsart Blog.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 58.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\Decisive_ this image using a fast shutter speed\u2026.jpg",
+      "truth": "golden_ratio",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 43.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\880ab11e-e23d-4935-8701-21e110bfa48f.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 89.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\0d40a26d-ceef-400b-89b9-7a7c5d2140ee.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 79.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\Fibonacci & The Cosmos!.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 93.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\download.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 95.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\Golden Ratio.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 95.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\Golden ratio (1).jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 74.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\4616cc51-f9a7-4801-b8d0-cf2025a83fca.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 51.3,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\golden_ratio\\The GOLDEN SPIRAL in Photography.jpg",
+      "truth": "golden_ratio",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 97.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\download (8).jpg",
+      "truth": "fill_the_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 59.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\ranurte-seu4SXK0S1A-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 43.4,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\rod-long-VXtbt_gDdYs-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 64.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\bernd-dittrich-31WXf9z1BIY-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 70.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\dylann-hendricks-f-QNXEhFvxw-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 41.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\bernd-dittrich-ZizGYhVXbao-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 65.7,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\rachel-yoon-sUtA6sPEUkU-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 59.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\download (11).jpg",
+      "truth": "fill_the_frame",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 53.5,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\dylann-hendricks-2bdR46PZhyU-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 80.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\dylann-hendricks-2tJUc4xYeeE-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "centered",
+      "method": "ml",
+      "confidence": 25.4,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\rachel-yoon-rixm1xqO_Bo-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "golden_ratio",
+      "method": "ml",
+      "confidence": 41.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\aleksandr-kadykov-t_CS7huCevQ-unsplash.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "diagonal",
+      "method": "ml",
+      "confidence": 53.6,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\fill_the_frame\\IMG_20251010_153014_257.jpg",
+      "truth": "fill_the_frame",
+      "predicted": "fill_the_frame",
+      "method": "ml",
+      "confidence": 49.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\bf719edc-46e7-4820-b782-e9871c518761.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 46.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\Francesca Woodman.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 47.0,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\download (1).jpg",
+      "truth": "frame_within_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 78.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\IMG-20251010-WA0077.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 56.9,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\Sailing.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "leading_lines",
+      "method": "ml",
+      "confidence": 41.8,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\download (5).jpg",
+      "truth": "frame_within_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 61.4,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\download.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 60.2,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\IMG_20251010_152945_084.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "frame_within_frame",
+      "method": "ml",
+      "confidence": 34.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\download (7).jpg",
+      "truth": "frame_within_frame",
+      "predicted": "rule_of_thirds",
+      "method": "ml",
+      "confidence": 39.1,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\Fade Out.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 24.4,
+      "reliable": false
+    },
+    {
+      "path": "training_data\\frame_within_frame\\IMG_20251010_152947_284.jpg",
+      "truth": "frame_within_frame",
+      "predicted": "symmetrical",
+      "method": "ml",
+      "confidence": 41.7,
+      "reliable": false
+    }
+  ],
+  "integration_smoke": [
+    {
+      "path": "training_data\\rule_of_thirds\\080e34f9-4e11-452d-a9f5-dc08eb5823a0.jpg",
+      "overall_score": 6.6,
+      "aesthetic_score": 6.6,
+      "distribution_mean": 6.5889,
+      "composition": "Golden Ratio",
+      "method": "ml",
+      "aesthetic_mode": "learned-nima",
+      "pose_available": false
+    },
+    {
+      "path": "C:\\Users\\avina\\OneDrive\\Desktop\\aura-ai\\aura-ai\\backend\\test_image.jpg",
+      "overall_score": 4.9,
+      "aesthetic_score": 4.9,
+      "distribution_mean": 4.9112,
+      "composition": "Unclear",
+      "method": "insufficient-evidence",
+      "aesthetic_mode": "learned-nima",
+      "pose_available": false
+    }
+  ]
+}

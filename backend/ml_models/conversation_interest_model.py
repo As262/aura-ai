@@ -6,12 +6,17 @@ Analyzes chat engagement, interest levels, and provides improvement suggestions
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple, Any, Optional
 import re
 import numpy as np
 from collections import Counter
 import json
 import os
+
+try:  # works both as `ml_models.conversation_interest_model` and standalone
+    from .conversation_context import ConversationContext, NEUTRAL_TIMING
+except ImportError:  # pragma: no cover
+    from conversation_context import ConversationContext, NEUTRAL_TIMING
 
 # Real-time local sentiment engine (pure-python, instant, no downloads)
 try:
@@ -22,52 +27,73 @@ except ImportError:
     print("[WARN] vaderSentiment not available. Install with: pip install vaderSentiment")
 
 
+# Length of the feature vector `extract_features` produces. Nine of these slots
+# are real timing/flow signals (see conversation_context) which used to be
+# hard-coded constants.
+FEATURE_DIM = 76
+
+
 class ConversationInterestAnalyzer(nn.Module):
     """
     Neural network for analyzing conversation interest and engagement
     Features: response time, message length, emoji usage, question patterns
     """
-    
-    def __init__(self, input_size=75, hidden_size=256, output_size=5):
+
+    def __init__(self, input_size=FEATURE_DIM, hidden_size=256, output_size=5):
         super(ConversationInterestAnalyzer, self).__init__()
-        
+
+        # Input standardisation carried *inside* the checkpoint, so the scaling
+        # a model was trained with can never drift from the scaling used to
+        # serve it. Identity until training fills them in.
+        self.register_buffer('input_mean', torch.zeros(input_size))
+        self.register_buffer('input_std', torch.ones(input_size))
+
         # Enhanced network architecture - BIGGER AND BETTER
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.bn1 = nn.BatchNorm1d(hidden_size)
         self.dropout1 = nn.Dropout(0.3)
-        
+
         self.fc2 = nn.Linear(hidden_size, hidden_size)
         self.bn2 = nn.BatchNorm1d(hidden_size)
         self.dropout2 = nn.Dropout(0.25)
-        
+
         self.fc3 = nn.Linear(hidden_size, hidden_size // 2)
         self.bn3 = nn.BatchNorm1d(hidden_size // 2)
         self.dropout3 = nn.Dropout(0.2)
-        
+
         self.fc4 = nn.Linear(hidden_size // 2, output_size)
-        
+
         # Interest level categories with percentage ranges
         self.interest_categories = [
             "Very Low (0-20%)",
-            "Low (20-40%)", 
+            "Low (20-40%)",
             "Moderate (40-60%)",
             "High (60-80%)",
             "Very High (80-100%)"
         ]
-        
+
+    def set_input_normalization(self, mean: np.ndarray, std: np.ndarray) -> None:
+        """Store the training-set feature statistics in the model's buffers."""
+        std = np.where(np.asarray(std) < 1e-6, 1.0, np.asarray(std))
+        self.input_mean.copy_(torch.as_tensor(mean, dtype=torch.float32))
+        self.input_std.copy_(torch.as_tensor(std, dtype=torch.float32))
+
     def forward(self, x):
         """Enhanced forward pass through deeper network"""
+        x = (x - self.input_mean) / self.input_std
+
         x = F.relu(self.bn1(self.fc1(x)))
         x = self.dropout1(x)
-        
+
         x = F.relu(self.bn2(self.fc2(x)))
         x = self.dropout2(x)
-        
+
         x = F.relu(self.bn3(self.fc3(x)))
         x = self.dropout3(x)
-        
+
         x = self.fc4(x)
         return x
+
 
 
 class ConversationAnalysisService:
@@ -78,13 +104,15 @@ class ConversationAnalysisService:
     def __init__(self, model_path: str = None):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model = ConversationInterestAnalyzer().to(self.device)
+        self.model_loaded = False
 
         # Real-time sentiment engine (local, instant)
         self.sentiment = SentimentIntensityAnalyzer() if VADER_AVAILABLE else None
 
         if model_path and os.path.exists(model_path):
-            self.model.load_state_dict(torch.load(model_path, map_location=self.device))
-            self.model.eval()
+            self._load_checkpoint(model_path)
+
+        self.model.eval()
         
         # Enhanced engagement indicators
         self.positive_indicators = [
@@ -142,11 +170,53 @@ class ConversationAnalysisService:
             r'(what|when|where|why|how|who|which)',  # Question words anywhere
         ]
     
-    def extract_features(self, your_message: str, their_response: str) -> np.ndarray:
+    def _load_checkpoint(self, model_path: str) -> None:
+        """
+        Load trained weights, refusing a checkpoint whose input width does not
+        match the current feature extractor.
+
+        The feature vector grew when the placeholder timing slots were replaced
+        with real ones, so older checkpoints are silently wrong rather than
+        merely stale. Falling back to untrained weights with a loud warning
+        beats serving a model fed features it never saw.
+        """
+        try:
+            state = torch.load(model_path, map_location=self.device)
+        except Exception as exc:  # corrupt or unreadable file
+            print(f"[WARN] Could not read {os.path.basename(model_path)}: {exc}")
+            return
+
+        expected = self.model.fc1.weight.shape[1]
+        found = state.get('fc1.weight')
+        if found is not None and found.shape[1] != expected:
+            print(
+                f"[WARN] {os.path.basename(model_path)} expects a "
+                f"{found.shape[1]}-feature input but this build produces "
+                f"{expected}. Skipping load - retrain with "
+                f"training/train_realistic_conversation_model.py."
+            )
+            return
+
+        try:
+            self.model.load_state_dict(state, strict=False)
+            self.model_loaded = True
+        except Exception as exc:
+            print(f"[WARN] Incompatible checkpoint {os.path.basename(model_path)}: {exc}")
+
+    def extract_features(self, your_message: str, their_response: str,
+                         context: Optional[Dict[str, float]] = None) -> np.ndarray:
         """
         Extract ENHANCED features from message pair for ML analysis
-        
-        Returns 75-dimensional feature vector with advanced text style and emoji analysis
+
+        Args:
+            your_message: what you sent.
+            their_response: what they replied.
+            context: real timing/flow context for this pair, from
+                `ConversationContext.pair_context`. When omitted the timing
+                slots fall back to neutral values and the availability flag is
+                set to 0 so the model knows to discount them.
+
+        Returns a `FEATURE_DIM`-dimensional feature vector.
         """
         features = []
         
@@ -221,7 +291,7 @@ class ConversationAnalysisService:
             len(set(words_their)) / max(len(words_their), 1),  # Vocabulary diversity
             their_response.count('...'),  # Ellipsis usage
             their_response.count(','),  # Comma usage
-            1 if their_response[0].isupper() else 0,  # Starts with capital
+            1 if their_response[:1].isupper() else 0,  # Starts with capital
             sum(1 for char in their_response if char.isupper()) / max(len(their_response), 1),  # Capital ratio
             their_response.count('"'),  # Quote usage
             their_response.count("'"),  # Apostrophe usage
@@ -229,18 +299,14 @@ class ConversationAnalysisService:
             1 if re.search(r'\b(you|your|yours)\b', their_lower) else 0  # You-reference
         ])
         
-        # 6. Timing and pattern features (8 features) - placeholder for now
-        # In real implementation, these would come from message timestamps
-        features.extend([
-            0.5,  # Response speed (normalized)
-            0.7,  # Conversation continuity
-            0.6,  # Topic maintenance
-            0.8,  # Engagement consistency
-            1,    # Is daytime
-            0,    # Is late night
-            0.5,  # Conversation position (start/middle/end)
-            0.3   # Time since last message
-        ])
+        # 6. TIMING AND CONVERSATION FLOW (9 features)
+        # Computed for real from the message timestamps - reply latency both in
+        # absolute terms and against this person's own baseline, same-session
+        # continuity, whether they engage with your actual topic, how steady
+        # their attention is, hour of day, position in the chat, and a flag for
+        # whether the export carried usable timestamps at all.
+        features.extend(ConversationContext.as_vector(context))
+
         
         # 7. Additional semantic features (6 features)
         features.extend([
@@ -350,11 +416,15 @@ class ConversationAnalysisService:
             min(enthusiasm_total, 10) / 10  # Normalized total enthusiasm (0-1)
         ])
         
-        # Ensure we have exactly 75 features
-        while len(features) < 75:
-            features.append(0.0)
-        
-        return np.array(features[:75], dtype=np.float32)
+        # Ensure we have exactly FEATURE_DIM features
+        if len(features) != FEATURE_DIM:
+            raise ValueError(
+                f"Feature extractor produced {len(features)} features, expected "
+                f"{FEATURE_DIM}. Update FEATURE_DIM if this change was intended."
+            )
+
+        return np.array(features, dtype=np.float32)
+
     
     def analyze_conversation(self, messages: List[Dict], user_identifier: str = None) -> Dict[str, Any]:
         """
@@ -400,29 +470,40 @@ class ConversationAnalysisService:
         # Extract conversation pairs and analyze
         your_messages = [msg for msg in messages if msg['sender'] == user]
         their_messages = [msg for msg in messages if msg['sender'] == other]
-        
-        # Get response pairs
-        pairs = []
+
+        # Real timing/flow context for this conversation, computed once and
+        # reused for every pair.
+        flow = ConversationContext(messages, user, other)
+
+        # Get response pairs, keeping the indices so each one can be placed on
+        # the conversation's real timeline.
+        pair_indices = []
         for i in range(len(messages) - 1):
             if messages[i]['sender'] == user and messages[i + 1]['sender'] == other:
-                pairs.append((messages[i]['message'], messages[i + 1]['message']))
-        
+                pair_indices.append((i, i + 1))
+
+        pairs = [
+            (messages[a]['message'], messages[b]['message'])
+            for a, b in pair_indices
+        ]
+
         if not pairs:
             return {
                 'error': 'No conversation pairs found',
                 'your_messages': len(your_messages),
                 'their_messages': len(their_messages)
             }
-        
+
         # Analyze each pair
         interest_scores = []
         detailed_pairs = []
-        
+
         # Set model to evaluation mode for inference
         self.model.eval()
-        
-        for your_msg, their_msg in pairs:
-            features = self.extract_features(your_msg, their_msg)
+
+        for (your_idx, their_idx), (your_msg, their_msg) in zip(pair_indices, pairs):
+            context = flow.pair_context(your_idx, their_idx)
+            features = self.extract_features(your_msg, their_msg, context)
             
             # Run through model
             with torch.no_grad():
@@ -474,10 +555,7 @@ class ConversationAnalysisService:
                 confidence_scores.append(detailed_pairs[i]['confidence'])
         
         avg_confidence = np.mean(confidence_scores) if confidence_scores else 0
-        
-        # Generate improvement suggestions (now sentiment-aware)
-        suggestions = self._generate_suggestions(pairs, interest_scores, your_messages, their_messages, sentiment_analysis)
-        
+
         # Calculate engagement metrics
         engagement_metrics = self._calculate_engagement_metrics(
             your_messages, their_messages, pairs
@@ -488,6 +566,15 @@ class ConversationAnalysisService:
         
         # Add emoji usage summary
         emoji_summary = self._analyze_emoji_patterns(their_messages)
+
+        # Real reply-timing summary (latency, consistency, who restarts the chat)
+        timing_summary = flow.timing_summary()
+
+        # Generate improvement suggestions (sentiment- and timing-aware)
+        suggestions = self._generate_suggestions(
+            pairs, interest_scores, your_messages, their_messages,
+            sentiment_analysis, timing_summary
+        )
         
         # Interest level interpretation
         if interest_percentage >= 80:
@@ -533,6 +620,7 @@ class ConversationAnalysisService:
             'sentiment_analysis': sentiment_analysis,
             'text_style_analysis': text_style_summary,
             'emoji_analysis': emoji_summary,
+            'timing_analysis': timing_summary,
             
             # Detailed Results
             'detailed_pair_analysis': detailed_pairs[:10],  # First 10 pairs
@@ -633,17 +721,24 @@ class ConversationAnalysisService:
         
         total_messages = len(messages)
         emoji_usage_rate = (messages_with_emojis / max(total_messages, 1)) * 100
-        
+
         # Calculate positive emoji percentage
-        positive_emojis = (emoji_counts['high_interest'] + emoji_counts['happy'] + 
+        positive_emojis = (emoji_counts['high_interest'] + emoji_counts['happy'] +
                           emoji_counts['laughing'] + emoji_counts['excited'])
         positive_percentage = (positive_emojis / max(total_emojis, 1)) * 100
-        
+
+        # How many distinct emotional registers they draw on. A person cycling
+        # through several categories is expressing more than one hammering the
+        # same single emoji.
+        categories_used = sum(1 for count in emoji_counts.values() if count > 0)
+        emoji_diversity = (categories_used / len(self.emoji_categories)) * 100
+
         return {
             'total_emojis': total_emojis,
             'emoji_usage_rate': round(emoji_usage_rate, 1),
             'emojis_per_message': round(total_emojis / max(total_messages, 1), 2),
             'messages_with_emojis': messages_with_emojis,
+            'emoji_diversity': round(emoji_diversity, 1),
             'emoji_categories': {
                 'high_interest': emoji_counts['high_interest'],
                 'happy': emoji_counts['happy'],
@@ -716,13 +811,54 @@ class ConversationAnalysisService:
                             interest_scores: List[int],
                             your_messages: List[Dict],
                             their_messages: List[Dict],
-                            sentiment_analysis: Dict[str, Any] = None) -> List[Dict[str, str]]:
+                            sentiment_analysis: Dict[str, Any] = None,
+                            timing: Dict[str, Any] = None) -> List[Dict[str, str]]:
         """
         Generate DYNAMIC, AI-powered improvement suggestions based on actual conversation analysis
         Analyzes real message content, patterns, and context to provide personalized tips
         """
 
         all_suggestions = []
+
+        # === REPLY-TIMING ADVICE (real timestamps, not text heuristics) ===
+        if timing and timing.get('timing_available'):
+            ratio = timing.get('reply_delay_ratio')
+            their_median = timing.get('their_median_reply_minutes')
+            share = timing.get('their_initiation_share')
+
+            if ratio is not None and ratio > 3 and their_median and their_median > 30:
+                all_suggestions.append({
+                    'category': 'Reply Speed Gap',
+                    'priority': 'High',
+                    'suggestion': (
+                        f"They take about {their_median:.0f} minutes to reply while you answer "
+                        f"roughly {ratio:.1f}x faster. That imbalance usually means you are "
+                        f"investing more in the chat than they are."
+                    ),
+                    'tip': 'Match their pace for a while instead of replying instantly - it evens out the effort and lets them come to you.'
+                })
+            elif ratio is not None and ratio < 0.5 and their_median is not None and their_median < 10:
+                all_suggestions.append({
+                    'category': 'They Are Keen',
+                    'priority': 'Info',
+                    'suggestion': (
+                        f"They reply in about {their_median:.0f} minutes - faster than you do. "
+                        f"Quick, consistent replies are one of the most reliable signs of real interest."
+                    ),
+                    'tip': 'They are clearly available for you. This is a good moment to suggest meeting or moving to a call.'
+                })
+
+            if share is not None and share <= 20 and timing.get('you_restarted_chat', 0) >= 2:
+                all_suggestions.append({
+                    'category': 'One-Sided Initiation',
+                    'priority': 'High',
+                    'suggestion': (
+                        f"You restarted the conversation {timing.get('you_restarted_chat')} time(s) after it went "
+                        f"quiet and they restarted it {timing.get('they_restarted_chat', 0)}. The chat only "
+                        f"continues when you push it."
+                    ),
+                    'tip': 'Try leaving the next silence alone for a few days. If they reach out, the interest is real; if not, you have your answer.'
+                })
 
         # === REAL-TIME SENTIMENT-DRIVEN ADVICE (VADER) ===
         if sentiment_analysis and sentiment_analysis.get('available'):
@@ -1155,6 +1291,25 @@ class ConversationAnalysisService:
             lines.append(f"   Negative Messages:      {sent.get('negativity', 0):.1f}%")
             lines.append(f"   Trajectory:             {sent.get('trajectory', 'steady').title()} ({sent.get('trajectory_delta', 0):+.0f})")
             lines.append(f"   📝 {sent.get('interpretation', 'N/A')}")
+            lines.append("")
+
+        # Reply timing (only meaningful when the export carried timestamps)
+        timing = analysis_result.get('timing_analysis') or {}
+        if timing.get('timing_available'):
+            lines.append("⏱️  REPLY TIMING")
+            lines.append("-" * 80)
+            their_median = timing.get('their_median_reply_minutes')
+            your_median = timing.get('your_median_reply_minutes')
+            if their_median is not None:
+                lines.append(f"   Their Median Reply:     {their_median:.1f} min")
+            if your_median is not None:
+                lines.append(f"   Your Median Reply:      {your_median:.1f} min")
+            if timing.get('reply_delay_ratio') is not None:
+                lines.append(f"   They Reply:             {timing['reply_delay_ratio']:.2f}x your speed")
+            lines.append(f"   Pace Consistency:       {timing.get('reply_speed_consistency', 0):.2f}")
+            lines.append(f"   They Restarted Chat:    {timing.get('they_restarted_chat', 0)} time(s)")
+            lines.append(f"   You Restarted Chat:     {timing.get('you_restarted_chat', 0)} time(s)")
+            lines.append(f"   📝 {timing.get('interpretation', 'N/A')}")
             lines.append("")
 
         # Text Style Analysis

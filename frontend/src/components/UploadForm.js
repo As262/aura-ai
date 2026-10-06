@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useId, useRef } from 'react';
 import FileValidator from '../utils/FileValidator';
 import './UploadForm.css';
 
@@ -11,8 +11,12 @@ const UploadForm = ({
   platform = 'instagram',
   shouldClearPreview = false,
   onPreviewCleared,
+  showReset = false,
+  onReset,
   children 
 }) => {
+  const inputId = `file-upload-${useId().replace(/:/g, '')}`;
+  const inputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const [caption, setCaption] = useState('');
   const [validationErrors, setValidationErrors] = useState([]);
@@ -138,6 +142,13 @@ const UploadForm = ({
     }
   }, [handleFiles]);
 
+  const handleLabelKeyDown = useCallback((event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      inputRef.current?.click();
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Form submission logic can be added here if needed
@@ -170,11 +181,21 @@ const UploadForm = ({
 
   return (
     <div className="upload-form">
-      <h2 className="upload-title">{title}</h2>
+      <div className="upload-heading-row">
+        <h2 className="upload-title">{title}</h2>
+        {showReset && onReset && (
+          <button type="button" className="upload-reset-button" onClick={onReset}>
+            Upload new image
+          </button>
+        )}
+      </div>
       
       <form onSubmit={handleSubmit} className="upload-container">
         <div 
           className={`upload-area ${dragActive ? 'drag-active' : ''} ${isLoading ? 'loading' : ''}`}
+          role="region"
+          aria-label="Image upload area"
+          aria-busy={isLoading || isValidating}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
@@ -182,19 +203,28 @@ const UploadForm = ({
         >
           <input
             type="file"
-            id="file-upload"
+            ref={inputRef}
+            id={inputId}
             className="file-input"
             accept={acceptedTypes}
             onChange={handleChange}
             disabled={isLoading}
+            aria-describedby={`${inputId}-hint`}
+            aria-label="Choose an image file"
           />
           
-          <label htmlFor="file-upload" className="upload-label">
+          <label
+            htmlFor={inputId}
+            className="upload-label"
+            role="button"
+            tabIndex={isLoading ? -1 : 0}
+            onKeyDown={handleLabelKeyDown}
+          >
             {previewUrl ? (
               <div className="preview-container">
                 <img src={previewUrl} alt="Preview" className="preview-image" />
                 <div className="preview-overlay">
-                  <p className="preview-text">Click to change image</p>
+                  <span className="preview-text">Change image</span>
                   {uploadedFile && <p className="file-name">{uploadedFile.name}</p>}
                 </div>
               </div>
@@ -204,8 +234,9 @@ const UploadForm = ({
                   📁
                 </div>
                 <div className="upload-text">
-                  <h3>Drop your file here or click to browse</h3>
-                  <p>Accepted formats: {acceptedTypes}</p>
+                  <h3>Drop an image here or choose a file</h3>
+                  <span className="upload-cta">Choose image</span>
+                  <p id={`${inputId}-hint`}>Accepted formats: {acceptedTypes}</p>
                   <p className="platform-info">
                     {platform === 'ai-analysis' ? ' AI Analysis Mode' : `Platform: ${platform}`}
                   </p>
@@ -225,7 +256,7 @@ const UploadForm = ({
         {/* Validation Messages */}
         {validationErrors.length > 0 && (
           <div className="validation-messages error-messages" role="alert" aria-live="polite">
-            <h4>❌ File Validation Errors:</h4>
+            <h3>File validation errors</h3>
             <ul>
               {validationErrors.map((error, index) => (
                 <li key={index}>{error}</li>
@@ -236,7 +267,7 @@ const UploadForm = ({
 
         {validationWarnings.length > 0 && (
           <div className="validation-messages warning-messages" role="alert" aria-live="polite">
-            <h4>⚠️ File Validation Warnings:</h4>
+            <h3>File validation warnings</h3>
             <ul>
               {validationWarnings.map((warning, index) => (
                 <li key={index}>{warning}</li>

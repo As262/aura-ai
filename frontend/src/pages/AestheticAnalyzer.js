@@ -126,6 +126,13 @@ const AestheticAnalyzer = () => {
     setShouldClearPreview(false);
   }, []);
 
+  const handleResetAnalysis = useCallback(() => {
+    setDetailedAnalysis(null);
+    setError(null);
+    setPendingFile(null);
+    setShouldClearPreview(true);
+  }, []);
+
   return (
     <div className="aesthetic-analyzer">
       <div className="page-header">
@@ -155,7 +162,7 @@ const AestheticAnalyzer = () => {
         />
         
         <UploadForm
-          title="Upload Image for AI Analysis"
+          title="Upload image for AI analysis"
           acceptedTypes="image/jpeg,image/jpg,image/png,image/webp,image/gif"
           onFileUpload={handleFileUploadRequest}
           showCaption={false}
@@ -163,10 +170,12 @@ const AestheticAnalyzer = () => {
           platform="ai-analysis"
           shouldClearPreview={shouldClearPreview}
           onPreviewCleared={handlePreviewCleared}
+          showReset={Boolean(detailedAnalysis) || Boolean(error)}
+          onReset={handleResetAnalysis}
         />
 
         {error && (
-          <div className="error-message">
+          <div className="error-message" role="alert" aria-live="polite">
             <span className="error-icon">⚠️</span>
             {error}
           </div>
@@ -180,7 +189,7 @@ const AestheticAnalyzer = () => {
       </div>
 
       {/* Lazy loaded Info Section */}
-      <Suspense fallback={<div style={{ height: '400px' }} />}>
+      <Suspense fallback={<div className="info-section-fallback" aria-hidden="true" />}>
         <InfoSection />
       </Suspense>
 

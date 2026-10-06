@@ -137,9 +137,9 @@ class ConversationAnalysisView(APIView):
         return [MultiPartParser(), FormParser(), JSONParser()]
     
     def post(self, request):
-        print("🚀 Conversation Analysis API called")
-        print(f"📄 Request data keys: {list(request.data.keys())}")
-        print(f"📄 Request files: {list(request.FILES.keys())}")
+        print("[API] Conversation analysis called")
+        print(f"[API] Request data keys: {list(request.data.keys())}")
+        print(f"[API] Request files: {list(request.FILES.keys())}")
         
         # Check usage limit before processing
         req_ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '')
@@ -157,9 +157,9 @@ class ConversationAnalysisView(APIView):
         try:
             # Handle file upload
             if 'file' in request.FILES:
-                print("✅ File found in request")
+                print("[OK] File found in request")
                 uploaded_file = request.FILES['file']
-                print(f"📄 File: {uploaded_file.name}, Type: {uploaded_file.content_type}, Size: {uploaded_file.size}")
+                print(f"[INFO] File: {uploaded_file.name}, Type: {uploaded_file.content_type}, Size: {uploaded_file.size}")
                 
                 # Save file temporarily
                 with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(uploaded_file.name)[1]) as tmp_file:
@@ -172,15 +172,15 @@ class ConversationAnalysisView(APIView):
                     from .conversation_decoder import ConversationDecoder
                     from ml_models.conversation_interest_model import ConversationAnalysisService
                     
-                    print(f"🔍 Decoding conversation file...")
+                    print("[INFO] Decoding conversation file...")
                     decoder = ConversationDecoder()
                     decoded_data = decoder.decode_file(tmp_file_path)
                     
-                    print(f"✅ Decoded {decoded_data['metadata']['total_messages']} messages")
-                    print(f"📊 First 3 messages: {decoded_data['messages'][:3]}")
+                    print(f"[OK] Decoded {decoded_data['metadata']['total_messages']} messages")
+                    print(f"[INFO] First 3 messages: {decoded_data['messages'][:3]}")
                     
                     # Run ML analysis
-                    print(f"🤖 Running ML analysis...")
+                    print("[INFO] Running ML analysis...")
                     model_path = os.path.join(
                         os.path.dirname(__file__),
                         '..',
@@ -211,7 +211,7 @@ class ConversationAnalysisView(APIView):
                     # Generate human-readable text format
                     formatted_text = analysis_service.format_analysis_as_text(analysis_result)
                     
-                    print(f"✅ Analysis complete!")
+                    print("[OK] Analysis complete")
                     
                     # Clean up temporary file
                     os.unlink(tmp_file_path)
@@ -234,7 +234,7 @@ class ConversationAnalysisView(APIView):
                     if os.path.exists(tmp_file_path):
                         os.unlink(tmp_file_path)
                     
-                    print(f"❌ Analysis error: {str(e)}")
+                    print(f"[ERROR] Analysis error: {str(e)}")
                     import traceback
                     traceback.print_exc()
                     
@@ -247,7 +247,7 @@ class ConversationAnalysisView(APIView):
             
             # Handle raw text (legacy support)
             elif 'conversation_text' in request.data:
-                print("✅ Text data found in request")
+                print("[OK] Text data found in request")
                 conversation_text = request.data['conversation_text']
                 
                 # Simple mock analysis for raw text
@@ -272,14 +272,14 @@ class ConversationAnalysisView(APIView):
                 }, status=status.HTTP_200_OK)
             
             else:
-                print("❌ No file or text data found")
+                print("[WARN] No file or text data found")
                 return Response(
                     {'error': 'No file or conversation_text provided'}, 
                     status=status.HTTP_400_BAD_REQUEST
                 )
                 
         except Exception as e:
-            print(f"❌ Server error: {str(e)}")
+            print(f"[ERROR] Server error: {str(e)}")
             import traceback
             traceback.print_exc()
             return Response(

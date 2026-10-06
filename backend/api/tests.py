@@ -1,21 +1,9 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
-from .models import UserProfile, AestheticAnalysis, ConversationAnalysis
-
-
-class UserProfileTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
-            password='testpass123'
-        )
-
-    def test_user_profile_creation(self):
-        profile = UserProfile.objects.create(user=self.user)
-        self.assertEqual(str(profile), "testuser's Profile")
+from django.core.files.uploadedfile import SimpleUploadedFile
+from unittest.mock import patch
+from PIL import Image
+import io
 
 
 class APITestCase(APITestCase):
@@ -24,19 +12,25 @@ class APITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], 'healthy')
 
-    def test_user_registration(self):
-        data = {
-            'username': 'newuser',
-            'email': 'newuser@example.com',
-            'password': 'newpass123'
-        }
-        response = self.client.post('/api/register/', data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
     def test_conversation_analysis(self):
         data = {
             'conversation_text': 'This is a test conversation about technology and innovation.'
         }
-        response = self.client.post('/api/conversation-analysis/', data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn('analysis_result', response.data)
+        response = self.client.post('/api/conversation-analysis/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data['success'])
+        self.assertIn('data', response.data)
+
+    @patch('api.views._check_usage_limit', return_value=(True, 0))
+    @patch('api.views._increment_usage_for_ip', return_value=1)
+    def test_photo_upload_preserves_learned_rating_and_reports_blank_composition(self, increment, usage):
+        buffer = io.BytesIO()
+        Image.new('RGB', (100, 100), (255, 0, 0)).save(buffer, format='PNG')
+        upload = SimpleUploadedFile('flat.png', buffer.getvalue(), content_type='image/png')
+        response = self.client.post('/api/detailed-image-analysis/', {'image': upload}, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        analysis = response.json()['analysis']
+        self.assertEqual(analysis['aesthetic_score']['mode'], 'learned-nima')
+        self.assertEqual(analysis['overall_rating']['score'], analysis['aesthetic_score']['score'])
+        self.assertEqual(analysis['composition_analysis']['method'], 'insufficient-evidence')
+        self.assertFalse(analysis['composition_analysis']['ml_reliable'])

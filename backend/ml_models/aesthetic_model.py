@@ -28,6 +28,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import models, transforms
+from PIL import Image
+
+
+def aesthetic_preprocess():
+    """The same full-frame PIL resize used in AVA training and evaluation."""
+    return transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ])
 
 
 class NIMA(nn.Module):
@@ -49,10 +59,12 @@ class NIMA(nn.Module):
         )
 
     def forward(self, x):
-        f = self.features(x)
-        f = self.pool(f).flatten(1)
-        logits = self.head(f)
+        logits = self.head(self.features_only(x))
         return F.softmax(logits, dim=1)
+
+    def assess_with_features(self, x):
+        features = self.features_only(x)
+        return F.softmax(self.head(features), dim=1), features
 
     def features_only(self, x):
         f = self.features(x)
@@ -66,24 +78,21 @@ class AestheticAssessor:
 
     def __init__(self, weights_path: str = None):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.model = NIMA(pretrained_backbone=True).to(self.device).eval()
+        has_checkpoint = bool(weights_path and os.path.exists(weights_path))
+        self.model = NIMA(pretrained_backbone=not has_checkpoint).to(self.device).eval()
 
         self.learned = False
         if weights_path and os.path.exists(weights_path):
             try:
-                state = torch.load(weights_path, map_location=self.device)
+                state = torch.load(weights_path, map_location=self.device, weights_only=True)
                 self.model.load_state_dict(state)
                 self.learned = True
                 print(f"[OK] Loaded learned aesthetic model from {weights_path}")
             except Exception as e:
                 print(f"[WARN] Could not load aesthetic weights ({e}); using perceptual mode.")
+                self.model = NIMA(pretrained_backbone=True).to(self.device).eval()
 
-        self.preprocess = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Resize((224, 224), antialias=True),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                  std=[0.229, 0.224, 0.225]),
-        ])
+        self.preprocess = aesthetic_preprocess()
 
     # ---------------------------------------------------------------- public
 
@@ -93,17 +102,18 @@ class AestheticAssessor:
         Assess an RGB (H, W, 3) uint8 image.
         Returns score (1-10), distribution, confidence, factors, mode.
         """
-        tensor = self.preprocess(image_rgb).unsqueeze(0).to(self.device)
+        tensor = self.preprocess(Image.fromarray(image_rgb)).unsqueeze(0).to(self.device)
 
         # Deep feature signal (learned representation richness) — used in both modes
-        feats = self.model.features_only(tensor)[0].cpu().numpy()
+        distributions, features = self.model.assess_with_features(tensor)
+        feats = features[0].cpu().numpy()
         feat_richness = self._feature_richness(feats)
 
         # Perceptual correlates (computed directly on the image)
         perceptual = self._perceptual_factors(image_rgb)
 
         if self.learned:
-            dist = self.model(tensor)[0].cpu()
+            dist = distributions[0].cpu()
             mean = float((dist * self.SCORE_BINS).sum())
             std = float(((self.SCORE_BINS - mean) ** 2 * dist).sum().sqrt())
             confidence = round(max(0.0, 1.0 - std / 3.5) * 100, 1)
@@ -113,9 +123,11 @@ class AestheticAssessor:
                 'score': round(mean, 1),
                 'distribution': [round(float(p), 4) for p in dist.tolist()],
                 'confidence': confidence,
+                'confidence_kind': 'predicted-rating-consensus',
+                'rating_std': round(std, 3),
                 'factors': factors,
                 'mode': 'learned-nima',
-                'interpretation': self._interpret(mean, perceptual),
+                'interpretation': 'Predicted aesthetic appeal based on human-rated AVA photographs.',
             }
 
         # ---- Perceptual-calibrated fusion ----

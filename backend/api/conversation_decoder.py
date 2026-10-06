@@ -10,6 +10,11 @@ import re
 from typing import Dict, List, Tuple, Any
 from datetime import datetime
 
+try:  # package import (Django) and direct-script import both need to work
+    from .timestamp_parser import attach_datetimes
+except ImportError:  # pragma: no cover - fallback for `python conversation_decoder.py`
+    from timestamp_parser import attach_datetimes
+
 # Try to import PyPDF2, provide fallback if not available
 try:
     import PyPDF2
@@ -54,6 +59,34 @@ class ConversationDecoder:
         }
         
         return decoder_map[file_format](file_path)
+
+    @staticmethod
+    def _finalize(messages: List[Dict[str, Any]], source: str,
+                  **extra_metadata) -> Dict[str, Any]:
+        """
+        Attach parsed datetimes and build the metadata block.
+
+        Every decode path funnels through here so timing information is
+        available no matter which export format the user uploaded.
+        """
+        attach_datetimes(messages)
+
+        stamps = [m['datetime'] for m in messages if m.get('datetime')]
+        metadata = {
+            'source': source,
+            'total_messages': len(messages),
+            'timestamps_parsed': len(stamps),
+            'has_timing': len(stamps) >= 2,
+            'first_message_at': stamps[0].isoformat() if stamps else None,
+            'last_message_at': stamps[-1].isoformat() if stamps else None,
+            'duration_hours': (
+                round((stamps[-1] - stamps[0]).total_seconds() / 3600, 2)
+                if len(stamps) >= 2 else None
+            ),
+        }
+        metadata.update(extra_metadata)
+
+        return {'messages': messages, 'metadata': metadata}
     
     def decode_pdf(self, file_path: str) -> Dict[str, Any]:
         """
@@ -78,18 +111,11 @@ class ConversationDecoder:
             
             # Parse text into messages
             messages = self._parse_text_to_messages(text)
-            
-            return {
-                'messages': messages,
-                'metadata': {
-                    'source': 'pdf',
-                    'total_messages': len(messages),
-                    'pages': len(pdf_reader.pages)
-                }
-            }
+
+            return self._finalize(messages, 'pdf', pages=len(pdf_reader.pages))
         except Exception as e:
             raise Exception(f"Failed to decode PDF: {str(e)}. Ensure the PDF contains text (not images).")
-    
+
     def decode_txt(self, file_path: str) -> Dict[str, Any]:
         """
         Extract conversation from TXT file
@@ -97,16 +123,10 @@ class ConversationDecoder:
         """
         with open(file_path, 'r', encoding='utf-8') as file:
             text = file.read()
-        
+
         messages = self._parse_text_to_messages(text)
-        
-        return {
-            'messages': messages,
-            'metadata': {
-                'source': 'txt',
-                'total_messages': len(messages)
-            }
-        }
+
+        return self._finalize(messages, 'txt')
     
     def decode_json(self, file_path: str) -> Dict[str, Any]:
         """
@@ -137,14 +157,8 @@ class ConversationDecoder:
                     if message:
                         messages.append(message)
         
-        return {
-            'messages': messages,
-            'metadata': {
-                'source': 'json',
-                'total_messages': len(messages)
-            }
-        }
-    
+        return self._finalize(messages, 'json')
+
     def decode_csv(self, file_path: str) -> Dict[str, Any]:
         """
         Extract conversation from CSV file
@@ -160,14 +174,8 @@ class ConversationDecoder:
                 if message:
                     messages.append(message)
         
-        return {
-            'messages': messages,
-            'metadata': {
-                'source': 'csv',
-                'total_messages': len(messages)
-            }
-        }
-    
+        return self._finalize(messages, 'csv')
+
     def decode_log(self, file_path: str) -> Dict[str, Any]:
         """
         Extract conversation from LOG file
@@ -175,16 +183,10 @@ class ConversationDecoder:
         """
         with open(file_path, 'r', encoding='utf-8') as file:
             text = file.read()
-        
+
         messages = self._parse_text_to_messages(text)
-        
-        return {
-            'messages': messages,
-            'metadata': {
-                'source': 'log',
-                'total_messages': len(messages)
-            }
-        }
+
+        return self._finalize(messages, 'log')
     
     # WhatsApp line prefix: optional '[', date (d/m/y, 2- or 4-digit year),
     # time (12h or 24h, optional seconds, optional am/pm), optional ']' and ' - '.

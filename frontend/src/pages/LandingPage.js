@@ -5,7 +5,8 @@ import './LandingPage.css';
 const LandingPage = () => {
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll('.fade-on-scroll'));
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // No JS-animation path: leave everything visible.
     if (reduce || !('IntersectionObserver' in window)) return;
@@ -63,8 +64,8 @@ const LandingPage = () => {
 
           <div className="hero-stats">
             <div className="stat">
-              <div className="stat-number">99.9%</div>
-              <div className="stat-label">Accuracy</div>
+              <div className="stat-number">20k+</div>
+              <div className="stat-label">Rated training photos</div>
             </div>
             <div className="stat">
               <div className="stat-number">~3s</div>

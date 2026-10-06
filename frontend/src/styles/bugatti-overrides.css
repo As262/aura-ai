@@ -203,7 +203,7 @@
 .info-section .info-title {
   font-family: var(--font-display) !important;
   font-weight: 400 !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   letter-spacing: var(--tracking-display) !important;
   background: none !important;
   -webkit-text-fill-color: var(--bug-ink) !important;

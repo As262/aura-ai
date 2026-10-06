@@ -73,7 +73,7 @@
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--bug-muted);
   background: none !important;
   border: none !important;
@@ -98,20 +98,23 @@
   box-shadow: none !important;
 }
 
-/* Pricing / upgrade link — subtle outlined pill, no colour */
+/* Upgrade is the primary navigation action. */
 .nav-link-pricing {
   padding: 8px 18px;
-  border: 1px solid var(--bug-hairline-strong) !important;
+  border: 1px solid var(--bug-ink) !important;
   border-radius: var(--radius-pill);
-  color: var(--bug-body);
+  color: var(--bug-canvas) !important;
+  background: var(--bug-ink) !important;
 }
 .nav-link-pricing:hover {
-  border-color: var(--bug-ink) !important;
-  color: var(--bug-ink);
+  border-color: var(--bug-body-strong) !important;
+  color: var(--bug-canvas) !important;
+  background: var(--bug-body-strong) !important;
 }
 .nav-link-pricing.nav-link--active {
   border-color: var(--bug-ink) !important;
-  color: var(--bug-ink);
+  color: var(--bug-canvas) !important;
+  background: var(--bug-ink) !important;
 }
 
 .pricing-icon {
@@ -139,7 +142,7 @@
   border-radius: var(--radius-pill);
   color: var(--bug-muted);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   backdrop-filter: none;
@@ -152,7 +155,7 @@
   border-color: var(--bug-hairline-strong);
   color: var(--bug-body);
 }
-.usage-sub { opacity: 0.8; font-size: 0.625rem; }
+.usage-sub { opacity: 0.8; font-size: 0.75rem; }
 
 /* Theme toggle container */
 .theme-toggle {

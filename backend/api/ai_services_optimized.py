@@ -18,7 +18,7 @@ except ImportError:
     mp = None
     MEDIAPIPE_AVAILABLE = False
 
-from PIL import Image, ImageEnhance, ImageStat
+from PIL import Image, ImageOps, ImageEnhance, ImageStat
 import torch
 from skimage import measure, filters
 import os
@@ -94,8 +94,7 @@ class OptimizedImageAnalysisService:
         if HYBRID_MODEL_AVAILABLE:
             model_path = Path(__file__).parent.parent / 'ml_models' / 'trained' / 'composition_model_best.pth'
             self.hybrid_detector = HybridCompositionDetector(
-                model_path=str(model_path) if model_path.exists() else None,
-                confidence_threshold=0.6
+                model_path=str(model_path) if model_path.exists() else None
             )
         else:
             self.hybrid_detector = None
@@ -119,9 +118,6 @@ class OptimizedImageAnalysisService:
         # Thread pool for parallel processing
         self.executor = ThreadPoolExecutor(max_workers=4)
         
-        # Store current image path for hybrid detection
-        self.current_image_path = None
-    
     def analyze_image(self, image_path):
         """
         Main analysis function - Fast & Accurate
@@ -136,13 +132,13 @@ class OptimizedImageAnalysisService:
         """
         start_time = time.time()
         
-        # Store image path for hybrid detection
-        self.current_image_path = image_path
-        
-        # Load and optimize image
-        image = cv2.imread(image_path)
-        if image is None:
-            raise ValueError("Failed to load image")
+        # Decode once, normalize EXIF orientation, and pass request-local pixels
+        # to every model. The singleton must never remember another upload's
+        # path while two requests are being analyzed concurrently.
+        with Image.open(image_path) as source:
+            image_rgb = np.asarray(ImageOps.exif_transpose(source).convert('RGB'))
+        original_image_rgb = image_rgb
+        image = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2BGR)
         
         # Smart resize for optimal speed/quality
         image = self._smart_resize(image, max_dimension=1920)
@@ -157,10 +153,10 @@ class OptimizedImageAnalysisService:
         }
         
         # Composition detection (sequential for accuracy)
-        composition_analysis = self._detect_composition_type(image_rgb)
+        composition_analysis = self._detect_composition_type(image_rgb, model_image_rgb=original_image_rgb)
         
         # Pose detection if available
-        pose_result = self._analyze_pose(image_rgb) if MEDIAPIPE_AVAILABLE else {'detected': False}
+        pose_result = self._analyze_pose(image_rgb) if MEDIAPIPE_AVAILABLE else {'detected': False, 'available': False}
         
         # Gather parallel results
         results = {
@@ -200,13 +196,22 @@ class OptimizedImageAnalysisService:
         
         return cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
     
-    def _detect_composition_type(self, image_rgb):
+    def _detect_composition_type(self, image_rgb, model_image_rgb=None):
         """
         Accurately detect the actual composition type being used.
         Returns detected type and improvement suggestions.
         """
         height, width = image_rgb.shape[:2]
         gray = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2GRAY)
+        if float(image_rgb.std(axis=(0, 1)).max()) < 1.0:
+            return {
+                'detected_type': 'Unclear', 'type_key': None,
+                'description': 'Not enough visual structure to identify a composition style.',
+                'ideal_for': '', 'score': 0.0, 'quality': 'Not enough evidence',
+                'secondary_type': None, 'all_scores': {key: 0.0 for key in self.COMPOSITION_TYPES},
+                'analysis_details': {}, 'method': 'insufficient-evidence',
+                'ml_confidence': 0.0, 'ml_reliable': False,
+            }
         
         # Calculate scores for each composition type
         composition_scores = {}
@@ -245,15 +250,19 @@ class OptimizedImageAnalysisService:
         
         # ==== HYBRID ML + RULE-BASED DETECTION ====
         # Try ML model first if available
-        if self.hybrid_detector and self.hybrid_detector.model_loaded and self.current_image_path:
+        if self.hybrid_detector and self.hybrid_detector.model_loaded:
             try:
                 hybrid_result = self.hybrid_detector.detect_composition(
-                    self.current_image_path,
+                    image_rgb if model_image_rgb is None else model_image_rgb,
                     composition_scores
                 )
                 
-                # Use ML result if reliable AND corroborated by geometry
-                if hybrid_result['reliable'] and hybrid_result['method'] in ['ml', 'hybrid']:
+                # The learned checkpoint owns the class decision. Geometry is
+                # retained as interpretable supporting evidence and is never
+                # allowed to replace a trained prediction: the old hard
+                # override substituted heuristic labels for learned predictions
+                # without validating that decision on the serving path.
+                if hybrid_result['method'] == 'ml' and hybrid_result.get('all_scores'):
                     primary_type = hybrid_result['detected_type']
                     ml_conf = hybrid_result['confidence']
 
@@ -263,55 +272,41 @@ class OptimizedImageAnalysisService:
                     # show 0/10 across the board.
                     geom_scores = dict(composition_scores)
                     geom_for_type = geom_scores.get(primary_type, 0.0)
-                    geom_winner = max(geom_scores, key=geom_scores.get)
-                    geom_max = geom_scores[geom_winner]
+                    # Class probability measures recognition certainty, not
+                    # photographic quality. Keep the geometric match separate.
+                    primary_score = float(np.clip(geom_for_type, 0.0, 10.0))
 
-                    # Corroboration guard: trust the CNN only if the geometry doesn't
-                    # strongly contradict it. A confident-but-wrong CNN that asserts a
-                    # type the geometry has no evidence for is overruled and we fall
-                    # through to the rule-based winner instead.
-                    accept_ml = (geom_for_type >= 4.0) or (ml_conf >= 0.85)
-                    strong_disagreement = (geom_for_type < 3.0 and geom_max > 7.0)
+                    # Keep the softmax distribution separately (for confidence display).
+                    ml_probabilities = {k: round(v, 4)
+                                        for k, v in hybrid_result.get('all_scores', {}).items()}
 
-                    if accept_ml and not strong_disagreement:
-                        # Blend the headline score: mostly CNN confidence, partly the
-                        # measured geometric strength of the detected type.
-                        fused = (ml_conf * 10.0 * 0.6) + (geom_for_type * 0.4)
-                        primary_score = min(fused, 10.0)
+                    print(f"[AI] CNN Detection: {primary_type} "
+                          f"(ml {ml_conf:.0%}, geom {geom_for_type:.1f}/10 -> {primary_score:.1f})")
 
-                        # Keep the softmax distribution separately (for % display only).
-                        ml_probabilities = {k: round(v, 4)
-                                            for k, v in hybrid_result.get('all_scores', {}).items()}
-
-                        print(f"[AI] {hybrid_result['method'].upper()} Detection: {primary_type} "
-                              f"(ml {ml_conf:.0%}, geom {geom_for_type:.1f}/10 -> {primary_score:.1f})")
-
-                        return {
-                            'detected_type': self.COMPOSITION_TYPES[primary_type]['name'],
-                            'type_key': primary_type,
-                            'description': self.COMPOSITION_TYPES[primary_type]['description'],
-                            'ideal_for': self.COMPOSITION_TYPES[primary_type]['ideal_for'],
-                            'score': round(primary_score, 1),
-                            'quality': self._get_quality_rating(primary_score),
-                            'secondary_type': None,
-                            # Genuine geometric 0-10 strengths for every style
-                            'all_scores': {k: round(min(v, 10.0), 1) for k, v in geom_scores.items()},
-                            'analysis_details': {
-                                'rule_of_thirds': round(geom_scores.get('rule_of_thirds', 0), 1),
-                                'centered': round(geom_scores.get('centered', 0), 1),
-                                'leading_lines': round(geom_scores.get('leading_lines', 0), 1),
-                                'diagonal': round(geom_scores.get('diagonal', 0), 1),
-                                'symmetry': round(geom_scores.get('symmetrical', 0), 1),
-                                'golden_ratio': round(geom_scores.get('golden_ratio', 0), 1)
-                            },
-                            'ml_probabilities': ml_probabilities,
-                            'method': hybrid_result['method'],
-                            'ml_confidence': round(ml_conf * 100, 1)
-                        }
-                    else:
-                        # CNN not supported by geometry -> use the rule-based winner.
-                        print(f"[AI] CNN '{primary_type}' (conf {ml_conf:.0%}) overruled by "
-                              f"geometry: winner '{geom_winner}' {geom_max:.1f}/10")
+                    return {
+                        'detected_type': self.COMPOSITION_TYPES[primary_type]['name'],
+                        'type_key': primary_type,
+                        'description': self.COMPOSITION_TYPES[primary_type]['description'],
+                        'ideal_for': self.COMPOSITION_TYPES[primary_type]['ideal_for'],
+                        'score': round(primary_score, 1),
+                        'quality': 'Clear geometric match' if primary_score >= 7 else 'Partial geometric match',
+                        'secondary_type': None,
+                        'score_kind': 'geometric-match-heuristic',
+                        # Genuine geometric 0-10 strengths for every style
+                        'all_scores': {k: round(min(v, 10.0), 1) for k, v in geom_scores.items()},
+                        'analysis_details': {
+                            'rule_of_thirds': round(geom_scores.get('rule_of_thirds', 0), 1),
+                            'centered': round(geom_scores.get('centered', 0), 1),
+                            'leading_lines': round(geom_scores.get('leading_lines', 0), 1),
+                            'diagonal': round(geom_scores.get('diagonal', 0), 1),
+                            'symmetry': round(geom_scores.get('symmetrical', 0), 1),
+                            'golden_ratio': round(geom_scores.get('golden_ratio', 0), 1)
+                        },
+                        'ml_probabilities': ml_probabilities,
+                        'method': hybrid_result['method'],
+                        'ml_confidence': round(ml_conf * 100, 1),
+                        'ml_reliable': bool(hybrid_result.get('reliable'))
+                    }
             except Exception as e:
                 print(f"[WARN] Hybrid detection failed, using rule-based: {e}")
         
@@ -520,31 +515,36 @@ class OptimizedImageAnalysisService:
         
         # Edge detection for better symmetry analysis
         edges = cv2.Canny(gray, 50, 150)
+        if np.count_nonzero(edges) < 16:
+            return 0.0
         
         # Vertical symmetry
         mid_v = w // 2
         left_half = edges[:, :mid_v]
-        right_half = cv2.flip(edges[:, mid_v:], 1)
+        right_half = cv2.flip(edges[:, w - mid_v:], 1)
         
         # Ensure same dimensions
         min_width = min(left_half.shape[1], right_half.shape[1])
         left_half = left_half[:, :min_width]
         right_half = right_half[:, :min_width]
         
-        v_difference = np.mean(np.abs(left_half.astype(float) - right_half.astype(float)))
-        v_symmetry = max(0, 10 - (v_difference / 25.5))
+        def edge_match(first, second):
+            # Match occupied edges, not shared empty background. Sparse random
+            # edges used to receive near-perfect scores under mean difference.
+            a, b = first > 0, second > 0
+            return 10.0 * 2 * np.count_nonzero(a & b) / max(np.count_nonzero(a) + np.count_nonzero(b), 1)
+        v_symmetry = edge_match(left_half, right_half)
         
         # Horizontal symmetry
         mid_h = h // 2
         top_half = edges[:mid_h, :]
-        bottom_half = cv2.flip(edges[mid_h:, :], 0)
+        bottom_half = cv2.flip(edges[h - mid_h:, :], 0)
         
         min_height = min(top_half.shape[0], bottom_half.shape[0])
         top_half = top_half[:min_height, :]
         bottom_half = bottom_half[:min_height, :]
         
-        h_difference = np.mean(np.abs(top_half.astype(float) - bottom_half.astype(float)))
-        h_symmetry = max(0, 10 - (h_difference / 25.5))
+        h_symmetry = edge_match(top_half, bottom_half)
         
         # Return the higher symmetry score (favor strongest axis)
         return max(v_symmetry, h_symmetry)
@@ -646,7 +646,9 @@ class OptimizedImageAnalysisService:
         color_score = results['color_analysis']['overall_score']
         
         # COMPOSITION TIPS (more personalized, only if truly needed)
-        if comp_score < 6:
+        composition_supported = bool(detected_type) and composition_analysis.get('ml_reliable', True)
+        composition_quality_measured = composition_analysis.get('method') != 'ml'
+        if composition_supported and composition_quality_measured and comp_score < 6:
             tips.append({
                 'category': 'Composition',
                 'priority': 'High',
@@ -654,7 +656,7 @@ class OptimizedImageAnalysisService:
                 'tip': f"Your {composition_analysis['detected_type']} could be stronger. {self._get_composition_improvement_tip(detected_type, comp_score)}",
                 'alternative': self._suggest_better_composition(composition_analysis)
             })
-        elif comp_score < 7.5:
+        elif composition_supported and composition_quality_measured and comp_score < 7.5:
             # Only show if alternative composition is much better
             alt = self._suggest_better_composition(composition_analysis)
             if alt and alt['score'] - comp_score > 1.5:
@@ -745,7 +747,8 @@ class OptimizedImageAnalysisService:
                 })
         
         # COMPOSITION-SPECIFIC TIPS
-        tips.extend(self._get_composition_specific_tips(detected_type, composition_analysis))
+        if composition_supported:
+            tips.extend(self._get_composition_specific_tips(detected_type, composition_analysis))
         
         # Sort by priority
         priority_order = {'High': 0, 'Medium': 1, 'Low': 2}
@@ -783,6 +786,10 @@ class OptimizedImageAnalysisService:
     
     def _suggest_better_composition(self, composition_analysis):
         """Suggest alternative composition that might work better"""
+        if composition_analysis.get('method') == 'ml':
+            # Neither class probabilities nor edge scores predict how good a
+            # hypothetical re-composition would be.
+            return None
         current_type = composition_analysis['type_key']
         all_scores = composition_analysis['all_scores']
         
@@ -1092,19 +1099,21 @@ class OptimizedImageAnalysisService:
     def _analyze_pose(self, image_rgb):
         """Fast pose detection"""
         if not self.pose:
-            return {'detected': False}
+            return {'detected': False, 'available': False}
         
         try:
             results = self.pose.process(image_rgb)
             if not results.pose_landmarks:
-                return {'detected': False}
+                return {'detected': False, 'available': True}
             
             landmarks = results.pose_landmarks.landmark
             visibility_avg = np.mean([lm.visibility for lm in landmarks])
-            pose_score = min(10, visibility_avg * 12)
+            pose_score = float(np.clip(visibility_avg * 10, 0, 10))
             
             return {
                 'detected': True,
+                'available': True,
+                'score_kind': 'landmark-visibility',
                 'quality_score': round(pose_score, 1),
                 'visibility': round(visibility_avg, 2),
                 'rating': self._get_rating(pose_score),
@@ -1114,7 +1123,7 @@ class OptimizedImageAnalysisService:
             return {'detected': False}
     
     def _calculate_overall_rating(self, results):
-        """Calculate overall rating, trusting the trained CNN more when confident."""
+        """Use learned aesthetic appeal for the rating, with diagnostics alongside."""
         tech = results['technical_quality']['overall_score']
         lighting = results['lighting_analysis']['overall_score']
         comp = results['composition_analysis']['score']
@@ -1130,8 +1139,12 @@ class OptimizedImageAnalysisService:
 
         overall = (tech * tech_weight + lighting * lighting_weight +
                    comp * comp_weight + colors * colors_weight)
+        assessment = results.get('aesthetic_score', {})
+        learned_aesthetic = assessment.get('mode') == 'learned-nima'
+        if learned_aesthetic:
+            overall = float(assessment['score'])
 
-        if results['pose_analysis'].get('detected'):
+        if not learned_aesthetic and results['pose_analysis'].get('detected'):
             pose_score = results['pose_analysis'].get('quality_score', 0)
             overall = overall * 0.95 + pose_score * 0.05
 
@@ -1146,6 +1159,7 @@ class OptimizedImageAnalysisService:
 
         return {
             'score': round(overall, 1),
+            'scoring_method': 'learned-nima' if learned_aesthetic else 'diagnostic-heuristics',
             'category': category,
             'grade': self._score_to_grade(overall),
             'breakdown': {
@@ -1161,18 +1175,15 @@ class OptimizedImageAnalysisService:
         """
         Primary aesthetic scorer: the new NIMA-style deep aesthetic model
         (MobileNetV2 backbone). Falls back to the rule-based aesthetic score
-        if the model is unavailable. Blends in the trained composition CNN.
+        if the model is unavailable. Composition class confidence does not
+        modify the learned distribution or its expected aesthetic score.
         """
         try:
             from ml_models.aesthetic_model import get_assessor
             assessment = get_assessor().assess(image_rgb)
 
-            # Blend the deep aesthetic score with the trained composition CNN
             comp_obj = results['composition_analysis']
-            ml_conf = comp_obj.get('ml_confidence', 0) / 100.0 if comp_obj.get('method') in ('ml', 'hybrid') else 0.0
             comp_score = comp_obj.get('score', assessment['score'])
-            blended = assessment['score'] * (1 - 0.25 * ml_conf) + comp_score * (0.25 * ml_conf)
-            assessment['score'] = round(float(min(max(blended, 1.0), 10.0)), 1)
 
             # Surface composition as an extra factor for the UI
             assessment.setdefault('factors', {})['composition'] = round(float(comp_score), 1)

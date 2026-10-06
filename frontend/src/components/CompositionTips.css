@@ -17,9 +17,9 @@
 }
 .composition-ideal strong {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   color: var(--bug-ink);
   margin-right: var(--space-2);
 }
