@@ -85,14 +85,15 @@ class OptimizedImageAnalysisService:
         }
     }
     
-    def __init__(self):
+    def __init__(self, composition_model_path=None):
         # GPU detection
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.use_gpu = torch.cuda.is_available()
         
         # Initialize Hybrid ML Composition Detector
         if HYBRID_MODEL_AVAILABLE:
-            model_path = Path(__file__).parent.parent / 'ml_models' / 'trained' / 'composition_model_best.pth'
+            model_path = (Path(composition_model_path) if composition_model_path else
+                          Path(__file__).parent.parent / 'ml_models' / 'trained' / 'composition_model_best.pth')
             self.hybrid_detector = HybridCompositionDetector(
                 model_path=str(model_path) if model_path.exists() else None
             )

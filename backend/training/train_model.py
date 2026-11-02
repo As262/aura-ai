@@ -205,14 +205,20 @@ def train_composition_model(data_dir=BACKEND / 'training_data', epochs=80, batch
                             spatial_pool_size=1, freeze_batchnorm=False, defer_test=False):
     seed_everything(seed)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if device.type == 'cuda':
+        torch.backends.cudnn.benchmark = True
+        torch.set_float32_matmul_precision('high')
     save_dir = Path(save_dir)
     save_dir.mkdir(parents=True, exist_ok=True)
     splits, audit = audit_and_split(data_dir, seed, split_manifest)
     write_json(save_dir / 'composition_data_audit.json', audit)
     print(f'Device: {device}; unique images: ' + ', '.join(f'{k}={len(v)}' for k, v in splits.items()), flush=True)
-    loaders = {name: DataLoader(CompositionDataset(rows, name == 'train'), batch_size=batch_size,
-                               shuffle=name == 'train', num_workers=workers,
-                               pin_memory=device.type == 'cuda', persistent_workers=workers > 0)
+    loader_options = dict(batch_size=batch_size, num_workers=workers,
+                          pin_memory=device.type == 'cuda', persistent_workers=workers > 0)
+    if workers > 0:
+        loader_options['prefetch_factor'] = 2
+    loaders = {name: DataLoader(CompositionDataset(rows, name == 'train'),
+                                shuffle=name == 'train', **loader_options)
                for name, rows in splits.items()}
     model = CompositionCNN(num_classes=len(COMPOSITION_TYPES), pretrained=True,
                            spatial_pool_size=spatial_pool_size).to(device)
@@ -241,7 +247,8 @@ def train_composition_model(data_dir=BACKEND / 'training_data', epochs=80, batch
                     module.eval()
         total_loss, seen = 0, 0
         for images, labels in loaders['train']:
-            images, labels = images.to(device), labels.to(device)
+            images = images.to(device, non_blocking=True)
+            labels = labels.to(device, non_blocking=True)
             optimizer.zero_grad(set_to_none=True)
             with torch.amp.autocast(device.type, enabled=device.type == 'cuda'):
                 loss = criterion(model(images), labels)

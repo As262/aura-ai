@@ -26,9 +26,9 @@ from training.train_model import audit_and_split
 
 def main(args):
     seed_everything(42)
-    model_dir = BACKEND / 'ml_models/trained'
+    model_dir = args.model_dir
     splits, _ = audit_and_split(args.data_dir, split_manifest=model_dir / 'composition_data_audit.json')
-    service = OptimizedImageAnalysisService()
+    service = OptimizedImageAnalysisService(composition_model_path=model_dir / 'composition_model_best.pth')
     if not service.hybrid_detector or not service.hybrid_detector.model_loaded:
         raise RuntimeError('Serving composition checkpoint did not load')
     truth, predicted, rows = [], [], []
@@ -90,5 +90,6 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data-dir', type=Path, default=BACKEND / 'training_data')
+    parser.add_argument('--model-dir', type=Path, default=BACKEND / 'ml_models/trained')
     parser.add_argument('--report', type=Path, default=BACKEND / 'ml_models/trained/photo_pipeline_evaluation.json')
     main(parser.parse_args())
